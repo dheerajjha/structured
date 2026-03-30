@@ -28,9 +28,15 @@ enum AppTab: CaseIterable {
 // MARK: - Content View
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @AppStorage("anchor_wake_hour")   private var wakeHour:   Int = 7
+    @AppStorage("anchor_wake_minute") private var wakeMinute: Int = 0
+    @AppStorage("anchor_bed_hour")    private var bedHour:    Int = 23
+    @AppStorage("anchor_bed_minute")  private var bedMinute:  Int = 0
     @State private var selectedTab: AppTab = .timeline
     @State private var viewModel = TimelineViewModel()
+    @State private var aiViewModel = AIViewModel()
     @State private var showingTaskEditor = false
     @State private var showDatePicker = false
 
@@ -38,22 +44,19 @@ struct ContentView: View {
         if !hasCompletedOnboarding {
             OnboardingContainerView(hasCompletedOnboarding: $hasCompletedOnboarding)
         } else {
-            ZStack(alignment: .bottom) {
-                // Page content — extend under the custom tab bar
-                tabContent
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                // Floating tab bar + FAB
-                bottomBar
-            }
-            .ignoresSafeArea(edges: .bottom)
-            .sheet(isPresented: $showingTaskEditor) {
-                if selectedTab == .unscheduled {
-                    TaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
-                } else {
-                    TaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
+            tabContent
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // Push content up so nothing hides behind the tab bar
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    bottomBar
                 }
-            }
+                .sheet(isPresented: $showingTaskEditor) {
+                    if selectedTab == .unscheduled {
+                        TaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
+                    } else {
+                        TaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
+                    }
+                }
         }
     }
 
@@ -71,8 +74,15 @@ struct ContentView: View {
                 Divider()
                 DayTimelineView(viewModel: viewModel)
             }
+            .onChange(of: viewModel.selectedDate, initial: true) { _, date in
+                DailyAnchorManager.ensureAnchors(
+                    for: date, context: modelContext,
+                    wakeHour: wakeHour, wakeMinute: wakeMinute,
+                    bedHour: bedHour, bedMinute: bedMinute
+                )
+            }
         case .ai:
-            AIView()
+            AIView(viewModel: aiViewModel)
         case .settings:
             SettingsView()
         }

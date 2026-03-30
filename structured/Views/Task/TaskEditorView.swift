@@ -235,6 +235,8 @@ struct TaskEditorView: View {
             task.notes = notes
             task.isInbox = !isScheduled
             if !isScheduled { task.startTime = nil }
+            // If user manually changed an anchor task's time, flag it so global updates skip it
+            if task.isProtected { task.isUserModifiedTime = true }
             updateSubtasks(for: task)
         } else {
             // Create new

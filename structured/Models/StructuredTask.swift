@@ -17,6 +17,14 @@ class StructuredTask {
     var order: Int = 0
     var createdAt: Date = Date()
 
+    // Anchor task fields
+    /// "wake_up" | "wind_down" | nil
+    var anchorType: String? = nil
+    /// True for Rise and Shine / Wind Down — protected from AI and bulk moves
+    var isProtected: Bool = false
+    /// True once user manually edits this specific day's anchor time
+    var isUserModifiedTime: Bool = false
+
     @Relationship(deleteRule: .cascade, inverse: \Subtask.task)
     var subtasks: [Subtask]? = []
 
@@ -31,7 +39,9 @@ class StructuredTask {
         isCompleted: Bool = false,
         isAllDay: Bool = false,
         isInbox: Bool = false,
-        order: Int = 0
+        order: Int = 0,
+        anchorType: String? = nil,
+        isProtected: Bool = false
     ) {
         self.id = UUID()
         self.title = title
@@ -45,6 +55,8 @@ class StructuredTask {
         self.isAllDay = isAllDay
         self.isInbox = isInbox
         self.order = order
+        self.anchorType = anchorType
+        self.isProtected = isProtected
         self.createdAt = Date()
     }
 }

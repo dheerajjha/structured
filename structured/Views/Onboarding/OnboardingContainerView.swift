@@ -179,11 +179,16 @@ struct OnboardingContainerView: View {
     private func saveAndFinish() {
         let day = Date().startOfDay
 
+        // Persist wake / bed times so DailyAnchorManager can use them going forward
+        DailyAnchorManager.saveWakeTime(wakeUpTime)
+        DailyAnchorManager.saveBedTime(bedTime)
+
         let wake = StructuredTask(
             title: "Rise and Shine",
             startTime: day.atTime(hour: wakeUpTime.hour, minute: wakeUpTime.minute),
             duration: 0, date: day, colorHex: "#E8907E",
-            iconName: "sun.max.fill", isCompleted: false, order: 0
+            iconName: "sun.max.fill", isCompleted: false, order: 0,
+            anchorType: AnchorType.wakeUp, isProtected: true
         )
         modelContext.insert(wake)
 
@@ -203,7 +208,8 @@ struct OnboardingContainerView: View {
             startTime: day.atTime(hour: bedTime.hour, minute: bedTime.minute),
             duration: 0, date: day, colorHex: "#7C97AB",
             iconName: "moon.fill", isCompleted: false,
-            order: summaryTasks.count + 1
+            order: summaryTasks.count + 1,
+            anchorType: AnchorType.windDown, isProtected: true
         )
         modelContext.insert(wind)
 
