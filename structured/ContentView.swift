@@ -1,39 +1,135 @@
 import SwiftUI
 import SwiftData
 
-/// Root view — shows onboarding on first launch, then day timeline
+// MARK: - App Tabs
+
+enum AppTab: CaseIterable {
+    case unscheduled, timeline, ai, settings
+
+    var title: String {
+        switch self {
+        case .unscheduled: return "Unscheduled"
+        case .timeline:    return "Timeline"
+        case .ai:          return "AI"
+        case .settings:    return "Settings"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .unscheduled: return "tray.fill"
+        case .timeline:    return "list.bullet.below.rectangle"
+        case .ai:          return "sparkles"
+        case .settings:    return "gearshape.fill"
+        }
+    }
+}
+
+// MARK: - Content View
+
 struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @State private var selectedTab: AppTab = .timeline
     @State private var viewModel = TimelineViewModel()
+    @State private var showingTaskEditor = false
     @State private var showDatePicker = false
 
     var body: some View {
         if !hasCompletedOnboarding {
             OnboardingContainerView(hasCompletedOnboarding: $hasCompletedOnboarding)
         } else {
-        VStack(spacing: 0) {
-            // MARK: - Navigation Header
-            headerView
+            ZStack(alignment: .bottom) {
+                // Page content — extend under the custom tab bar
+                tabContent
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            // MARK: - Week Strip
-            weekStripView
-
-            Divider()
-
-            // MARK: - Timeline
-            DayTimelineView(viewModel: viewModel)
+                // Floating tab bar + FAB
+                bottomBar
+            }
+            .ignoresSafeArea(edges: .bottom)
+            .sheet(isPresented: $showingTaskEditor) {
+                if selectedTab == .unscheduled {
+                    TaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
+                } else {
+                    TaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
+                }
+            }
         }
-        .overlay(alignment: .bottomTrailing) {
-            addButton
-        }
-        } // else
     }
 
-    // MARK: - Header
+    // MARK: - Tab Content
+
+    @ViewBuilder
+    private var tabContent: some View {
+        switch selectedTab {
+        case .unscheduled:
+            InboxView()
+        case .timeline:
+            VStack(spacing: 0) {
+                headerView
+                weekStripView
+                Divider()
+                DayTimelineView(viewModel: viewModel)
+            }
+        case .ai:
+            AIView()
+        case .settings:
+            SettingsView()
+        }
+    }
+
+    // MARK: - Bottom Bar
+
+    private var bottomBar: some View {
+        HStack(alignment: .center, spacing: 10) {
+            // Tab pill
+            HStack(spacing: 0) {
+                ForEach(AppTab.allCases, id: \.self) { tab in
+                    Button {
+                        selectedTab = tab
+                    } label: {
+                        VStack(spacing: 3) {
+                            Image(systemName: tab.icon)
+                                .font(.system(size: 20, weight: .medium))
+                            Text(tab.title)
+                                .font(.system(size: 10, weight: .medium))
+                        }
+                        .foregroundStyle(selectedTab == tab ? Color(hex: "#E8907E") : Color.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .background(
+                Capsule()
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 16, y: 4)
+            )
+
+            // FAB
+            Button {
+                showingTaskEditor = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 52, height: 52)
+                    .background(
+                        Circle()
+                            .fill(Color(hex: "#E8907E"))
+                            .shadow(color: Color(hex: "#E8907E").opacity(0.35), radius: 8, y: 3)
+                    )
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 28)
+    }
+
+    // MARK: - Timeline Header
 
     private var headerView: some View {
         HStack {
-            // Date title (tappable for picker)
             Button {
                 showDatePicker.toggle()
             } label: {
@@ -65,7 +161,6 @@ struct ContentView: View {
 
             Spacer()
 
-            // Navigation arrows
             HStack(spacing: 16) {
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -123,11 +218,13 @@ struct ContentView: View {
 
                         Text("\(day.dayNumber)")
                             .font(.callout.weight(day.isSameDay(as: viewModel.selectedDate) ? .bold : .regular))
-                            .foregroundStyle(day.isSameDay(as: viewModel.selectedDate) ? .white : day.isToday ? Color(hex: "#FF6B6B") : .primary)
+                            .foregroundStyle(day.isSameDay(as: viewModel.selectedDate) ? .white
+                                             : day.isToday ? Color(hex: "#FF6B6B") : .primary)
                             .frame(width: 32, height: 32)
                             .background(
                                 Circle()
-                                    .fill(day.isSameDay(as: viewModel.selectedDate) ? Color(hex: "#FF6B6B") : .clear)
+                                    .fill(day.isSameDay(as: viewModel.selectedDate)
+                                          ? Color(hex: "#FF6B6B") : .clear)
                             )
                     }
                     .frame(maxWidth: .infinity)
@@ -137,26 +234,6 @@ struct ContentView: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-    }
-
-    // MARK: - FAB
-
-    private var addButton: some View {
-        Button {
-            viewModel.startNewTask()
-        } label: {
-            Image(systemName: "plus")
-                .font(.title2.weight(.semibold))
-                .foregroundStyle(.white)
-                .frame(width: 56, height: 56)
-                .background(
-                    Circle()
-                        .fill(Color(hex: "#FF6B6B"))
-                        .shadow(color: Color(hex: "#FF6B6B").opacity(0.3), radius: 8, y: 4)
-                )
-        }
-        .padding(.trailing, 20)
-        .padding(.bottom, 24)
     }
 }
 

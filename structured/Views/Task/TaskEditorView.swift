@@ -8,6 +8,7 @@ struct TaskEditorView: View {
 
     let task: StructuredTask?
     let selectedDate: Date
+    var startAsInbox: Bool = false
 
     // Form state
     @State private var title = ""
@@ -18,6 +19,9 @@ struct TaskEditorView: View {
     @State private var iconName = "star.fill"
     @State private var notes = ""
     @State private var subtaskTexts: [String] = []
+
+    // Scheduling state (Option C)
+    @State private var isScheduled: Bool = true
 
     // Sheet state
     @State private var showIconPicker = false
@@ -60,6 +64,19 @@ struct TaskEditorView: View {
                 // Color
                 Section("Color") {
                     TaskColorPickerView(selectedHex: $colorHex)
+                }
+
+                // Option C — Scheduled toggle (editing only)
+                if isEditing {
+                    Section {
+                        Toggle("Scheduled on timeline", isOn: $isScheduled)
+                            .tint(Color(hex: colorHex))
+                    } footer: {
+                        if !isScheduled {
+                            Text("Task will move to Unscheduled.")
+                                .font(.caption)
+                        }
+                    }
                 }
 
                 // Time section
@@ -183,6 +200,7 @@ struct TaskEditorView: View {
         if let task {
             title = task.title
             isAllDay = task.isAllDay
+            isScheduled = !task.isInbox
             startTime = task.startTime ?? selectedDate.atTime(hour: 9)
             durationMinutes = Double(task.durationMinutes)
             colorHex = task.colorHex
@@ -207,7 +225,7 @@ struct TaskEditorView: View {
         guard !trimmedTitle.isEmpty else { return }
 
         if let task {
-            // Update existing
+            // Update existing — scheduling always moves out of inbox
             task.title = trimmedTitle
             task.isAllDay = isAllDay
             task.startTime = isAllDay ? nil : startTime
@@ -215,6 +233,8 @@ struct TaskEditorView: View {
             task.colorHex = colorHex
             task.iconName = iconName
             task.notes = notes
+            task.isInbox = !isScheduled
+            if !isScheduled { task.startTime = nil }
             updateSubtasks(for: task)
         } else {
             // Create new
@@ -225,7 +245,8 @@ struct TaskEditorView: View {
                 date: selectedDate,
                 colorHex: colorHex,
                 iconName: iconName,
-                isAllDay: isAllDay
+                isAllDay: isAllDay,
+                isInbox: startAsInbox
             )
             newTask.notes = notes
             modelContext.insert(newTask)

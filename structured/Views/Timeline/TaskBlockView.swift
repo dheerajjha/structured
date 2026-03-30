@@ -8,7 +8,7 @@ struct TaskBlockView: View {
 
     private var taskColor: Color { Color(hex: task.colorHex) }
     private var blockHeight: CGFloat {
-        max(TimelineViewModel.height(for: task.duration), 44)
+        max(TimelineViewModel.height(for: task.duration), 56)
     }
 
     var body: some View {

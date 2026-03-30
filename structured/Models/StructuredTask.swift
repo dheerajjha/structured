@@ -70,6 +70,7 @@ extension StructuredTask {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         let startStr = formatter.string(from: start)
+        if duration == 0 { return startStr }
         let endStr = formatter.string(from: start.addingTimeInterval(duration))
         let mins = durationMinutes
         if mins >= 60 {

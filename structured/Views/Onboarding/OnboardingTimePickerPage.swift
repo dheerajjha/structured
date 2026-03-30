@@ -60,6 +60,7 @@ struct OnboardingTimePickerPage: View {
     let subtitle: String
     @Binding var selectedTime: Date
     let theme: TimePickerTheme
+    var onContinue: (@MainActor () -> Void)? = nil
 
     @State private var selectedMinuteOffset = 0
 
@@ -85,7 +86,23 @@ struct OnboardingTimePickerPage: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        ZStack {
+            // Full-screen background for each theme
+            switch theme {
+            case .morning:
+                Color(hex: "#FAF0E8").ignoresSafeArea()
+            case .night:
+                LinearGradient(
+                    colors: [Color(hex: "#8FA8BE"), Color(hex: "#5C7A96")],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .ignoresSafeArea()
+            }
+
+            VStack(alignment: .leading, spacing: 0) {
+            // Clear floating topBar
+            Spacer().frame(height: 80)
+
             // Title
             VStack(alignment: .leading, spacing: 8) {
                 (Text(title + " ")
@@ -106,7 +123,7 @@ struct OnboardingTimePickerPage: View {
                     .foregroundStyle(theme == .night ? .white.opacity(0.8) : .secondary)
             }
             .padding(.horizontal, 24)
-            .padding(.top, 20)
+            .padding(.top, 8)
 
             Spacer()
 
@@ -145,10 +162,28 @@ struct OnboardingTimePickerPage: View {
                 }
                 .padding(.vertical, 16)
             }
-            .frame(height: 380)
+            .frame(height: 340)
 
             Spacer()
-        }
+
+            // Continue button embedded in page — no z-fighting
+            if let onContinue {
+                Button(action: onContinue) {
+                    Text("Continue")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(
+                            RoundedRectangle(cornerRadius: 28)
+                                .fill(Color(hex: theme.buttonColor))
+                        )
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 32)
+            }
+            } // VStack
+        } // ZStack
     }
 
     // MARK: - Theme Icon
@@ -265,7 +300,8 @@ struct OnboardingTimePickerPage: View {
         highlightedWord: "wake up",
         subtitle: "Structured will help you start your day right.",
         selectedTime: .constant(Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!),
-        theme: .morning
+        theme: .morning,
+        onContinue: {}
     )
 }
 
@@ -275,6 +311,7 @@ struct OnboardingTimePickerPage: View {
         highlightedWord: "go to bed",
         subtitle: "Setting a clear sleep goal can help to regulate your body's internal clock.",
         selectedTime: .constant(Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date())!),
-        theme: .night
+        theme: .night,
+        onContinue: {}
     )
 }

@@ -1,17 +1,29 @@
 import SwiftUI
 import SwiftData
 
-/// Main scrollable daily timeline view
+// MARK: - Timeline Item Model
+
+private enum TimelineItem: Identifiable {
+    case task(StructuredTask)
+    case gap(minutes: Int, afterTaskID: UUID)
+    case currentTime(date: Date)
+
+    var id: String {
+        switch self {
+        case .task(let t):        return "task-\(t.id)"
+        case .gap(_, let tid):    return "gap-after-\(tid)"
+        case .currentTime(let d): return "now-\(Int(d.timeIntervalSince1970 / 60))"
+        }
+    }
+}
+
+// MARK: - Day Timeline View
+
 struct DayTimelineView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var viewModel: TimelineViewModel
 
-    // Query all tasks — we filter in code for the selected date
     @Query(sort: \StructuredTask.order) private var allTasks: [StructuredTask]
-
-    @State private var scrollPosition = ScrollPosition()
-
-    private let leadingPadding: CGFloat = 64 // Space for hour labels
 
     // MARK: - Filtered Tasks
 
@@ -29,65 +41,73 @@ struct DayTimelineView: View {
         tasksForDate.filter(\.isAllDay)
     }
 
+    // MARK: - Build Items
+
+    private func buildItems(from tasks: [StructuredTask], isToday: Bool) -> [TimelineItem] {
+        guard !tasks.isEmpty else { return [] }
+        var items: [TimelineItem] = []
+        let now = Date()
+
+        for (index, task) in tasks.enumerated() {
+            if isToday && index == 0 {
+                if let first = tasks.first?.startTime, now < first {
+                    items.append(.currentTime(date: now))
+                }
+            }
+
+            if index > 0 {
+                let prev = tasks[index - 1]
+                let prevEnd = (prev.startTime ?? .distantPast).addingTimeInterval(prev.duration)
+                if let thisStart = task.startTime {
+                    let gapSecs = thisStart.timeIntervalSince(prevEnd)
+                    if gapSecs >= 15 * 60 {
+                        if isToday && now >= prevEnd && now < thisStart {
+                            items.append(.currentTime(date: now))
+                        }
+                        items.append(.gap(minutes: Int(gapSecs / 60), afterTaskID: prev.id))
+                    }
+                }
+            }
+
+            items.append(.task(task))
+        }
+
+        if isToday {
+            let lastEnd = (tasks.last?.startTime ?? .distantPast)
+                .addingTimeInterval(tasks.last?.duration ?? 0)
+            if now >= lastEnd {
+                items.append(.currentTime(date: now))
+            }
+        }
+
+        return items
+    }
+
+    // MARK: - Task Actions
+
+    private func unscheduleTask(_ task: StructuredTask) {
+        withAnimation {
+            task.isInbox = true
+            task.startTime = nil
+        }
+    }
+
+    private func deleteTask(_ task: StructuredTask) {
+        withAnimation {
+            modelContext.delete(task)
+        }
+    }
+
     // MARK: - Body
 
     var body: some View {
         VStack(spacing: 0) {
-            // All-day tasks strip
             AllDayTasksView(
                 tasks: allDayTasks,
                 onToggleComplete: { viewModel.toggleCompletion($0) },
                 onTap: { viewModel.startEditingTask($0) }
             )
-
-            // Scrollable timeline
-            ScrollView(.vertical, showsIndicators: false) {
-                ZStack(alignment: .topLeading) {
-                    // Background hour grid
-                    HourGridView()
-
-                    // Task blocks
-                    ForEach(scheduledTasks, id: \.id) { task in
-                        if let startTime = task.startTime {
-                            let y = TimelineViewModel.yPosition(for: startTime)
-                            let height = TimelineViewModel.height(for: task.duration)
-
-                            TaskBlockView(
-                                task: task,
-                                onToggleComplete: { viewModel.toggleCompletion(task) },
-                                onTap: { viewModel.startEditingTask(task) }
-                            )
-                            .frame(height: max(height, 44))
-                            .padding(.leading, leadingPadding)
-                            .padding(.trailing, 16)
-                            .offset(y: y)
-                        }
-                    }
-
-                    // Current time indicator (only on today)
-                    if viewModel.isToday {
-                        CurrentTimeIndicatorView(timelineWidth: 0)
-                            .padding(.leading, leadingPadding - 10)
-                            .padding(.trailing, 16)
-                    }
-                }
-                .frame(height: TimelineViewModel.totalHeight + 50)
-                .contentShape(Rectangle())
-                .onTapGesture { location in
-                    handleTimelineTap(at: location)
-                }
-            }
-            .scrollPosition($scrollPosition)
-            .onAppear {
-                let target = viewModel.initialScrollTarget()
-                scrollPosition.scrollTo(y: target)
-            }
-            .onChange(of: viewModel.selectedDate) {
-                let target = viewModel.initialScrollTarget()
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    scrollPosition.scrollTo(y: target)
-                }
-            }
+            taskContent
         }
         .sheet(isPresented: $viewModel.showingTaskEditor) {
             TaskEditorView(
@@ -97,25 +117,148 @@ struct DayTimelineView: View {
         }
     }
 
-    // MARK: - Tap to Create
+    @ViewBuilder
+    private var taskContent: some View {
+        let tasks = scheduledTasks
+        if tasks.isEmpty {
+            emptyState
+        } else {
+            let items = buildItems(from: tasks, isToday: viewModel.isToday)
+            List {
+                Color.clear.frame(height: 8)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init())
 
-    private func handleTimelineTap(at location: CGPoint) {
-        // Only create if tapping on an empty area
-        let tappedY = location.y
-        let snappedY = TimelineViewModel.snapToQuarterHour(tappedY)
-        let startTime = TimelineViewModel.dateFromYPosition(snappedY, on: viewModel.selectedDate)
+                ForEach(items) { item in
+                    rowView(for: item)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(.init())
+                }
 
-        // Check if any existing task is at this position
-        let tappedOnTask = scheduledTasks.contains { task in
-            guard let taskStart = task.startTime else { return false }
-            let taskY = TimelineViewModel.yPosition(for: taskStart)
-            let taskHeight = TimelineViewModel.height(for: task.duration)
-            return tappedY >= taskY && tappedY <= taskY + taskHeight
+                Color.clear.frame(height: 100)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init())
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
+            .environment(\.defaultMinListRowHeight, 0)
         }
+    }
 
-        if !tappedOnTask {
-            viewModel.editingTask = nil
-            viewModel.showingTaskEditor = true
+    // MARK: - Row View  (Options A + B wired here)
+
+    @ViewBuilder
+    private func rowView(for item: TimelineItem) -> some View {
+        switch item {
+        case .task(let task):
+            TaskBlockView(
+                task: task,
+                onToggleComplete: { viewModel.toggleCompletion(task) },
+                onTap: { viewModel.startEditingTask(task) }
+            )
+            .padding(.horizontal, 16)
+            .padding(.vertical, 4)
+            // Option B — long press context menu
+            .contextMenu {
+                Button { viewModel.startEditingTask(task) } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+                Button { unscheduleTask(task) } label: {
+                    Label("Move to Unscheduled", systemImage: "tray.fill")
+                }
+                Divider()
+                Button(role: .destructive) { deleteTask(task) } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+            // Option A — swipe left to reveal Unschedule + Delete
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                Button(role: .destructive) { deleteTask(task) } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+                Button { unscheduleTask(task) } label: {
+                    Label("Unschedule", systemImage: "tray.fill")
+                }
+                .tint(.orange)
+            }
+
+        case .gap(let minutes, _):
+            gapView(minutes: minutes)
+
+        case .currentTime(let date):
+            currentTimeBadge(for: date)
         }
+    }
+
+    // MARK: - Current Time Badge
+
+    private func currentTimeBadge(for date: Date) -> some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(.red)
+                .frame(width: 8, height: 8)
+            Text(TimeFormatting.timeString(from: date))
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.red)
+            Rectangle()
+                .fill(.red.opacity(0.25))
+                .frame(height: 1)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 6)
+    }
+
+    // MARK: - Gap View
+
+    private func gapView(minutes: Int) -> some View {
+        HStack(spacing: 8) {
+            VStack(spacing: 3) {
+                ForEach(0..<3, id: \.self) { _ in
+                    RoundedRectangle(cornerRadius: 1)
+                        .fill(Color(.systemGray4))
+                        .frame(width: 2, height: 4)
+                }
+            }
+            .frame(width: 16)
+            .padding(.leading, 20)
+
+            Text(gapLabel(minutes: minutes))
+                .font(.caption)
+                .foregroundStyle(Color(.systemGray3))
+            Spacer()
+        }
+        .frame(height: 28)
+    }
+
+    private func gapLabel(minutes: Int) -> String {
+        if minutes >= 60 {
+            let h = minutes / 60
+            let m = minutes % 60
+            return m > 0 ? "\(h) hr \(m) min free" : "\(h) hr free"
+        }
+        return "\(minutes) min free"
+    }
+
+    // MARK: - Empty State
+
+    private var emptyState: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(systemName: "calendar.badge.plus")
+                .font(.system(size: 48))
+                .foregroundStyle(Color(.systemGray4))
+            Text("No tasks scheduled")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text("Tap + to add your first task.")
+                .font(.subheadline)
+                .foregroundStyle(Color(.systemGray3))
+            Spacer()
+        }
+        .padding(.horizontal, 40)
     }
 }

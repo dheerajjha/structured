@@ -5,11 +5,15 @@ struct OnboardingSummaryPage: View {
     let wakeUpTime: Date
     let createdTasks: [OnboardingTaskData]
     let bedTime: Date
+    var onFinish: (@MainActor () -> Void)? = nil
 
     private let greenColor = Color(hex: "#7CB342")
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Clear the floating topBar
+            Spacer().frame(height: 80)
+
             // Title
             VStack(alignment: .leading, spacing: 8) {
                 (Text("Awesome! ")
@@ -26,7 +30,7 @@ struct OnboardingSummaryPage: View {
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 24)
-            .padding(.top, 20)
+            .padding(.top, 4)
 
             // Plan label
             Text("Your Structured Plan:")
@@ -41,6 +45,12 @@ struct OnboardingSummaryPage: View {
                 .padding(.top, 12)
 
             Spacer()
+
+            if let onFinish {
+                OnboardingPrimaryButton(title: "Finish Setup", colorHex: "#7A9A6A", action: onFinish)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 32)
+            }
         }
     }
 

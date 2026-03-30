@@ -1,336 +1,217 @@
 import SwiftUI
 import SwiftData
 
-/// Main onboarding container — manages navigation between all onboarding pages
 struct OnboardingContainerView: View {
     @Environment(\.modelContext) private var modelContext
     @Binding var hasCompletedOnboarding: Bool
 
-    @State private var currentPage: OnboardingPage = .welcome
-    @State private var planForToday = true
-    @State private var wakeUpTime = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
-    @State private var bedTime = Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date())!
-    @State private var taskTitle = ""
-    @State private var taskIcon = "envelope.fill"
-    @State private var taskDuration: Double = 15
+    // Shared state
+    @State private var wakeUpTime  = Calendar.current.date(bySettingHour: 7,  minute: 0, second: 0, of: Date())!
+    @State private var bedTime     = Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date())!
+    @State private var taskTitle   = ""
+    @State private var taskIcon    = "envelope.fill"
+    @State private var taskDuration: Double = 30
     @State private var taskColorHex = "#E8907E"
-    @State private var createdTasks: [OnboardingTaskData] = []
 
-    enum OnboardingPage: Int, CaseIterable {
-        case welcome, benefits, getStarted, wakeUp, bedTime, taskEntry, duration, color, summary
+    @State private var pageIndex = 0
+
+    // 7 pages
+    private enum Page: Int, CaseIterable {
+        case welcome, benefits, wakeUp, bedTime, taskEntry, taskStyle, summary
     }
+    private var totalPages: Int { Page.allCases.count }
 
-    // MARK: - Progress
-
-    /// Pages after getStarted use a progress bar
-    private var usesProgressBar: Bool {
-        currentPage.rawValue >= OnboardingPage.getStarted.rawValue
-    }
-
-    private var progressFraction: Double {
-        let setupPages: [OnboardingPage] = [.getStarted, .wakeUp, .bedTime, .taskEntry, .duration, .color, .summary]
-        guard let idx = setupPages.firstIndex(of: currentPage) else { return 0 }
-        return Double(idx + 1) / Double(setupPages.count)
-    }
-
-    // MARK: - Body
+    private let warmBrown  = Color(hex: "#8B7355")
+    private let accentSage = Color(hex: "#9CAF88")
+    private let sageGreen  = Color(hex: "#7A9A6A")
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Top bar
-            topBar
+        ZStack(alignment: .top) {
+            // ── Pages ─────────────────────────────────────────────
+            TabView(selection: $pageIndex) {
+                OnboardingWelcomePage(onNext: { goTo(Page.benefits.rawValue) })
+                    .tag(Page.welcome.rawValue)
 
-            // Page content
-            Group {
-                switch currentPage {
-                case .welcome:
-                    OnboardingWelcomePage()
-                case .benefits:
-                    OnboardingBenefitsPage()
-                case .getStarted:
-                    OnboardingGetStartedPage(planForToday: $planForToday)
-                case .wakeUp:
-                    OnboardingTimePickerPage(
-                        title: "When did you",
-                        highlightedWord: "wake up",
-                        subtitle: "Structured will help you start your day right.",
-                        selectedTime: $wakeUpTime,
-                        theme: .morning
-                    )
-                case .bedTime:
-                    OnboardingTimePickerPage(
-                        title: "When will you",
-                        highlightedWord: "go to bed",
-                        subtitle: "Setting a clear sleep goal can help to regulate your body's internal clock.",
-                        selectedTime: $bedTime,
-                        theme: .night
-                    )
-                case .taskEntry:
-                    OnboardingTaskEntryPage(
-                        taskTitle: $taskTitle,
-                        taskIcon: $taskIcon
-                    )
-                case .duration:
-                    OnboardingDurationPage(
-                        taskTitle: taskTitle,
-                        taskIcon: taskIcon,
-                        taskColorHex: taskColorHex,
-                        duration: $taskDuration
-                    )
-                case .color:
-                    OnboardingColorPage(
-                        taskTitle: taskTitle,
-                        taskIcon: taskIcon,
-                        duration: taskDuration,
-                        selectedColorHex: $taskColorHex
-                    )
-                case .summary:
-                    OnboardingSummaryPage(
-                        wakeUpTime: wakeUpTime,
-                        createdTasks: createdTasks,
-                        bedTime: bedTime
-                    )
-                }
+                OnboardingBenefitsPage(onNext: { goTo(Page.wakeUp.rawValue) })
+                    .tag(Page.benefits.rawValue)
+
+                OnboardingTimePickerPage(
+                    title: "When did you",
+                    highlightedWord: "wake up",
+                    subtitle: "Structured will help you start your day right.",
+                    selectedTime: $wakeUpTime,
+                    theme: .morning,
+                    onContinue: { goTo(Page.bedTime.rawValue) }
+                )
+                .tag(Page.wakeUp.rawValue)
+
+                OnboardingTimePickerPage(
+                    title: "When will you",
+                    highlightedWord: "go to bed",
+                    subtitle: "Setting a clear sleep goal can help regulate your body's internal clock.",
+                    selectedTime: $bedTime,
+                    theme: .night,
+                    onContinue: { goTo(Page.taskEntry.rawValue) }
+                )
+                .tag(Page.bedTime.rawValue)
+
+                OnboardingTaskEntryPage(
+                    taskTitle: $taskTitle,
+                    taskIcon: $taskIcon,
+                    onContinue: { goTo(Page.taskStyle.rawValue) }
+                )
+                .tag(Page.taskEntry.rawValue)
+
+                OnboardingTaskStylePage(
+                    taskTitle: $taskTitle,
+                    taskIcon: $taskIcon,
+                    duration: $taskDuration,
+                    colorHex: $taskColorHex,
+                    onContinue: { goTo(Page.summary.rawValue) }
+                )
+                .tag(Page.taskStyle.rawValue)
+
+                OnboardingSummaryPage(
+                    wakeUpTime: wakeUpTime,
+                    createdTasks: summaryTasks,
+                    bedTime: bedTime,
+                    onFinish: { saveAndFinish() }
+                )
+                // Force re-render when task data changes — TabView caches pages otherwise
+                .id("summary-\(taskTitle)-\(taskColorHex)-\(Int(taskDuration))")
+                .tag(Page.summary.rawValue)
             }
-            .transition(.asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            ))
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .ignoresSafeArea()
 
-            Spacer(minLength: 0)
-
-            // Bottom action
-            bottomAction
+            // ── Floating top bar ──────────────────────────────────
+            topBar.padding(.top, safeTop)
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea()
     }
 
     // MARK: - Top Bar
 
+    private var isIntroPage: Bool { pageIndex <= Page.benefits.rawValue }
+
     private var topBar: some View {
-        HStack {
-            if currentPage.rawValue > OnboardingPage.getStarted.rawValue - 1 && currentPage != .welcome {
-                Button {
-                    goBack()
-                } label: {
+        HStack(spacing: 12) {
+            // Back arrow (all pages except welcome)
+            if pageIndex > 0 {
+                Button { goTo(pageIndex - 1) } label: {
                     Image(systemName: "arrow.left")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(isIntroPage ? Color.white : warmBrown)
+                        .frame(width: 36, height: 36)
                 }
             }
 
-            if usesProgressBar {
-                // Progress bar
+            if isIntroPage {
+                // Dot indicators — white on coral
+                HStack(spacing: 8) {
+                    ForEach(0..<2, id: \.self) { i in
+                        Capsule()
+                            .fill(Color.white.opacity(i == pageIndex ? 0.9 : 0.35))
+                            .frame(width: i == pageIndex ? 20 : 7, height: 7)
+                    }
+                }
+                Spacer()
+                Button("Skip") { finish() }
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.85))
+            } else {
+                // Progress bar — setup pages
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule()
-                            .fill(Color(.systemGray4))
-                            .frame(height: 6)
-
+                            .fill(warmBrown.opacity(0.12))
+                            .frame(height: 5)
                         Capsule()
-                            .fill(Color(hex: currentPage == .summary ? "#7CB342" : "#E8907E"))
-                            .frame(width: geo.size.width * progressFraction, height: 6)
-                            .animation(.easeInOut(duration: 0.3), value: progressFraction)
+                            .fill(pageIndex == Page.summary.rawValue ? sageGreen : accentSage)
+                            .frame(width: geo.size.width * progressFraction, height: 5)
+                            .animation(.easeInOut(duration: 0.3), value: pageIndex)
                     }
                 }
-                .frame(height: 6)
-            } else {
-                // Page dots
-                HStack(spacing: 8) {
-                    ForEach(0..<3, id: \.self) { index in
-                        Capsule()
-                            .fill(index == currentPage.rawValue ? Color(hex: "#E8907E") : Color(hex: "#E8907E").opacity(0.4))
-                            .frame(width: index == currentPage.rawValue ? 20 : 8, height: 8)
-                    }
-                }
-                Spacer()
-            }
+                .frame(height: 5)
 
-            Button("Skip") {
-                finishOnboarding()
+                Button("Skip") { finish() }
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(warmBrown.opacity(0.55))
             }
-            .font(.body.weight(.semibold))
-            .foregroundStyle(.primary)
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.vertical, 10)
     }
 
-    // MARK: - Bottom Action
+    // MARK: - Helpers
 
-    @ViewBuilder
-    private var bottomAction: some View {
-        switch currentPage {
-        case .welcome, .benefits:
-            HStack {
-                Spacer()
-                Button {
-                    goNext()
-                } label: {
-                    Image(systemName: "arrow.right")
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(.primary.opacity(0.6))
-                        .frame(width: 56, height: 56)
-                        .background(
-                            Circle()
-                                .fill(Color(.systemGray5))
-                        )
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-
-        case .getStarted:
-            VStack(spacing: 12) {
-                Button {
-                    planForToday.toggle()
-                } label: {
-                    Text(planForToday ? "Plan for tomorrow instead" : "Plan for today instead")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-
-                OnboardingPrimaryButton(
-                    title: "Start Planning",
-                    colorHex: "#E8907E"
-                ) {
-                    goNext()
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-
-        case .wakeUp, .bedTime:
-            OnboardingPrimaryButton(
-                title: "Continue",
-                colorHex: currentPage == .bedTime ? "#7C97AB" : "#E8907E"
-            ) {
-                goNext()
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-
-        case .taskEntry:
-            OnboardingPrimaryButton(
-                title: "Continue",
-                colorHex: "#E8907E",
-                isDisabled: taskTitle.trimmingCharacters(in: .whitespaces).isEmpty
-            ) {
-                goNext()
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-
-        case .duration, .color:
-            OnboardingPrimaryButton(
-                title: "Continue",
-                colorHex: currentPage == .color ? taskColorHex : "#E8907E"
-            ) {
-                if currentPage == .color {
-                    // Save the created task data and go to summary
-                    let taskData = OnboardingTaskData(
-                        title: taskTitle,
-                        icon: taskIcon,
-                        colorHex: taskColorHex,
-                        durationMinutes: taskDuration
-                    )
-                    createdTasks.append(taskData)
-                }
-                goNext()
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-
-        case .summary:
-            OnboardingPrimaryButton(
-                title: "Finish Setup",
-                colorHex: "#7CB342"
-            ) {
-                saveOnboardingData()
-                finishOnboarding()
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-        }
+    private var progressFraction: Double {
+        let setupStart = Page.wakeUp.rawValue
+        let setupEnd   = Page.summary.rawValue
+        let range = Double(setupEnd - setupStart)
+        let current = Double(pageIndex - setupStart)
+        return range > 0 ? min(max(current / range, 0), 1) : 0
     }
 
-    // MARK: - Navigation
-
-    private func goNext() {
-        let allPages = OnboardingPage.allCases
-        guard let idx = allPages.firstIndex(of: currentPage),
-              idx + 1 < allPages.count else { return }
-        withAnimation(.easeInOut(duration: 0.35)) {
-            currentPage = allPages[idx + 1]
-        }
+    private var summaryTasks: [OnboardingTaskData] {
+        guard !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return [] }
+        return [OnboardingTaskData(title: taskTitle, icon: taskIcon,
+                                   colorHex: taskColorHex, durationMinutes: taskDuration)]
     }
 
-    private func goBack() {
-        let allPages = OnboardingPage.allCases
-        guard let idx = allPages.firstIndex(of: currentPage), idx > 0 else { return }
-        withAnimation(.easeInOut(duration: 0.35)) {
-            currentPage = allPages[idx - 1]
-        }
+    private var safeTop: CGFloat {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first?.safeAreaInsets.top ?? 44
     }
 
-    // MARK: - Save & Finish
+    private func goTo(_ index: Int) {
+        let clamped = min(max(index, 0), totalPages - 1)
+        withAnimation(.easeInOut(duration: 0.38)) { pageIndex = clamped }
+    }
 
-    private func saveOnboardingData() {
-        let targetDate = planForToday ? Date().startOfDay : Date().nextDay.startOfDay
+    private func finish() {
+        withAnimation { hasCompletedOnboarding = true }
+    }
 
-        // Create wake-up task
-        let wakeTask = StructuredTask(
+    // MARK: - Save
+
+    private func saveAndFinish() {
+        let day = Date().startOfDay
+
+        let wake = StructuredTask(
             title: "Rise and Shine",
-            startTime: targetDate.atTime(hour: wakeUpTime.hour, minute: wakeUpTime.minute),
-            duration: 0,
-            date: targetDate,
-            colorHex: "#E8907E",
-            iconName: "sun.max.fill",
-            isCompleted: false,
-            order: 0
+            startTime: day.atTime(hour: wakeUpTime.hour, minute: wakeUpTime.minute),
+            duration: 0, date: day, colorHex: "#E8907E",
+            iconName: "sun.max.fill", isCompleted: false, order: 0
         )
-        modelContext.insert(wakeTask)
+        modelContext.insert(wake)
 
-        // Create user tasks
-        for (index, taskData) in createdTasks.enumerated() {
-            // Place tasks after wake up, spaced out
-            let startHour = wakeUpTime.hour + 2 + index * 2
-            let start = targetDate.atTime(hour: min(startHour, 22))
+        if !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty {
+            let start = day.atTime(hour: min(wakeUpTime.hour + 2, 22))
             let task = StructuredTask(
-                title: taskData.title,
-                startTime: start,
-                duration: taskData.durationMinutes * 60,
-                date: targetDate,
-                colorHex: taskData.colorHex,
-                iconName: taskData.icon,
-                isCompleted: false,
-                order: index + 1
+                title: taskTitle, startTime: start,
+                duration: taskDuration * 60, date: day,
+                colorHex: taskColorHex, iconName: taskIcon,
+                isCompleted: false, order: 1
             )
             modelContext.insert(task)
         }
 
-        // Create wind-down task
-        let windDown = StructuredTask(
+        let wind = StructuredTask(
             title: "Wind Down",
-            startTime: targetDate.atTime(hour: bedTime.hour, minute: bedTime.minute),
-            duration: 0,
-            date: targetDate,
-            colorHex: "#7C97AB",
-            iconName: "moon.fill",
-            isCompleted: false,
-            order: createdTasks.count + 1
+            startTime: day.atTime(hour: bedTime.hour, minute: bedTime.minute),
+            duration: 0, date: day, colorHex: "#7C97AB",
+            iconName: "moon.fill", isCompleted: false,
+            order: summaryTasks.count + 1
         )
-        modelContext.insert(windDown)
-    }
+        modelContext.insert(wind)
 
-    private func finishOnboarding() {
-        withAnimation(.easeInOut(duration: 0.4)) {
-            hasCompletedOnboarding = true
-        }
+        finish()
     }
 }
 
-// MARK: - Supporting Types
+// MARK: - Shared types
 
 struct OnboardingTaskData {
     let title: String
@@ -339,13 +220,11 @@ struct OnboardingTaskData {
     let durationMinutes: Double
 }
 
-// MARK: - Reusable Primary Button
-
 struct OnboardingPrimaryButton: View {
     let title: String
     let colorHex: String
     var isDisabled: Bool = false
-    let action: () -> Void
+    let action: @MainActor () -> Void
 
     var body: some View {
         Button(action: action) {
@@ -356,7 +235,7 @@ struct OnboardingPrimaryButton: View {
                 .frame(height: 56)
                 .background(
                     RoundedRectangle(cornerRadius: 28)
-                        .fill(Color(hex: colorHex).opacity(isDisabled ? 0.4 : 1.0))
+                        .fill(Color(hex: colorHex).opacity(isDisabled ? 0.4 : 1))
                 )
         }
         .disabled(isDisabled)
