@@ -30,10 +30,6 @@ enum AppTab: CaseIterable {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @AppStorage("anchor_wake_hour")   private var wakeHour:   Int = 7
-    @AppStorage("anchor_wake_minute") private var wakeMinute: Int = 0
-    @AppStorage("anchor_bed_hour")    private var bedHour:    Int = 23
-    @AppStorage("anchor_bed_minute")  private var bedMinute:  Int = 0
     @State private var selectedTab: AppTab = .timeline
     @State private var viewModel = TimelineViewModel()
     @State private var aiViewModel = AIViewModel()
@@ -43,6 +39,9 @@ struct ContentView: View {
     var body: some View {
         if !hasCompletedOnboarding {
             OnboardingContainerView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                .onChange(of: hasCompletedOnboarding) { _, completed in
+                    if completed { ensureAnchorsForCurrentDate() }
+                }
         } else {
             tabContent
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -56,6 +55,10 @@ struct ContentView: View {
                     } else {
                         TaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
                     }
+                }
+                .onAppear { ensureAnchorsForCurrentDate() }
+                .onChange(of: viewModel.selectedDate) { _, newDate in
+                    DailyAnchorManager.ensureAnchors(for: newDate, context: modelContext)
                 }
         }
     }
@@ -75,11 +78,7 @@ struct ContentView: View {
                 DayTimelineView(viewModel: viewModel)
             }
             .onChange(of: viewModel.selectedDate, initial: true) { _, date in
-                DailyAnchorManager.ensureAnchors(
-                    for: date, context: modelContext,
-                    wakeHour: wakeHour, wakeMinute: wakeMinute,
-                    bedHour: bedHour, bedMinute: bedMinute
-                )
+                DailyAnchorManager.ensureAnchors(for: date, context: modelContext)
             }
         case .ai:
             AIView(viewModel: aiViewModel)
@@ -244,6 +243,12 @@ struct ContentView: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
+    }
+
+    // MARK: - Anchor Helpers
+
+    private func ensureAnchorsForCurrentDate() {
+        DailyAnchorManager.ensureAnchors(for: viewModel.selectedDate, context: modelContext)
     }
 }
 

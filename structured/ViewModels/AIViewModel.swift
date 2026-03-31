@@ -30,10 +30,11 @@ class AIViewModel {
         if !scheduledTasks.isEmpty {
             lines.append("Scheduled tasks (use these exact titles for actions):")
             for t in scheduledTasks {
-                let time = t.startTime.map { fmt.string(from: $0) } ?? "?"
-                let dur  = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
-                let done = t.isCompleted ? " [completed]" : ""
-                lines.append("  • \(time) — \(t.title)\(dur)\(done)")
+                let time      = t.startTime.map { fmt.string(from: $0) } ?? "?"
+                let dur       = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
+                let done      = t.isCompleted ? " [completed]" : ""
+                let protected = t.isProtected ? " [protected]" : ""
+                lines.append("  • \(time) — \(t.title)\(dur)\(done)\(protected)")
             }
         }
 
@@ -82,6 +83,8 @@ class AIViewModel {
 
         Use 24-hour HH:MM format. Only output [ACTIONS] when the user explicitly confirms changes.
         First explain the plan, ask for confirmation, then act when they say yes.
+
+        PROTECTED tasks (marked [protected]): Never move, delete, or complete these — they are anchor tasks set by the user. You may suggest adjusting them, but never include them in an [ACTIONS] block.
         """
 
         var apiMsgs: [[String: String]] = [["role": "system", "content": system]]

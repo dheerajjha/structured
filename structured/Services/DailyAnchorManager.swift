@@ -44,6 +44,26 @@ struct DailyAnchorManager {
         UserDefaults.standard.set(c.minute ?? 0,  forKey: AnchorDefaults.bedMinute)
     }
 
+    // MARK: - Convenience: read as Date (used by SettingsView)
+
+    static func storedWakeTime() -> Date {
+        Calendar.current.date(bySettingHour: storedWakeHour, minute: storedWakeMinute, second: 0, of: Date()) ?? Date()
+    }
+
+    static func storedBedTime() -> Date {
+        Calendar.current.date(bySettingHour: storedBedHour, minute: storedBedMinute, second: 0, of: Date()) ?? Date()
+    }
+
+    // MARK: - Convenience: ensure anchors using stored preferences
+
+    static func ensureAnchors(for date: Date, context: ModelContext) {
+        ensureAnchors(
+            for: date, context: context,
+            wakeHour: storedWakeHour, wakeMinute: storedWakeMinute,
+            bedHour: storedBedHour,   bedMinute: storedBedMinute
+        )
+    }
+
     // MARK: - Ensure anchors exist for a date
 
     static func ensureAnchors(

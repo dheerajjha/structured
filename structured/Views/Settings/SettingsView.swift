@@ -5,8 +5,8 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
 
     // Local picker state — loaded from DailyAnchorManager on appear
-    @State private var wakeTime: Date = DailyAnchorManager.storedWakeTime()
-    @State private var bedTime:  Date = DailyAnchorManager.storedBedTime()
+    @State private var wakeTime: Date = Calendar.current.date(bySettingHour: 7,  minute: 0, second: 0, of: Date())!
+    @State private var bedTime:  Date = Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date())!
 
     // Sheet state
     @State private var showWakePicker = false
@@ -29,6 +29,10 @@ struct SettingsView: View {
                 aboutSection
             }
             .navigationTitle("Settings")
+            .onAppear {
+                wakeTime = DailyAnchorManager.storedWakeTime()
+                bedTime  = DailyAnchorManager.storedBedTime()
+            }
             .sheet(isPresented: $showWakePicker) {
                 OnboardingTimePickerPage(
                     title: "Change your",
