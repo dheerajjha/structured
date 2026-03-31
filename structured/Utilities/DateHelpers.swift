@@ -63,10 +63,10 @@ extension Date {
         Calendar.current.component(.day, from: self)
     }
 
-    /// Formatted as "13. May 2026"
+    /// Formatted as "13 May 2026"
     var fullDateString: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d. MMMM yyyy"
+        formatter.dateFormat = "d MMMM yyyy"
         return formatter.string(from: self)
     }
 

@@ -33,6 +33,7 @@ struct ContentView: View {
     @State private var selectedTab: AppTab = .timeline
     @State private var viewModel = TimelineViewModel()
     @State private var aiViewModel = AIViewModel()
+    @Query(sort: \StructuredTask.order) private var allTasks: [StructuredTask]
     @State private var showingTaskEditor = false
     @State private var showDatePicker = false
 
@@ -236,6 +237,17 @@ struct ContentView: View {
                                     .fill(day.isSameDay(as: viewModel.selectedDate)
                                           ? Color(hex: "#FF6B6B") : .clear)
                             )
+
+                        // Task indicator dots
+                        HStack(spacing: 3) {
+                            let dayColors = taskColors(for: day)
+                            ForEach(dayColors, id: \.self) { hex in
+                                Circle()
+                                    .fill(Color(hex: hex))
+                                    .frame(width: 5, height: 5)
+                            }
+                        }
+                        .frame(height: 5)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -244,6 +256,25 @@ struct ContentView: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
+    }
+
+    // MARK: - Week Strip Helpers
+
+    /// Returns up to 3 unique task colors for a given day (for dot indicators).
+    private func taskColors(for day: Date) -> [String] {
+        let dayTasks = allTasks.filter {
+            $0.date.isSameDay(as: day) && !$0.isInbox && !$0.isProtected && !$0.isAllDay
+        }
+        // Unique colors, max 3
+        var seen = Set<String>()
+        var colors: [String] = []
+        for task in dayTasks {
+            if seen.insert(task.colorHex).inserted {
+                colors.append(task.colorHex)
+                if colors.count >= 3 { break }
+            }
+        }
+        return colors
     }
 
     // MARK: - Anchor Helpers
