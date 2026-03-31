@@ -36,6 +36,8 @@ struct ContentView: View {
     @Query(sort: \StructuredTask.order) private var allTasks: [StructuredTask]
     @State private var showingTaskEditor = false
     @State private var showDatePicker = false
+    @State private var pianoRevealed = false
+    @State private var sheetDragOffset: CGFloat = 0
 
     var body: some View {
         if !hasCompletedOnboarding {
@@ -75,8 +77,70 @@ struct ContentView: View {
             VStack(spacing: 0) {
                 headerView
                 weekStripView
-                Divider()
-                DayTimelineView(viewModel: viewModel)
+
+                // Piano overview behind, task sheet in front
+                GeometryReader { geo in
+                    let fullHeight = geo.size.height
+                    let pianoHeight: CGFloat = fullHeight - 90  // leave room for ~1 card
+                    let collapsedOffset: CGFloat = 0
+                    let expandedOffset: CGFloat = pianoHeight
+                    let currentOffset = pianoRevealed ? expandedOffset : collapsedOffset
+
+                    ZStack(alignment: .top) {
+                        // Piano background
+                        PianoWeekView(
+                            weekDays: viewModel.selectedDate.weekDays,
+                            tasks: allTasks,
+                            selectedDate: viewModel.selectedDate
+                        )
+                        .frame(height: pianoHeight)
+                        .opacity(pianoRevealed ? 1 : 0.3)
+                        .animation(.easeInOut(duration: 0.25), value: pianoRevealed)
+
+                        // Draggable task sheet
+                        VStack(spacing: 0) {
+                            // Grab handle
+                            Capsule()
+                                .fill(Color(.systemGray4))
+                                .frame(width: 36, height: 5)
+                                .padding(.top, 10)
+                                .padding(.bottom, 6)
+
+                            Divider()
+                            DayTimelineView(viewModel: viewModel)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(
+                            UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16)
+                                .fill(Color(.systemGroupedBackground))
+                                .shadow(color: .black.opacity(0.08), radius: 8, y: -2)
+                        )
+                        .offset(y: currentOffset + sheetDragOffset)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    sheetDragOffset = value.translation.height
+                                }
+                                .onEnded { value in
+                                    let threshold: CGFloat = 60
+                                    withAnimation(.snappy(duration: 0.3)) {
+                                        if pianoRevealed {
+                                            // If dragging up past threshold, collapse
+                                            if value.translation.height < -threshold {
+                                                pianoRevealed = false
+                                            }
+                                        } else {
+                                            // If dragging down past threshold, expand
+                                            if value.translation.height > threshold {
+                                                pianoRevealed = true
+                                            }
+                                        }
+                                        sheetDragOffset = 0
+                                    }
+                                }
+                        )
+                    }
+                }
             }
             .onChange(of: viewModel.selectedDate, initial: true) { _, date in
                 DailyAnchorManager.ensureAnchors(for: date, context: modelContext)
@@ -133,8 +197,8 @@ struct ContentView: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 32)
+        .padding(.top, 6)
+        .padding(.bottom, 16)
     }
 
     // MARK: - Timeline Header
