@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 335DAF642F7BB78D0054A3F5 /* BugReporterSDK */; };
 		33C15DE52F6F34E600247411 /* structured Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 33C15DE42F6F34E600247411 /* structured Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +112,7 @@
 			);
 			name = structured;
 			packageProductDependencies = (
+				335DAF642F7BB78D0054A3F5 /* BugReporterSDK */,
 			);
 			productName = structured;
 			productReference = 33C15DD72F6F34E500247411 /* structured.app */;
@@ -164,6 +167,9 @@
 			);
 			mainGroup = 33C15DCE2F6F34E500247411;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				335DAF632F7BB78D0054A3F5 /* XCLocalSwiftPackageReference "../BugReporter/ios/BugReporterSDK" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 33C15DD82F6F34E500247411 /* Products */;
 			projectDirPath = "";
@@ -412,6 +418,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -447,6 +455,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -503,6 +513,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		335DAF632F7BB78D0054A3F5 /* XCLocalSwiftPackageReference "../BugReporter/ios/BugReporterSDK" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../BugReporter/ios/BugReporterSDK;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		335DAF642F7BB78D0054A3F5 /* BugReporterSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BugReporterSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33C15DCF2F6F34E500247411 /* Project object */;
 }

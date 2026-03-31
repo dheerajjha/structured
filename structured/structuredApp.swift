@@ -1,8 +1,21 @@
 import SwiftUI
 import SwiftData
+import BugReporterSDK
 
 @main
 struct structuredApp: App {
+    init() {
+        BugReporter.start(config: BugReporterConfig(
+            apiURL: URL(string: "https://bug.heywrist.com")!,
+            apiKey: "structured-ios-dev",
+            userEmail: "tester@heywrist.com",
+            mode: .debug,
+            enableScreenshotDetection: true,
+            enableFloatingButton: false,
+            maxNetworkLogEntries: 50
+        ))
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             StructuredTask.self,

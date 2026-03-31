@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(BugReporterSDK)
+import BugReporterSDK
+#endif
 
 // MARK: - Chat Message Model
 
@@ -35,6 +38,15 @@ struct AIService {
     private static let baseURL  = "https://azure-openai-proxy.ball-breaker.workers.dev"
     private static let devToken = "a83c17f2b50e4e4f93e9c26f52a9d0bb"
 
+    /// Session with BugReporter network logging injected (works in all modes).
+    private static let session: URLSession = {
+        #if canImport(BugReporterSDK)
+        return URLSession(configuration: BugReporter.trackedSessionConfiguration())
+        #else
+        return URLSession.shared
+        #endif
+    }()
+
     /// Send a conversation and return the assistant's reply text.
     static func chat(messages: [[String: String]]) async throws -> String {
         let url = URL(string: "\(baseURL)/api/chat")!
@@ -49,7 +61,7 @@ struct AIService {
 
         let (data, response): (Data, URLResponse)
         do {
-            (data, response) = try await URLSession.shared.data(for: request)
+            (data, response) = try await session.data(for: request)
         } catch {
             throw AIError.networkError(error)
         }

@@ -8,8 +8,8 @@ enum AppTab: CaseIterable {
 
     var title: String {
         switch self {
-        case .unscheduled: return "Unscheduled"
-        case .timeline:    return "Timeline"
+        case .unscheduled: return "Later"
+        case .timeline:    return "Today"
         case .ai:          return "AI"
         case .settings:    return "Settings"
         }
@@ -105,7 +105,7 @@ struct ContentView: View {
                         }
                         .foregroundStyle(selectedTab == tab ? Color(hex: "#E8907E") : Color.primary)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
+                        .padding(.vertical, 12)
                     }
                     .buttonStyle(.plain)
                 }
@@ -132,7 +132,8 @@ struct ContentView: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 28)
+        .padding(.top, 8)
+        .padding(.bottom, 32)
     }
 
     // MARK: - Timeline Header

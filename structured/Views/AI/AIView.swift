@@ -9,6 +9,7 @@ struct AIView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StructuredTask.order) private var allTasks: [StructuredTask]
     @FocusState private var inputFocused: Bool
+    @State private var speechRecognizer = SpeechRecognizer()
 
     private let coral = Color(hex: "#E8907E")
 
@@ -203,9 +204,17 @@ struct AIView: View {
                     .lineLimit(1...4)
                     .focused($inputFocused)
                     .onSubmit { Task { await viewModel.send() } }
-                Image(systemName: "mic")
-                    .font(.body)
-                    .foregroundStyle(Color(.systemGray3))
+
+                // Mic button — tap to start/stop speech recognition
+                Button {
+                    Task { await speechRecognizer.toggle() }
+                } label: {
+                    Image(systemName: speechRecognizer.isListening ? "mic.fill" : "mic")
+                        .font(.body)
+                        .foregroundStyle(speechRecognizer.isListening ? coral : Color(.systemGray3))
+                        .symbolEffect(.pulse, isActive: speechRecognizer.isListening)
+                }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
@@ -213,8 +222,13 @@ struct AIView: View {
                 RoundedRectangle(cornerRadius: 22)
                     .fill(Color(.systemBackground))
                     .shadow(color: .black.opacity(0.06), radius: 6, y: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(speechRecognizer.isListening ? coral.opacity(0.5) : .clear, lineWidth: 1.5)
+                    )
             )
 
+            // Send button — visible when there's text
             if !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty {
                 Button { Task { await viewModel.send() } } label: {
                     Image(systemName: "arrow.up")
@@ -229,6 +243,16 @@ struct AIView: View {
         }
         .animation(.snappy(duration: 0.2), value: viewModel.inputText.isEmpty)
         .padding(.horizontal, 16)
+        // Sync live transcript into the input field
+        .onChange(of: speechRecognizer.transcript) { _, text in
+            if !text.isEmpty { viewModel.inputText = text }
+        }
+        // When speech stops, auto-send if there's content
+        .onChange(of: speechRecognizer.isListening) { _, listening in
+            if !listening && !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty {
+                Task { await viewModel.send() }
+            }
+        }
     }
 
     // MARK: - Execute Actions
