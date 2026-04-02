@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "benefits.png",
+      "filename" : "benefits@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "benefits@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "benefits@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
