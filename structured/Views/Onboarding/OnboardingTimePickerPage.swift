@@ -236,6 +236,10 @@ struct OnboardingTimePickerPage: View {
 
                         timeSlotButton(time: time, index: index, isSelected: isSelected, distance: distance)
                             .id(index)
+                            .onAppear {
+                                // Auto-highlight the slot when it scrolls into center region
+                                updateSelectionIfNearest(index: index)
+                            }
                     }
                 }
                 .padding(.vertical, 40)
@@ -256,6 +260,20 @@ struct OnboardingTimePickerPage: View {
             .onAppear {
                 proxy.scrollTo(selectedIndex, anchor: .center)
             }
+            .onChange(of: selectedIndex) { _, newIndex in
+                withAnimation(.snappy(duration: 0.2)) {
+                    proxy.scrollTo(newIndex, anchor: .center)
+                }
+            }
+        }
+    }
+
+    private func updateSelectionIfNearest(index: Int) {
+        // Only auto-update if the user is scrolling (not tapping)
+        // onAppear fires for items entering the visible range — pick the closest to center
+        let dist = abs(index - selectedIndex)
+        if dist == 1 {
+            selectedTime = timeSlots[index]
         }
     }
     // MARK: - Time Slot Button (extracted to help type checker)

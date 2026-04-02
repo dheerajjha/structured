@@ -4,6 +4,7 @@ import SwiftData
 // MARK: - Inbox View
 
 struct InboxView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(
         filter: #Predicate<StructuredTask> { $0.isInbox },
         sort: \StructuredTask.createdAt,
@@ -21,18 +22,42 @@ struct InboxView: View {
                 if inboxTasks.isEmpty {
                     emptyState
                 } else {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(spacing: 10) {
-                            ForEach(inboxTasks) { task in
-                                InboxRowView(task: task) {
-                                    editingTask = task
+                    List {
+                        ForEach(inboxTasks) { task in
+                            InboxRowView(task: task) {
+                                editingTask = task
+                            }
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(.init(top: 5, leading: 16, bottom: 5, trailing: 16))
+                            .contextMenu {
+                                Button { editingTask = task } label: {
+                                    Label("Schedule", systemImage: "calendar.badge.plus")
+                                }
+                                Divider()
+                                Button(role: .destructive) {
+                                    withAnimation { modelContext.delete(task) }
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
                                 }
                             }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    withAnimation { modelContext.delete(task) }
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button { editingTask = task } label: {
+                                    Label("Schedule", systemImage: "calendar.badge.plus")
+                                }
+                                .tint(Color(hex: "#E8907E"))
+                            }
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        .padding(.bottom, 120)
                     }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
                 }
             }
             .navigationTitle("Unscheduled")

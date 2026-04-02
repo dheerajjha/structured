@@ -48,6 +48,15 @@ class TimelineViewModel {
         showingTaskEditor = true
     }
 
+    /// Pre-set start time for a new task (used by "Add Task" in gaps)
+    var newTaskStartTime: Date?
+
+    func addTaskAt(time: Date) {
+        editingTask = nil
+        newTaskStartTime = time
+        showingTaskEditor = true
+    }
+
     // MARK: - Task Operations
 
     func toggleCompletion(_ task: StructuredTask) {

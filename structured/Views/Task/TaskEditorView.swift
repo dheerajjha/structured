@@ -9,6 +9,7 @@ struct TaskEditorView: View {
     let task: StructuredTask?
     let selectedDate: Date
     var startAsInbox: Bool = false
+    var presetStartTime: Date? = nil
 
     // Form state
     @State private var title = ""
@@ -209,12 +210,16 @@ struct TaskEditorView: View {
             subtaskTexts = task.sortedSubtasks.map(\.title)
         } else {
             // Defaults for new task
-            let calendar = Calendar.current
-            let now = Date()
-            let minute = calendar.component(.minute, from: now)
-            let roundedMinute = ((minute + 14) / 15) * 15
-            startTime = calendar.date(bySettingHour: calendar.component(.hour, from: now),
-                                       minute: roundedMinute, second: 0, of: selectedDate) ?? selectedDate.atTime(hour: 9)
+            if let preset = presetStartTime {
+                startTime = preset
+            } else {
+                let calendar = Calendar.current
+                let now = Date()
+                let minute = calendar.component(.minute, from: now)
+                let roundedMinute = ((minute + 14) / 15) * 15
+                startTime = calendar.date(bySettingHour: calendar.component(.hour, from: now),
+                                           minute: roundedMinute, second: 0, of: selectedDate) ?? selectedDate.atTime(hour: 9)
+            }
         }
     }
 

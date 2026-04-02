@@ -112,8 +112,12 @@ struct DayTimelineView: View {
         .sheet(isPresented: $viewModel.showingTaskEditor) {
             TaskEditorView(
                 task: viewModel.editingTask,
-                selectedDate: viewModel.selectedDate
+                selectedDate: viewModel.selectedDate,
+                presetStartTime: viewModel.newTaskStartTime
             )
+        }
+        .onChange(of: viewModel.showingTaskEditor) { _, showing in
+            if !showing { viewModel.newTaskStartTime = nil }
         }
     }
 
@@ -186,8 +190,8 @@ struct DayTimelineView: View {
                 .tint(.orange)
             }
 
-        case .gap(let minutes, _):
-            gapView(minutes: minutes)
+        case .gap(let minutes, let afterTaskID):
+            gapView(minutes: minutes, afterTaskID: afterTaskID)
 
         case .currentTime(let date):
             currentTimeBadge(for: date)
@@ -214,7 +218,7 @@ struct DayTimelineView: View {
 
     // MARK: - Gap View
 
-    private func gapView(minutes: Int) -> some View {
+    private func gapView(minutes: Int, afterTaskID: UUID) -> some View {
         HStack(spacing: 8) {
             VStack(spacing: 3) {
                 ForEach(0..<3, id: \.self) { _ in
@@ -229,9 +233,34 @@ struct DayTimelineView: View {
             Text(gapLabel(minutes: minutes))
                 .font(.caption)
                 .foregroundStyle(Color(.systemGray3))
+
+            if minutes >= 60 {
+                Button {
+                    // Find the task that precedes this gap to compute start time
+                    if let prevTask = allTasks.first(where: { $0.id == afterTaskID }),
+                       let prevEnd = prevTask.startTime?.addingTimeInterval(prevTask.duration) {
+                        viewModel.addTaskAt(time: prevEnd)
+                    } else {
+                        viewModel.showingTaskEditor = true
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.caption)
+                        Text("Add Task")
+                            .font(.caption.weight(.medium))
+                    }
+                    .foregroundStyle(Color(hex: "#E8907E"))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(Color(hex: "#E8907E").opacity(0.1)))
+                }
+                .buttonStyle(.plain)
+            }
+
             Spacer()
         }
-        .frame(height: 28)
+        .frame(minHeight: 28)
     }
 
     private func gapLabel(minutes: Int) -> String {
