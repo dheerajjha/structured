@@ -1,0 +1,15 @@
+{
+  "originHash" : "c645be6937a5d5d3bd1211cf80021735245a29db6386f88049e944e592cd9937",
+  "pins" : [
+    {
+      "identity" : "bugreportersdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dheerajjha/BugReporterSDK-ios",
+      "state" : {
+        "revision" : "8d8e8ac842fe7cc4c09dd69f56bb8c4156205be9",
+        "version" : "1.4.0"
+      }
+    }
+  ],
+  "version" : 3
+}
