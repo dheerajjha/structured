@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		335004D02F8288F10086D678 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 335004CF2F8288F10086D678 /* Mixpanel */; };
 		335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 335DAF642F7BB78D0054A3F5 /* BugReporterSDK */; };
 		33C15DE52F6F34E600247411 /* structured Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 33C15DE42F6F34E600247411 /* structured Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				335004D02F8288F10086D678 /* Mixpanel in Frameworks */,
 				335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +115,7 @@
 			name = structured;
 			packageProductDependencies = (
 				335DAF642F7BB78D0054A3F5 /* BugReporterSDK */,
+				335004CF2F8288F10086D678 /* Mixpanel */,
 			);
 			productName = structured;
 			productReference = 33C15DD72F6F34E500247411 /* structured.app */;
@@ -169,6 +172,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				335DAF632F7BB78D0054A3F5 /* XCRemoteSwiftPackageReference "BugReporterSDK-ios" */,
+				335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 33C15DD82F6F34E500247411 /* Products */;
@@ -346,7 +350,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1775207298;
+				CURRENT_PROJECT_VERSION = 1775391645;
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -379,7 +383,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1775207298;
+				CURRENT_PROJECT_VERSION = 1775391645;
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -413,7 +417,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1775207298;
+				CURRENT_PROJECT_VERSION = 1775391645;
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -451,7 +455,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1775207298;
+				CURRENT_PROJECT_VERSION = 1775391645;
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -517,6 +521,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.1.0;
+			};
+		};
 		335DAF632F7BB78D0054A3F5 /* XCRemoteSwiftPackageReference "BugReporterSDK-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dheerajjha/BugReporterSDK-ios";
@@ -528,6 +540,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		335004CF2F8288F10086D678 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
 		335DAF642F7BB78D0054A3F5 /* BugReporterSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 335DAF632F7BB78D0054A3F5 /* XCRemoteSwiftPackageReference "BugReporterSDK-ios" */;
