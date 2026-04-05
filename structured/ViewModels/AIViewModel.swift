@@ -92,16 +92,20 @@ class AIViewModel {
             apiMsgs.append(["role": msg.role, "content": msg.content])
         }
 
+        Analytics.track(Analytics.Event.aiMessageSent, properties: ["query_length": trimmed.count])
+
         do {
             let raw = try await AIService.chat(messages: apiMsgs)
             let (displayText, actions) = Self.parseResponse(raw)
             messages.append(ChatMessage(role: "assistant", content: displayText))
             if !actions.isEmpty {
                 pendingActions = actions
+                Analytics.track(Analytics.Event.aiActionExecuted, properties: ["action_count": actions.count])
             }
         } catch {
             messages.removeLast()
             errorMessage = (error as? AIError)?.errorDescription ?? "Something went wrong."
+            Analytics.track(Analytics.Event.aiError, properties: ["error": errorMessage ?? "unknown"])
         }
 
         isLoading = false
@@ -109,11 +113,13 @@ class AIViewModel {
 
     @MainActor
     func sendSuggestion(_ text: String) {
+        Analytics.track(Analytics.Event.aiSuggestionTapped, properties: ["suggestion": text])
         inputText = text
         Task { await send() }
     }
 
     func clearConversation() {
+        Analytics.track(Analytics.Event.aiConversationCleared, properties: ["message_count": messages.count])
         messages.removeAll()
         errorMessage = nil
         pendingActions = []

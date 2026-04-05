@@ -14,6 +14,8 @@ struct structuredApp: App {
             enableFloatingButton: false,
             maxNetworkLogEntries: 50
         ))
+        Analytics.setup()
+        Analytics.track(Analytics.Event.appOpened)
     }
 
     var sharedModelContainer: ModelContainer = {

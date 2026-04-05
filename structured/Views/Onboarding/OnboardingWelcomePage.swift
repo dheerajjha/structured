@@ -59,6 +59,7 @@ struct OnboardingWelcomePage: View {
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.9).delay(0.15)) { appeared = true }
+            Analytics.track(Analytics.Event.onboardingStarted)
         }
     }
 }

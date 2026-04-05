@@ -128,11 +128,13 @@ struct ContentView: View {
                                             // If dragging up past threshold, collapse
                                             if value.translation.height < -threshold {
                                                 pianoRevealed = false
+                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": false])
                                             }
                                         } else {
                                             // If dragging down past threshold, expand
                                             if value.translation.height > threshold {
                                                 pianoRevealed = true
+                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": true])
                                             }
                                         }
                                         sheetDragOffset = 0
@@ -161,6 +163,7 @@ struct ContentView: View {
                 ForEach(AppTab.allCases, id: \.self) { tab in
                     Button {
                         selectedTab = tab
+                        Analytics.track(Analytics.Event.tabSwitched, properties: ["tab": tab.title])
                     } label: {
                         VStack(spacing: 3) {
                             Image(systemName: tab.icon)
@@ -184,6 +187,7 @@ struct ContentView: View {
             // FAB
             Button {
                 showingTaskEditor = true
+                Analytics.track(Analytics.Event.fabTapped, properties: ["source": selectedTab.title])
             } label: {
                 Image(systemName: "plus")
                     .font(.title2.weight(.semibold))
@@ -207,6 +211,9 @@ struct ContentView: View {
         HStack {
             Button {
                 showDatePicker.toggle()
+                if showDatePicker {
+                    Analytics.track(Analytics.Event.datePickerOpened)
+                }
             } label: {
                 VStack(alignment: .leading, spacing: 2) {
                     if viewModel.isToday {
@@ -241,6 +248,7 @@ struct ContentView: View {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         viewModel.goToPreviousDay()
                     }
+                    Analytics.track(Analytics.Event.dateNavigated, properties: ["direction": "previous"])
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.body.weight(.semibold))
@@ -248,6 +256,7 @@ struct ContentView: View {
 
                 Button {
                     viewModel.goToToday()
+                    Analytics.track(Analytics.Event.todayButtonTapped)
                 } label: {
                     Text("Today")
                         .font(.subheadline.weight(.semibold))
@@ -264,6 +273,7 @@ struct ContentView: View {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         viewModel.goToNextDay()
                     }
+                    Analytics.track(Analytics.Event.dateNavigated, properties: ["direction": "next"])
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.body.weight(.semibold))

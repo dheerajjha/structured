@@ -52,6 +52,7 @@ struct TaskEditorView: View {
                     HStack(spacing: 12) {
                         Button {
                             showIconPicker = true
+                            Analytics.track(Analytics.Event.iconPickerOpened)
                         } label: {
                             TaskIconView(iconName: iconName, colorHex: colorHex, size: 44)
                         }
@@ -101,6 +102,7 @@ struct TaskEditorView: View {
                                     ForEach(durationOptions, id: \.1) { label, mins in
                                         Button {
                                             durationMinutes = mins
+                                            Analytics.track(Analytics.Event.durationSelected, properties: ["minutes": mins])
                                         } label: {
                                             Text(label)
                                                 .font(.subheadline.weight(.medium))
@@ -140,6 +142,7 @@ struct TaskEditorView: View {
 
                             Button {
                                 subtaskTexts.remove(at: index)
+                                Analytics.track(Analytics.Event.subtaskRemoved)
                             } label: {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundStyle(.red.opacity(0.7))
@@ -150,6 +153,7 @@ struct TaskEditorView: View {
 
                     Button {
                         subtaskTexts.append("")
+                        Analytics.track(Analytics.Event.subtaskAdded)
                     } label: {
                         Label("Add Subtask", systemImage: "plus.circle.fill")
                             .foregroundStyle(Color(hex: colorHex))
@@ -191,6 +195,10 @@ struct TaskEditorView: View {
             }
             .onAppear {
                 loadTaskData()
+                Analytics.track(Analytics.Event.taskEditorOpened, properties: [
+                    "mode": isEditing ? "edit" : "create",
+                    "source": startAsInbox ? "inbox" : "timeline"
+                ])
             }
         }
     }
@@ -243,6 +251,14 @@ struct TaskEditorView: View {
             // If user manually changed an anchor task's time, flag it so global updates skip it
             if task.isProtected { task.isUserModifiedTime = true }
             updateSubtasks(for: task)
+            Analytics.track(Analytics.Event.taskUpdated, properties: [
+                "has_notes": !notes.isEmpty,
+                "is_all_day": isAllDay,
+                "duration_minutes": durationMinutes,
+                "color": colorHex,
+                "subtask_count": subtaskTexts.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }.count,
+                "is_scheduled": isScheduled
+            ])
         } else {
             // Create new
             let newTask = StructuredTask(
@@ -258,6 +274,14 @@ struct TaskEditorView: View {
             newTask.notes = notes
             modelContext.insert(newTask)
             updateSubtasks(for: newTask)
+            Analytics.track(Analytics.Event.taskCreated, properties: [
+                "has_notes": !notes.isEmpty,
+                "is_all_day": isAllDay,
+                "is_inbox": startAsInbox,
+                "duration_minutes": durationMinutes,
+                "color": colorHex,
+                "subtask_count": subtaskTexts.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }.count
+            ])
         }
 
         dismiss()
@@ -285,6 +309,7 @@ struct TaskEditorView: View {
 
     private func deleteTask() {
         if let task {
+            Analytics.track(Analytics.Event.taskDeleted, properties: ["source": "editor"])
             modelContext.delete(task)
         }
         dismiss()

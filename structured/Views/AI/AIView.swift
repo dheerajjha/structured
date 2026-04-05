@@ -207,6 +207,11 @@ struct AIView: View {
 
                 // Mic button — tap to start/stop speech recognition
                 Button {
+                    if speechRecognizer.isListening {
+                        Analytics.track(Analytics.Event.aiSpeechStopped)
+                    } else {
+                        Analytics.track(Analytics.Event.aiSpeechStarted)
+                    }
                     Task { await speechRecognizer.toggle() }
                 } label: {
                     Image(systemName: speechRecognizer.isListening ? "mic.fill" : "mic")

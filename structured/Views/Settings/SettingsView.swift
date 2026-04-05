@@ -36,6 +36,7 @@ struct SettingsView: View {
             .onAppear {
                 wakeTime = DailyAnchorManager.storedWakeTime()
                 bedTime  = DailyAnchorManager.storedBedTime()
+                Analytics.track(Analytics.Event.settingsViewed)
             }
             .sheet(isPresented: $showWakePicker) {
                 OnboardingTimePickerPage(
@@ -47,6 +48,7 @@ struct SettingsView: View {
                 ) {
                     applyTimes()
                     showWakePicker = false
+                    Analytics.track(Analytics.Event.wakeTimeChanged, properties: ["hour": wakeTime.hour, "minute": wakeTime.minute])
                 }
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
@@ -61,6 +63,7 @@ struct SettingsView: View {
                 ) {
                     applyTimes()
                     showBedPicker = false
+                    Analytics.track(Analytics.Event.bedTimeChanged, properties: ["hour": bedTime.hour, "minute": bedTime.minute])
                 }
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
@@ -145,12 +148,18 @@ struct SettingsView: View {
 
     private var exportSection: some View {
         Section {
-            Button { exportCSV() } label: {
+            Button {
+                Analytics.track(Analytics.Event.exportCsvTapped)
+                exportCSV()
+            } label: {
                 Label("Export to CSV", systemImage: "doc.text")
                     .foregroundStyle(.primary)
             }
 
-            Button { exportICS() } label: {
+            Button {
+                Analytics.track(Analytics.Event.exportIcsTapped)
+                exportICS()
+            } label: {
                 Label("Export to iCal (.ics)", systemImage: "calendar")
                     .foregroundStyle(.primary)
             }

@@ -86,6 +86,7 @@ struct DayTimelineView: View {
     // MARK: - Task Actions
 
     private func unscheduleTask(_ task: StructuredTask) {
+        Analytics.track(Analytics.Event.taskUnscheduled, properties: ["source": "timeline"])
         withAnimation {
             task.isInbox = true
             task.startTime = nil
@@ -93,6 +94,7 @@ struct DayTimelineView: View {
     }
 
     private func deleteTask(_ task: StructuredTask) {
+        Analytics.track(Analytics.Event.taskDeleted, properties: ["source": "timeline"])
         withAnimation {
             modelContext.delete(task)
         }
@@ -104,7 +106,11 @@ struct DayTimelineView: View {
         VStack(spacing: 0) {
             AllDayTasksView(
                 tasks: allDayTasks,
-                onToggleComplete: { viewModel.toggleCompletion($0) },
+                onToggleComplete: { task in
+                    let willComplete = !task.isCompleted
+                    viewModel.toggleCompletion(task)
+                    Analytics.track(willComplete ? Analytics.Event.taskCompleted : Analytics.Event.taskUncompleted, properties: ["source": "all_day"])
+                },
                 onTap: { viewModel.startEditingTask($0) }
             )
             taskContent
@@ -161,7 +167,11 @@ struct DayTimelineView: View {
         case .task(let task):
             TaskBlockView(
                 task: task,
-                onToggleComplete: { viewModel.toggleCompletion(task) },
+                onToggleComplete: {
+                    let willComplete = !task.isCompleted
+                    viewModel.toggleCompletion(task)
+                    Analytics.track(willComplete ? Analytics.Event.taskCompleted : Analytics.Event.taskUncompleted, properties: ["source": "timeline"])
+                },
                 onTap: { viewModel.startEditingTask(task) }
             )
             .padding(.horizontal, 16)
@@ -236,6 +246,7 @@ struct DayTimelineView: View {
 
             if minutes >= 60 {
                 Button {
+                    Analytics.track(Analytics.Event.gapAddTaskTapped, properties: ["gap_minutes": minutes])
                     // Find the task that precedes this gap to compute start time
                     if let prevTask = allTasks.first(where: { $0.id == afterTaskID }),
                        let prevEnd = prevTask.startTime?.addingTimeInterval(prevTask.duration) {

@@ -31,11 +31,15 @@ struct InboxView: View {
                             .listRowBackground(Color.clear)
                             .listRowInsets(.init(top: 5, leading: 16, bottom: 5, trailing: 16))
                             .contextMenu {
-                                Button { editingTask = task } label: {
+                                Button {
+                                    editingTask = task
+                                    Analytics.track(Analytics.Event.inboxTaskScheduleTapped, properties: ["source": "context_menu"])
+                                } label: {
                                     Label("Schedule", systemImage: "calendar.badge.plus")
                                 }
                                 Divider()
                                 Button(role: .destructive) {
+                                    Analytics.track(Analytics.Event.taskDeleted, properties: ["source": "inbox_context_menu"])
                                     withAnimation { modelContext.delete(task) }
                                 } label: {
                                     Label("Delete", systemImage: "trash")
@@ -43,13 +47,17 @@ struct InboxView: View {
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
+                                    Analytics.track(Analytics.Event.taskDeleted, properties: ["source": "inbox_swipe"])
                                     withAnimation { modelContext.delete(task) }
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button { editingTask = task } label: {
+                                Button {
+                                    editingTask = task
+                                    Analytics.track(Analytics.Event.inboxTaskScheduleTapped, properties: ["source": "swipe"])
+                                } label: {
                                     Label("Schedule", systemImage: "calendar.badge.plus")
                                 }
                                 .tint(Color(hex: "#E8907E"))
@@ -61,6 +69,9 @@ struct InboxView: View {
                 }
             }
             .navigationTitle("Unscheduled")
+        }
+        .onAppear {
+            Analytics.track(Analytics.Event.inboxViewed, properties: ["task_count": inboxTasks.count])
         }
         .sheet(item: $editingTask) { task in
             // Opening from row schedules the task → clears isInbox on save

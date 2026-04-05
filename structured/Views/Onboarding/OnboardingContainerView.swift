@@ -116,7 +116,10 @@ struct OnboardingContainerView: View {
                     }
                 }
                 Spacer()
-                Button("Skip") { finish() }
+                Button("Skip") {
+                    Analytics.track(Analytics.Event.onboardingSkipped, properties: ["page_index": pageIndex])
+                    finish()
+                }
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.white.opacity(0.85))
             } else {
@@ -134,7 +137,10 @@ struct OnboardingContainerView: View {
                 }
                 .frame(height: 5)
 
-                Button("Skip") { finish() }
+                Button("Skip") {
+                    Analytics.track(Analytics.Event.onboardingSkipped, properties: ["page_index": pageIndex])
+                    finish()
+                }
                     .font(.body.weight(.semibold))
                     .foregroundStyle(warmBrown.opacity(0.55))
             }
@@ -168,6 +174,8 @@ struct OnboardingContainerView: View {
     private func goTo(_ index: Int) {
         let clamped = min(max(index, 0), totalPages - 1)
         withAnimation(.easeInOut(duration: 0.38)) { pageIndex = clamped }
+        let pageNames = ["welcome", "benefits", "wake_up", "bed_time", "task_entry", "task_style", "summary"]
+        Analytics.track(Analytics.Event.onboardingPageViewed, properties: ["page": pageNames[clamped], "page_index": clamped])
     }
 
     private func finish() {
@@ -178,6 +186,14 @@ struct OnboardingContainerView: View {
 
     private func saveAndFinish() {
         let day = Date().startOfDay
+
+        Analytics.track(Analytics.Event.onboardingCompleted, properties: [
+            "wake_hour": wakeUpTime.hour,
+            "bed_hour": bedTime.hour,
+            "has_task": !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty,
+            "task_color": taskColorHex,
+            "task_duration": taskDuration
+        ])
 
         // Persist wake / bed times so DailyAnchorManager can use them going forward
         DailyAnchorManager.saveWakeTime(wakeUpTime)

@@ -11,6 +11,7 @@ struct TaskColorPickerView: View {
             ForEach(TaskColors.all) { taskColor in
                 Button {
                     selectedHex = taskColor.hex
+                    Analytics.track(Analytics.Event.colorSelected, properties: ["color": taskColor.hex])
                 } label: {
                     Circle()
                         .fill(taskColor.color)
