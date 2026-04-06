@@ -1,33 +1,33 @@
 {
-  "originHash" : "2fe126237a5ce2b6f042c4c81690cf9fee0039495fbd6135d3cba74b354ba125",
-  "pins" : [
+  "originHash": "2fe126237a5ce2b6f042c4c81690cf9fee0039495fbd6135d3cba74b354ba125",
+  "pins": [
     {
-      "identity" : "bugreportersdk-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dheerajjha/BugReporterSDK-ios",
-      "state" : {
-        "revision" : "8d8e8ac842fe7cc4c09dd69f56bb8c4156205be9",
-        "version" : "1.4.0"
+      "identity": "bugreportersdk-ios",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/dheerajjha/BugReporterSDK-ios",
+      "state": {
+        "revision": "a6f8cac886349a76aca951ca0b5b1d21107ae502",
+        "version": "1.5.2"
       }
     },
     {
-      "identity" : "json-logic-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/advantagefse/json-logic-swift",
-      "state" : {
-        "revision" : "9088eed1b26937fe13d248aa24d7632a51be28e2",
-        "version" : "1.2.4"
+      "identity": "json-logic-swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/advantagefse/json-logic-swift",
+      "state": {
+        "revision": "9088eed1b26937fe13d248aa24d7632a51be28e2",
+        "version": "1.2.4"
       }
     },
     {
-      "identity" : "mixpanel-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mixpanel/mixpanel-swift",
-      "state" : {
-        "revision" : "6e2a786b1e88b57b90f5a6d401337bc1bb2ba69c",
-        "version" : "6.1.0"
+      "identity": "mixpanel-swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/mixpanel/mixpanel-swift",
+      "state": {
+        "revision": "6e2a786b1e88b57b90f5a6d401337bc1bb2ba69c",
+        "version": "6.1.0"
       }
     }
   ],
-  "version" : 3
+  "version": 3
 }
