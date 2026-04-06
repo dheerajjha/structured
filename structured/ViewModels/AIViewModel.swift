@@ -4,7 +4,8 @@ import SwiftUI
 
 enum AIAction {
     case moveTask(title: String, hour: Int, minute: Int)
-    case createTask(title: String, hour: Int, minute: Int, durationMinutes: Int)
+    case createTask(title: String, hour: Int, minute: Int, durationMinutes: Int, date: Date?)
+    case createUnscheduledTask(title: String, durationMinutes: Int)
     case completeTask(title: String)
 }
 
@@ -33,20 +34,20 @@ class AIViewModel {
                 let time      = t.startTime.map { fmt.string(from: $0) } ?? "?"
                 let dur       = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
                 let done      = t.isCompleted ? " [completed]" : ""
-                let protected = t.isProtected ? " [protected]" : ""
-                lines.append("  • \(time) — \(t.title)\(dur)\(done)\(protected)")
+                let prot      = t.isProtected ? " [protected]" : ""
+                lines.append("  • \(time) — \(t.title)\(dur)\(done)\(prot)")
             }
         }
 
         if !unscheduledTasks.isEmpty {
-            lines.append("Unscheduled backlog:")
+            lines.append("Unscheduled backlog (Later tab):")
             for t in unscheduledTasks {
                 let dur = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
                 lines.append("  • \(t.title)\(dur)")
             }
         }
 
-        if lines.isEmpty { lines = ["No tasks today."] }
+        if lines.isEmpty { lines = ["No tasks scheduled today."] }
         taskContextLines = lines.joined(separator: "\n")
     }
 
@@ -62,30 +63,48 @@ class AIViewModel {
         isLoading = true
         errorMessage = nil
 
-        let dateStr = Date().formatted(.dateTime.weekday(.wide).month().day().year())
+        // YOH-94: Give the AI full temporal context (today + tomorrow dates)
+        let now = Date()
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        let isoFormatter = DateFormatter()
+        isoFormatter.dateFormat = "yyyy-MM-dd"
+
+        let todayStr    = dateFormatter.string(from: now)
+        let nowTimeStr  = timeFormatter.string(from: now)
+        let todayISO    = isoFormatter.string(from: now)
+        let tomorrowISO = isoFormatter.string(from: calendar.date(byAdding: .day, value: 1, to: now)!)
 
         let system = """
         You are a friendly AI planning assistant in the Structured daily planner app.
-        Today is \(dateStr).
+        Today is \(todayStr). Current time is \(nowTimeStr).
+        Today's date (ISO): \(todayISO)
+        Tomorrow's date (ISO): \(tomorrowISO)
 
         \(taskContextLines)
 
-        Keep responses short (2–4 sentences). Use plain text — no markdown, no bullet symbols.
-        Be warm and practical.
+        Keep responses short (1–2 sentences). Use plain text — no markdown, no bullets.
+        Be warm and direct.
 
-        When the user asks you to create, move, reschedule, or complete a task — do it immediately. Do NOT ask for confirmation. Just perform the action and briefly confirm what you did.
+        When the user asks you to create, move, reschedule, or complete a task — do it immediately. Do NOT ask for confirmation. Just do it and briefly say what you did.
 
         Always append an action block AFTER your response text when performing task operations:
         [ACTIONS]{"actions":[...]}[/ACTIONS]
 
-        Supported action types (use exact task titles from the schedule above):
-        • Move a task: {"type":"move_task","title":"exact title","new_time":"HH:MM"}
-        • Create a task: {"type":"create_task","title":"name","time":"HH:MM","duration_minutes":30}
-        • Complete a task: {"type":"complete_task","title":"exact title"}
+        Supported action types:
+        • Move a task:              {"type":"move_task","title":"exact title","new_time":"HH:MM"}
+        • Create a scheduled task:  {"type":"create_task","title":"name","time":"HH:MM","date":"YYYY-MM-DD","duration_minutes":30}
+        • Create an UNSCHEDULED task (no time/date known): {"type":"create_unscheduled_task","title":"name","duration_minutes":30}
+        • Complete a task:          {"type":"complete_task","title":"exact title"}
 
-        Use 24-hour HH:MM format. Default duration is 30 min when not specified.
+        Use 24-hour HH:MM. Default duration 30 min. Always include "date" in create_task using the ISO dates above.
+        If the user says "tomorrow", use \(tomorrowISO). If they say "today", use \(todayISO).
+        If the user is unsure about the time or says "no time" / "unscheduled" / "backlog" / "later", use create_unscheduled_task.
 
-        PROTECTED tasks (marked [protected]): Never move, delete, or complete these — they are anchor tasks set by the user. You may mention them but never include them in an [ACTIONS] block.
+        PROTECTED tasks (marked [protected]): never include in [ACTIONS]. You may mention them.
         """
 
         var apiMsgs: [[String: String]] = [["role": "system", "content": system]]
@@ -129,7 +148,6 @@ class AIViewModel {
     // MARK: - Response Parsing
 
     static func parseResponse(_ raw: String) -> (String, [AIAction]) {
-        // Extract [ACTIONS]...[/ACTIONS] block
         let open = "[ACTIONS]"
         let close = "[/ACTIONS]"
         guard let openRange = raw.range(of: open),
@@ -148,9 +166,13 @@ class AIViewModel {
             return (displayText, [])
         }
 
+        let isoFmt = DateFormatter()
+        isoFmt.dateFormat = "yyyy-MM-dd"
+
         let actions: [AIAction] = actionsArray.compactMap { dict in
             guard let type = dict["type"] as? String else { return nil }
             switch type {
+
             case "move_task":
                 guard let title = dict["title"] as? String,
                       let timeStr = dict["new_time"] as? String,
@@ -162,7 +184,15 @@ class AIViewModel {
                       let timeStr = dict["time"] as? String,
                       let (h, m) = parseTime(timeStr) else { return nil }
                 let dur = dict["duration_minutes"] as? Int ?? 30
-                return .createTask(title: title, hour: h, minute: m, durationMinutes: dur)
+                // YOH-94: parse optional date field
+                let taskDate: Date? = (dict["date"] as? String).flatMap { isoFmt.date(from: $0) }
+                return .createTask(title: title, hour: h, minute: m, durationMinutes: dur, date: taskDate)
+
+            // YOH-93: create task with no scheduled time
+            case "create_unscheduled_task":
+                guard let title = dict["title"] as? String else { return nil }
+                let dur = dict["duration_minutes"] as? Int ?? 30
+                return .createUnscheduledTask(title: title, durationMinutes: dur)
 
             case "complete_task":
                 guard let title = dict["title"] as? String else { return nil }

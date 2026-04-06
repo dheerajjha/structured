@@ -10,6 +10,7 @@ struct AIView: View {
     @Query(sort: \StructuredTask.order) private var allTasks: [StructuredTask]
     @FocusState private var inputFocused: Bool
     @State private var speechRecognizer = SpeechRecognizer()
+    @State private var showHelp = false
 
     private let coral = Color(hex: "#E8907E")
 
@@ -101,23 +102,47 @@ struct AIView: View {
                     .foregroundStyle(.primary)
             }
             Spacer()
-            Button {
-                withAnimation { viewModel.clearConversation() }
-            } label: {
-                Image(systemName: viewModel.messages.isEmpty ? "questionmark" : "arrow.counterclockwise")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(viewModel.messages.isEmpty ? Color.primary : Color.blue)
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(Color(.systemBackground))
-                            .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
-                    )
+
+            HStack(spacing: 10) {
+                // Reset button — only when there are messages
+                if !viewModel.messages.isEmpty {
+                    Button {
+                        withAnimation { viewModel.clearConversation() }
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.body.weight(.medium))
+                            .foregroundStyle(Color.blue)
+                            .frame(width: 36, height: 36)
+                            .background(
+                                Circle()
+                                    .fill(Color(.systemBackground))
+                                    .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                            )
+                    }
+                }
+
+                // Help button — always visible, opens help sheet (YOH-95)
+                Button { showHelp = true } label: {
+                    Image(systemName: "questionmark")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(Color.primary)
+                        .frame(width: 36, height: 36)
+                        .background(
+                            Circle()
+                                .fill(Color(.systemBackground))
+                                .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                        )
+                }
             }
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
         .padding(.bottom, 16)
+        .sheet(isPresented: $showHelp) {
+            AIHelpSheet()
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        }
     }
 
     // MARK: - Empty State
@@ -277,16 +302,32 @@ struct AIView: View {
                     task.startTime = cal.date(bySettingHour: hour, minute: minute, second: 0, of: base)
                 }
 
-            case .createTask(let title, let hour, let minute, let duration):
-                let start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: today)
+            // YOH-94: support date field for tasks on other days
+            case .createTask(let title, let hour, let minute, let duration, let taskDate):
+                let targetDay = (taskDate ?? today).startOfDay
+                let start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: targetDay)
                 let newTask = StructuredTask(
                     title: title,
                     startTime: start,
                     duration: TimeInterval(duration * 60),
-                    date: today.startOfDay,
+                    date: targetDay,
                     colorHex: "#E8907E",
                     iconName: "star.fill",
                     isAllDay: false
+                )
+                modelContext.insert(newTask)
+
+            // YOH-93: unscheduled / no-time task goes to the Later tab
+            case .createUnscheduledTask(let title, let duration):
+                let newTask = StructuredTask(
+                    title: title,
+                    startTime: nil,
+                    duration: TimeInterval(duration * 60),
+                    date: today.startOfDay,
+                    colorHex: "#E8907E",
+                    iconName: "star.fill",
+                    isAllDay: false,
+                    isInbox: true
                 )
                 modelContext.insert(newTask)
 
@@ -363,5 +404,64 @@ private struct TypingIndicator: View {
             Spacer()
         }
         .onAppear { withAnimation { phase = 1 } }
+    }
+}
+
+// MARK: - AI Help Sheet (YOH-95)
+
+private struct AIHelpSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    private let coral = Color(hex: "#E8907E")
+
+    private let examples: [(icon: String, title: String, example: String)] = [
+        ("calendar.badge.plus",    "Create a task",          "Add a meeting at 3pm tomorrow"),
+        ("tray.fill",              "Add to backlog",         "Add 'read a book' unscheduled"),
+        ("clock.arrow.circlepath", "Move a task",            "Move my workout to 5pm"),
+        ("checkmark.circle",       "Mark complete",          "Mark Go for a Walk as done"),
+        ("list.bullet.rectangle",  "Summarize your day",     "What's on my schedule today?"),
+        ("sparkles",               "Optimize schedule",      "How can I arrange my day better?"),
+    ]
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    Text("Just tell the AI what you want in plain English. It will act immediately — no confirmation needed.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                }
+
+                Section("What you can ask") {
+                    ForEach(examples, id: \.title) { item in
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: item.icon)
+                                .font(.body)
+                                .foregroundStyle(coral)
+                                .frame(width: 24)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(item.title)
+                                    .font(.subheadline.weight(.semibold))
+                                Text("\"\(item.example)\"")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .italic()
+                            }
+                        }
+                        .padding(.vertical, 2)
+                    }
+                }
+            }
+            .navigationTitle("AI Help")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
     }
 }
