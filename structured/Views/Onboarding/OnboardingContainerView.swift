@@ -14,6 +14,8 @@ struct OnboardingContainerView: View {
     @State private var taskColorHex = "#E8907E"
 
     @State private var pageIndex = 0
+    // Snapshot captured when user taps "See your plan" to avoid TabView caching stale data
+    @State private var summarySnapshot: [OnboardingTaskData] = []
 
     // 7 pages
     private enum Page: Int, CaseIterable {
@@ -67,18 +69,22 @@ struct OnboardingContainerView: View {
                     taskIcon: $taskIcon,
                     duration: $taskDuration,
                     colorHex: $taskColorHex,
-                    onContinue: { goTo(Page.summary.rawValue) }
+                    onContinue: {
+                        // Snapshot state NOW before TabView can cache stale data (YOH-90)
+                        summarySnapshot = summaryTasks
+                        goTo(Page.summary.rawValue)
+                    }
                 )
                 .tag(Page.taskStyle.rawValue)
 
                 OnboardingSummaryPage(
                     wakeUpTime: wakeUpTime,
-                    createdTasks: summaryTasks,
+                    createdTasks: summarySnapshot,
                     bedTime: bedTime,
                     onFinish: { saveAndFinish() }
                 )
-                // Force re-render when task data changes — TabView caches pages otherwise
-                .id("summary-\(taskTitle)-\(taskColorHex)-\(Int(taskDuration))")
+                // Re-render when snapshot updates (YOH-90)
+                .id("summary-\(summarySnapshot.map(\.title).joined())")
                 .tag(Page.summary.rawValue)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))

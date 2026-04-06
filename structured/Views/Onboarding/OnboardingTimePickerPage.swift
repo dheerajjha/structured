@@ -63,6 +63,7 @@ struct OnboardingTimePickerPage: View {
     var onContinue: (@MainActor () -> Void)? = nil
 
     @State private var selectedMinuteOffset = 0
+    @State private var scrollPositionID: Int?
 
     private let intervalMinutes = 15
     private var timeSlots: [Date] {
@@ -227,53 +228,45 @@ struct OnboardingTimePickerPage: View {
     // MARK: - Time List
 
     private var timeListView: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: 4) {
-                    ForEach(Array(timeSlots.enumerated()), id: \.offset) { index, time in
-                        let isSelected = index == selectedIndex
-                        let distance = abs(index - selectedIndex)
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: 4) {
+                ForEach(Array(timeSlots.enumerated()), id: \.offset) { index, time in
+                    let isSelected = index == selectedIndex
+                    let distance = abs(index - selectedIndex)
 
-                        timeSlotButton(time: time, index: index, isSelected: isSelected, distance: distance)
-                            .id(index)
-                            .onAppear {
-                                // Auto-highlight the slot when it scrolls into center region
-                                updateSelectionIfNearest(index: index)
-                            }
-                    }
-                }
-                .padding(.vertical, 40)
-            }
-            .frame(height: 220)
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .clear, location: 0),
-                        .init(color: .white, location: 0.2),
-                        .init(color: .white, location: 0.8),
-                        .init(color: .clear, location: 1.0),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .onAppear {
-                proxy.scrollTo(selectedIndex, anchor: .center)
-            }
-            .onChange(of: selectedIndex) { _, newIndex in
-                withAnimation(.snappy(duration: 0.2)) {
-                    proxy.scrollTo(newIndex, anchor: .center)
+                    timeSlotButton(time: time, index: index, isSelected: isSelected, distance: distance)
+                        .id(index)
                 }
             }
+            .padding(.vertical, 40)
+            .scrollTargetLayout()
         }
-    }
-
-    private func updateSelectionIfNearest(index: Int) {
-        // Only auto-update if the user is scrolling (not tapping)
-        // onAppear fires for items entering the visible range — pick the closest to center
-        let dist = abs(index - selectedIndex)
-        if dist == 1 {
-            selectedTime = timeSlots[index]
+        .scrollPosition(id: $scrollPositionID, anchor: .center)
+        .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
+        .frame(height: 220)
+        .mask(
+            LinearGradient(
+                stops: [
+                    .init(color: .clear, location: 0),
+                    .init(color: .white, location: 0.2),
+                    .init(color: .white, location: 0.8),
+                    .init(color: .clear, location: 1.0),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+        .onAppear {
+            scrollPositionID = selectedIndex
+        }
+        // Real-time update as user scrolls (YOH-89)
+        .onChange(of: scrollPositionID) { _, id in
+            guard let id, id < timeSlots.count else { return }
+            selectedTime = timeSlots[id]
+        }
+        // When selection changes from a tap, scroll to it
+        .onChange(of: selectedIndex) { _, newIndex in
+            scrollPositionID = newIndex
         }
     }
     // MARK: - Time Slot Button (extracted to help type checker)
@@ -287,6 +280,7 @@ struct OnboardingTimePickerPage: View {
         return Button {
             withAnimation(.snappy(duration: 0.3)) {
                 selectedTime = time
+                scrollPositionID = index
             }
         } label: {
             HStack(spacing: 8) {

@@ -73,7 +73,9 @@ class AIViewModel {
         Keep responses short (2–4 sentences). Use plain text — no markdown, no bullet symbols.
         Be warm and practical.
 
-        IMPORTANT — when the user confirms they want you to actually modify tasks, append an action block AFTER your response text, on its own line, in this exact format:
+        When the user asks you to create, move, reschedule, or complete a task — do it immediately. Do NOT ask for confirmation. Just perform the action and briefly confirm what you did.
+
+        Always append an action block AFTER your response text when performing task operations:
         [ACTIONS]{"actions":[...]}[/ACTIONS]
 
         Supported action types (use exact task titles from the schedule above):
@@ -81,10 +83,9 @@ class AIViewModel {
         • Create a task: {"type":"create_task","title":"name","time":"HH:MM","duration_minutes":30}
         • Complete a task: {"type":"complete_task","title":"exact title"}
 
-        Use 24-hour HH:MM format. Only output [ACTIONS] when the user explicitly confirms changes.
-        First explain the plan, ask for confirmation, then act when they say yes.
+        Use 24-hour HH:MM format. Default duration is 30 min when not specified.
 
-        PROTECTED tasks (marked [protected]): Never move, delete, or complete these — they are anchor tasks set by the user. You may suggest adjusting them, but never include them in an [ACTIONS] block.
+        PROTECTED tasks (marked [protected]): Never move, delete, or complete these — they are anchor tasks set by the user. You may mention them but never include them in an [ACTIONS] block.
         """
 
         var apiMsgs: [[String: String]] = [["role": "system", "content": system]]

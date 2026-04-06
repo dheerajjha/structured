@@ -116,29 +116,44 @@ struct ContentView: View {
                                 .shadow(color: .black.opacity(0.08), radius: 8, y: -2)
                         )
                         .offset(y: currentOffset + sheetDragOffset)
+                        // Vertical drag → reveal/collapse piano
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
-                                    sheetDragOffset = value.translation.height
+                                    // Only track if predominantly vertical
+                                    if abs(value.translation.height) > abs(value.translation.width) {
+                                        sheetDragOffset = value.translation.height
+                                    }
                                 }
                                 .onEnded { value in
-                                    let threshold: CGFloat = 60
-                                    withAnimation(.snappy(duration: 0.3)) {
-                                        if pianoRevealed {
-                                            // If dragging up past threshold, collapse
-                                            if value.translation.height < -threshold {
-                                                pianoRevealed = false
-                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": false])
-                                            }
-                                        } else {
-                                            // If dragging down past threshold, expand
-                                            if value.translation.height > threshold {
-                                                pianoRevealed = true
-                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": true])
+                                    let isHorizontal = abs(value.translation.width) > abs(value.translation.height)
+                                    if isHorizontal {
+                                        // YOH-91: horizontal swipe = navigate date
+                                        withAnimation(.snappy(duration: 0.3)) {
+                                            if value.translation.width < -50 {
+                                                viewModel.goToNextDay()
+                                            } else if value.translation.width > 50 {
+                                                viewModel.goToPreviousDay()
                                             }
                                         }
-                                        sheetDragOffset = 0
+                                    } else {
+                                        let threshold: CGFloat = 60
+                                        withAnimation(.snappy(duration: 0.3)) {
+                                            if pianoRevealed {
+                                                if value.translation.height < -threshold {
+                                                    pianoRevealed = false
+                                                    Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": false])
+                                                }
+                                            } else {
+                                                if value.translation.height > threshold {
+                                                    pianoRevealed = true
+                                                    Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": true])
+                                                }
+                                            }
+                                            sheetDragOffset = 0
+                                        }
                                     }
+                                    sheetDragOffset = 0
                                 }
                         )
                     }
