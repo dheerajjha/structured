@@ -6,8 +6,8 @@
       "kind": "remoteSourceControl",
       "location": "https://github.com/dheerajjha/BugReporterSDK-ios",
       "state": {
-        "revision": "67fdbb28ce88a0458455eaf5eb74f3271ee10c58",
-        "version": "1.5.3"
+        "revision": "3c15f0242331d97e4eb5318c97ebae0a2ff59402",
+        "version": "1.5.4"
       }
     },
     {
