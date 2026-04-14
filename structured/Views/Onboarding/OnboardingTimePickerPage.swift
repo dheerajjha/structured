@@ -62,20 +62,17 @@ struct OnboardingTimePickerPage: View {
     let theme: TimePickerTheme
     var onContinue: (@MainActor () -> Void)? = nil
 
-    @State private var selectedMinuteOffset = 0
     @State private var scrollPositionID: Int?
+    @State private var isUserScrolling = false
 
     private let intervalMinutes = 15
+
     private var timeSlots: [Date] {
-        var slots: [Date] = []
         let calendar = Calendar.current
         let baseDate = calendar.startOfDay(for: Date())
-        for minuteOffset in stride(from: 0, to: 24 * 60, by: intervalMinutes) {
-            if let date = calendar.date(byAdding: .minute, value: minuteOffset, to: baseDate) {
-                slots.append(date)
-            }
+        return stride(from: 0, to: 24 * 60, by: intervalMinutes).compactMap {
+            calendar.date(byAdding: .minute, value: $0, to: baseDate)
         }
-        return slots
     }
 
     private var selectedIndex: Int {
@@ -259,14 +256,15 @@ struct OnboardingTimePickerPage: View {
         .onAppear {
             scrollPositionID = selectedIndex
         }
-        // Real-time update as user scrolls (YOH-89)
+        // Update selectedTime when user scrolls — guard against feedback loop
         .onChange(of: scrollPositionID) { _, id in
-            guard let id, id < timeSlots.count else { return }
-            selectedTime = timeSlots[id]
-        }
-        // When selection changes from a tap, scroll to it
-        .onChange(of: selectedIndex) { _, newIndex in
-            scrollPositionID = newIndex
+            guard let id, id >= 0, id < timeSlots.count else { return }
+            let newTime = timeSlots[id]
+            // Only update if actually different to break the cycle
+            if Calendar.current.component(.hour, from: newTime) != Calendar.current.component(.hour, from: selectedTime)
+                || Calendar.current.component(.minute, from: newTime) != Calendar.current.component(.minute, from: selectedTime) {
+                selectedTime = newTime
+            }
         }
     }
     // MARK: - Time Slot Button (extracted to help type checker)
