@@ -81,11 +81,6 @@ struct AIView: View {
         }
         .onChange(of: todayScheduled.count)   { _, _ in refreshContext() }
         .onChange(of: todayUnscheduled.count) { _, _ in refreshContext() }
-        .onChange(of: viewModel.pendingActions.count) { _, count in
-            guard count > 0 else { return }
-            executeActions(viewModel.pendingActions)
-            viewModel.pendingActions = []
-        }
         .onAppear { refreshContext() }
     }
 
@@ -281,72 +276,6 @@ struct AIView: View {
         .onChange(of: speechRecognizer.isListening) { _, listening in
             if !listening && !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty {
                 Task { await viewModel.send() }
-            }
-        }
-    }
-
-    // MARK: - Execute Actions
-
-    /// Find a task by title: exact match first, then contains-based fallback.
-    private func findTask(titled title: String) -> StructuredTask? {
-        let trimmed = title.trimmingCharacters(in: .whitespaces)
-        // Exact match
-        if let exact = allTasks.first(where: {
-            $0.title.localizedCaseInsensitiveCompare(trimmed) == .orderedSame
-        }) { return exact }
-        // Fallback: task title is contained in the AI title, or vice versa
-        let lower = trimmed.lowercased()
-        return allTasks.first(where: {
-            $0.title.lowercased().contains(lower) || lower.contains($0.title.lowercased())
-        })
-    }
-
-    private func executeActions(_ actions: [AIAction]) {
-        let cal = Calendar.current
-        let today = Date()
-
-        for action in actions {
-            switch action {
-
-            case .moveTask(let title, let hour, let minute):
-                if let task = findTask(titled: title), !task.isProtected {
-                    let base = task.startTime ?? task.date
-                    task.startTime = cal.date(bySettingHour: hour, minute: minute, second: 0, of: base)
-                }
-
-            // YOH-94: support date field for tasks on other days
-            case .createTask(let title, let hour, let minute, let duration, let taskDate, let colorHex):
-                let targetDay = (taskDate ?? today).startOfDay
-                let start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: targetDay)
-                let newTask = StructuredTask(
-                    title: title,
-                    startTime: start,
-                    duration: TimeInterval(duration * 60),
-                    date: targetDay,
-                    colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
-                    isAllDay: false
-                )
-                modelContext.insert(newTask)
-
-            // YOH-93: unscheduled / no-time task goes to the Later tab
-            case .createUnscheduledTask(let title, let duration, let colorHex):
-                let newTask = StructuredTask(
-                    title: title,
-                    startTime: nil,
-                    duration: TimeInterval(duration * 60),
-                    date: today.startOfDay,
-                    colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
-                    isAllDay: false,
-                    isInbox: true
-                )
-                modelContext.insert(newTask)
-
-            case .completeTask(let title):
-                if let task = findTask(titled: title), !task.isProtected {
-                    task.isCompleted = true
-                }
             }
         }
     }

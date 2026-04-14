@@ -63,6 +63,11 @@ struct ContentView: View {
                 .onChange(of: viewModel.selectedDate) { _, newDate in
                     DailyAnchorManager.ensureAnchors(for: newDate, context: modelContext)
                 }
+                .onChange(of: aiViewModel.pendingActions.count) { _, count in
+                    guard count > 0 else { return }
+                    executeAIActions(aiViewModel.pendingActions)
+                    aiViewModel.pendingActions = []
+                }
         }
     }
 
@@ -370,6 +375,68 @@ struct ContentView: View {
 
     private func ensureAnchorsForCurrentDate() {
         DailyAnchorManager.ensureAnchors(for: viewModel.selectedDate, context: modelContext)
+    }
+
+    // MARK: - AI Action Execution
+
+    /// Find a task by title: exact match first, then contains-based fallback.
+    private func findTask(titled title: String) -> StructuredTask? {
+        let trimmed = title.trimmingCharacters(in: .whitespaces)
+        if let exact = allTasks.first(where: {
+            $0.title.localizedCaseInsensitiveCompare(trimmed) == .orderedSame
+        }) { return exact }
+        let lower = trimmed.lowercased()
+        return allTasks.first(where: {
+            $0.title.lowercased().contains(lower) || lower.contains($0.title.lowercased())
+        })
+    }
+
+    private func executeAIActions(_ actions: [AIAction]) {
+        let cal = Calendar.current
+        let today = Date()
+
+        for action in actions {
+            switch action {
+
+            case .moveTask(let title, let hour, let minute):
+                if let task = findTask(titled: title), !task.isProtected {
+                    let base = task.startTime ?? task.date
+                    task.startTime = cal.date(bySettingHour: hour, minute: minute, second: 0, of: base)
+                }
+
+            case .createTask(let title, let hour, let minute, let duration, let taskDate, let colorHex):
+                let targetDay = (taskDate ?? today).startOfDay
+                let start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: targetDay)
+                let newTask = StructuredTask(
+                    title: title,
+                    startTime: start,
+                    duration: TimeInterval(duration * 60),
+                    date: targetDay,
+                    colorHex: colorHex ?? "#E8907E",
+                    iconName: "star.fill",
+                    isAllDay: false
+                )
+                modelContext.insert(newTask)
+
+            case .createUnscheduledTask(let title, let duration, let colorHex):
+                let newTask = StructuredTask(
+                    title: title,
+                    startTime: nil,
+                    duration: TimeInterval(duration * 60),
+                    date: today.startOfDay,
+                    colorHex: colorHex ?? "#E8907E",
+                    iconName: "star.fill",
+                    isAllDay: false,
+                    isInbox: true
+                )
+                modelContext.insert(newTask)
+
+            case .completeTask(let title):
+                if let task = findTask(titled: title), !task.isProtected {
+                    task.isCompleted = true
+                }
+            }
+        }
     }
 }
 
