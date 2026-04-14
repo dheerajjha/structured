@@ -170,6 +170,11 @@ struct AIView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 8)
             }
+            .onAppear {
+                if let lastID = viewModel.messages.last?.id {
+                    proxy.scrollTo(lastID, anchor: .bottom)
+                }
+            }
             .onChange(of: viewModel.messages.count) { _, _ in
                 withAnimation {
                     proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
