@@ -448,6 +448,9 @@ struct ContentView: View {
                 }
             }
         }
+
+        // Force SwiftData to flush changes so @Query updates across all live views
+        try? modelContext.save()
     }
 }
 
