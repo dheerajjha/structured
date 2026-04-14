@@ -278,6 +278,10 @@ struct TaskEditorView: View {
 
     // MARK: - Custom Duration Pill
 
+    private var isCustomActive: Bool {
+        showCustomDuration || !isPresetDuration
+    }
+
     private var customPill: some View {
         Button {
             withAnimation(.snappy(duration: 0.2)) {
@@ -288,17 +292,17 @@ struct TaskEditorView: View {
                 }
             }
         } label: {
-            Text(showCustomDuration ? customDurationLabel : "Custom")
+            Text(isCustomActive ? customDurationLabel : "Custom")
                 .font(.subheadline.weight(.medium))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(
                     Capsule()
-                        .fill(showCustomDuration
+                        .fill(isCustomActive
                               ? Color(hex: colorHex)
                               : Color(.systemGray5))
                 )
-                .foregroundStyle(showCustomDuration ? .white : .primary)
+                .foregroundStyle(isCustomActive ? .white : .primary)
         }
         .buttonStyle(.plain)
     }
