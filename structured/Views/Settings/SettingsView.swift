@@ -206,7 +206,7 @@ struct SettingsView: View {
             csv += line + "\n"
         }
 
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("structured_tasks.csv")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tickd_tasks.csv")
         try? csv.write(to: url, atomically: true, encoding: .utf8)
         exportFileURL = url
         showShareSheet = true
@@ -219,7 +219,7 @@ struct SettingsView: View {
         fmt.dateFormat = "yyyyMMdd'T'HHmmss"
         fmt.timeZone = TimeZone.current
 
-        var ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Structured//EN\n"
+        var ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Tickd//EN\n"
 
         for task in allTasks where !task.isInbox {
             guard let start = task.startTime else { continue }
@@ -235,7 +235,7 @@ struct SettingsView: View {
 
         ics += "END:VCALENDAR\n"
 
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("structured_tasks.ics")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tickd_tasks.ics")
         try? ics.write(to: url, atomically: true, encoding: .utf8)
         exportFileURL = url
         showShareSheet = true

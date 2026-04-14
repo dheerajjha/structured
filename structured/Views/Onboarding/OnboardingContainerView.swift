@@ -40,7 +40,7 @@ struct OnboardingContainerView: View {
                 OnboardingTimePickerPage(
                     title: "When did you",
                     highlightedWord: "wake up",
-                    subtitle: "Structured will help you start your day right.",
+                    subtitle: "Tickd will help you start your day right.",
                     selectedTime: $wakeUpTime,
                     theme: .morning,
                     onContinue: { goTo(Page.bedTime.rawValue) }

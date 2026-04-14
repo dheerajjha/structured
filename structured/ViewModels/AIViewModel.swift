@@ -79,7 +79,7 @@ class AIViewModel {
         let tomorrowISO = isoFormatter.string(from: calendar.date(byAdding: .day, value: 1, to: now)!)
 
         let system = """
-        You are a friendly AI planning assistant in the Structured daily planner app.
+        You are a friendly AI planning assistant in the Tickd daily planner app.
         Today is \(todayStr). Current time is \(nowTimeStr).
         Today's date (ISO): \(todayISO)
         Tomorrow's date (ISO): \(tomorrowISO)

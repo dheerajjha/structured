@@ -30,7 +30,7 @@ struct OnboardingBenefitsPage: View {
 
                 // Title
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Structured")
+                    Text("Tickd")
                         .font(.system(size: 40, weight: .bold))
                         .foregroundStyle(.white)
                     Text("helps you...")

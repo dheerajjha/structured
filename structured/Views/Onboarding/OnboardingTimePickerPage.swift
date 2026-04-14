@@ -310,7 +310,7 @@ struct OnboardingTimePickerPage: View {
     OnboardingTimePickerPage(
         title: "When did you",
         highlightedWord: "wake up",
-        subtitle: "Structured will help you start your day right.",
+        subtitle: "Tickd will help you start your day right.",
         selectedTime: .constant(Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!),
         theme: .morning,
         onContinue: {}

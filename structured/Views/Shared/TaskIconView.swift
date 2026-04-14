@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Circular colored icon used on task blocks — matches Structured's design
+/// Circular colored icon used on task blocks — matches Tickd's design
 struct TaskIconView: View {
     let iconName: String
     let colorHex: String

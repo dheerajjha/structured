@@ -28,7 +28,7 @@ struct OnboardingWelcomePage: View {
                     Text("Welcome to")
                         .font(.system(size: 38, weight: .light))
                         .foregroundStyle(.white.opacity(0.88))
-                    Text("Structured")
+                    Text("Tickd")
                         .font(.system(size: 44, weight: .bold))
                         .foregroundStyle(.white)
                 }

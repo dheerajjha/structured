@@ -33,7 +33,7 @@ struct OnboardingSummaryPage: View {
             .padding(.top, 4)
 
             // Plan label
-            Text("Your Structured Plan:")
+            Text("Your Tickd Plan:")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 24)

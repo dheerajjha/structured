@@ -354,7 +354,7 @@
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = heywrist.structured;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -387,7 +387,7 @@
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = heywrist.structured;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -422,7 +422,7 @@
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
@@ -462,7 +462,7 @@
 				DEVELOPMENT_TEAM = 83C822A4J3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = structured;
+				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
