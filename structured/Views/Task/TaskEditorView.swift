@@ -104,10 +104,14 @@ struct TaskEditorView: View {
 
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
+                                    customPill
+
                                     ForEach(durationOptions, id: \.1) { label, mins in
                                         Button {
-                                            durationMinutes = mins
-                                            showCustomDuration = false
+                                            withAnimation(.snappy(duration: 0.2)) {
+                                                durationMinutes = mins
+                                                showCustomDuration = false
+                                            }
                                             Analytics.track(Analytics.Event.durationSelected, properties: ["minutes": mins])
                                         } label: {
                                             Text(label)
@@ -125,62 +129,69 @@ struct TaskEditorView: View {
                                         .buttonStyle(.plain)
                                     }
 
-                                    // Custom pill
-                                    Button {
-                                        showCustomDuration.toggle()
-                                        if showCustomDuration {
-                                            customHours = Int(durationMinutes) / 60
-                                            customMinutes = Int(durationMinutes) % 60
-                                        }
-                                    } label: {
-                                        Text(showCustomDuration ? customDurationLabel : "Custom")
-                                            .font(.subheadline.weight(.medium))
-                                            .padding(.horizontal, 12)
-                                            .padding(.vertical, 6)
-                                            .background(
-                                                Capsule()
-                                                    .fill(showCustomDuration
-                                                          ? Color(hex: colorHex)
-                                                          : Color(.systemGray5))
-                                            )
-                                            .foregroundStyle(showCustomDuration ? .white : .primary)
-                                    }
-                                    .buttonStyle(.plain)
+                                    customPill
                                 }
                             }
 
                             if showCustomDuration {
-                                HStack(spacing: 16) {
-                                    HStack(spacing: 4) {
-                                        Picker("Hours", selection: $customHours) {
-                                            ForEach(0...8, id: \.self) { h in
-                                                Text("\(h)").tag(h)
+                                VStack(spacing: 12) {
+                                    HStack(spacing: 16) {
+                                        HStack(spacing: 4) {
+                                            Picker("Hours", selection: $customHours) {
+                                                ForEach(0...8, id: \.self) { h in
+                                                    Text("\(h)").tag(h)
+                                                }
                                             }
+                                            .pickerStyle(.wheel)
+                                            .frame(width: 60, height: 100)
+                                            .clipped()
+                                            Text("hr")
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
                                         }
-                                        .pickerStyle(.wheel)
-                                        .frame(width: 60, height: 100)
-                                        .clipped()
-                                        Text("hr")
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+
+                                        HStack(spacing: 4) {
+                                            Picker("Minutes", selection: $customMinutes) {
+                                                ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { m in
+                                                    Text("\(m)").tag(m)
+                                                }
+                                            }
+                                            .pickerStyle(.wheel)
+                                            .frame(width: 60, height: 100)
+                                            .clipped()
+                                            Text("min")
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
+                                        }
                                     }
 
-                                    HStack(spacing: 4) {
-                                        Picker("Minutes", selection: $customMinutes) {
-                                            ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { m in
-                                                Text("\(m)").tag(m)
-                                            }
+                                    Button {
+                                        withAnimation(.snappy(duration: 0.2)) {
+                                            syncCustomDuration()
+                                            showCustomDuration = false
                                         }
-                                        .pickerStyle(.wheel)
-                                        .frame(width: 60, height: 100)
-                                        .clipped()
-                                        Text("min")
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+                                        Analytics.track(Analytics.Event.durationSelected, properties: ["minutes": durationMinutes])
+                                    } label: {
+                                        Text("Done — \(customDurationLabel)")
+                                            .font(.subheadline.weight(.semibold))
+                                            .foregroundStyle(.white)
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 10)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .fill(Color(hex: colorHex))
+                                            )
                                     }
+                                    .buttonStyle(.plain)
                                 }
+                                .padding(12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.systemGray6))
+                                )
                                 .onChange(of: customHours) { _, _ in syncCustomDuration() }
                                 .onChange(of: customMinutes) { _, _ in syncCustomDuration() }
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                             }
                         }
                     }
@@ -263,6 +274,33 @@ struct TaskEditorView: View {
                 ])
             }
         }
+    }
+
+    // MARK: - Custom Duration Pill
+
+    private var customPill: some View {
+        Button {
+            withAnimation(.snappy(duration: 0.2)) {
+                showCustomDuration.toggle()
+                if showCustomDuration {
+                    customHours = Int(durationMinutes) / 60
+                    customMinutes = Int(durationMinutes) % 60
+                }
+            }
+        } label: {
+            Text(showCustomDuration ? customDurationLabel : "Custom")
+                .font(.subheadline.weight(.medium))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    Capsule()
+                        .fill(showCustomDuration
+                              ? Color(hex: colorHex)
+                              : Color(.systemGray5))
+                )
+                .foregroundStyle(showCustomDuration ? .white : .primary)
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Custom Duration Helpers
