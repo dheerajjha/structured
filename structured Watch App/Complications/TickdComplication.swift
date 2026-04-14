@@ -157,10 +157,7 @@ struct TickdComplication: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: TickdComplicationProvider()) { entry in
-            switch WidgetFamily.allCases.first {
-            default:
-                TickdCircularView(entry: entry)
-            }
+            TickdComplicationEntryView(entry: entry)
         }
         .configurationDisplayName("Tickd")
         .description("See your next task at a glance.")

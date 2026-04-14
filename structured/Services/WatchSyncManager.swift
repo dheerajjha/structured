@@ -2,7 +2,7 @@ import Foundation
 import WatchConnectivity
 import SwiftData
 
-class WatchSyncManager: NSObject, ObservableObject {
+class WatchSyncManager: NSObject, @unchecked Sendable {
     static let shared = WatchSyncManager()
     var modelContainer: ModelContainer?
 

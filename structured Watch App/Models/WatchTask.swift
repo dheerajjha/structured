@@ -82,15 +82,8 @@ extension WatchTask {
         let startStr = formatter.string(from: start)
         if duration == 0 { return startStr }
         let endStr = formatter.string(from: start.addingTimeInterval(duration))
-        let mins = durationMinutes
-        if mins >= 60 {
-            let hours = mins / 60
-            let remaining = mins % 60
-            if remaining == 0 {
-                return "\(startStr) – \(endStr)"
-            } else {
-                return "\(startStr) – \(endStr)"
-            }
+        if durationMinutes >= 60 {
+            return "\(startStr) – \(endStr)"
         }
         return "\(startStr) – \(endStr)"
     }
