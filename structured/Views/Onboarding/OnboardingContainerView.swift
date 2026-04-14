@@ -11,7 +11,7 @@ struct OnboardingContainerView: View {
     @State private var taskTitle   = ""
     @State private var taskIcon    = "envelope.fill"
     @State private var taskDuration: Double = 30
-    @State private var taskColorHex = "#E8907E"
+    @State private var taskColorHex = "#4A7C6F"
 
     @State private var pageIndex = 0
     // Snapshot captured when user taps "See your plan" to avoid TabView caching stale data
@@ -60,7 +60,9 @@ struct OnboardingContainerView: View {
                 OnboardingTaskEntryPage(
                     taskTitle: $taskTitle,
                     taskIcon: $taskIcon,
-                    onContinue: { goTo(Page.taskStyle.rawValue) }
+                    onContinue: {
+                        goTo(Page.taskStyle.rawValue)
+                    }
                 )
                 .tag(Page.taskEntry.rawValue)
 
@@ -70,7 +72,6 @@ struct OnboardingContainerView: View {
                     duration: $taskDuration,
                     colorHex: $taskColorHex,
                     onContinue: {
-                        // Snapshot state NOW before TabView can cache stale data (YOH-90)
                         summarySnapshot = summaryTasks
                         goTo(Page.summary.rawValue)
                     }
@@ -79,16 +80,20 @@ struct OnboardingContainerView: View {
 
                 OnboardingSummaryPage(
                     wakeUpTime: wakeUpTime,
-                    createdTasks: summarySnapshot,
+                    createdTasks: $summarySnapshot,
                     bedTime: bedTime,
                     onFinish: { saveAndFinish() }
                 )
-                // Re-render when snapshot updates (YOH-90)
-                .id("summary-\(summarySnapshot.map(\.title).joined())")
                 .tag(Page.summary.rawValue)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .ignoresSafeArea()
+            .onChange(of: pageIndex) { _, newIndex in
+                // Catch manual swipes to summary — refresh snapshot
+                if newIndex == Page.summary.rawValue {
+                    summarySnapshot = summaryTasks
+                }
+            }
 
             // ── Floating top bar ──────────────────────────────────
             topBar.padding(.top, safeTop)
@@ -179,6 +184,10 @@ struct OnboardingContainerView: View {
 
     private func goTo(_ index: Int) {
         let clamped = min(max(index, 0), totalPages - 1)
+        // Always refresh summary snapshot when navigating to summary
+        if clamped >= Page.summary.rawValue {
+            summarySnapshot = summaryTasks
+        }
         withAnimation(.easeInOut(duration: 0.38)) { pageIndex = clamped }
         let pageNames = ["welcome", "benefits", "wake_up", "bed_time", "task_entry", "task_style", "summary"]
         Analytics.track(Analytics.Event.onboardingPageViewed, properties: ["page": pageNames[clamped], "page_index": clamped])

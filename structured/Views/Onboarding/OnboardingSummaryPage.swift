@@ -3,7 +3,7 @@ import SwiftUI
 /// Page 9: "Awesome! That's a great plan." with task timeline summary
 struct OnboardingSummaryPage: View {
     let wakeUpTime: Date
-    let createdTasks: [OnboardingTaskData]
+    @Binding var createdTasks: [OnboardingTaskData]
     let bedTime: Date
     var onFinish: (@MainActor () -> Void)? = nil
 
@@ -67,29 +67,9 @@ struct OnboardingSummaryPage: View {
                 nextColorHex: createdTasks.first?.colorHex ?? "#7C97AB"
             )
 
-            // User-created tasks
-            ForEach(Array(createdTasks.enumerated()), id: \.offset) { index, task in
-                let startHour = wakeUpTime.hour + 2 + index * 2
-                let startDate = Date().atTime(hour: min(startHour, 22))
-                let endDate = startDate.addingTimeInterval(task.durationMinutes * 60)
-                let durationStr: String = {
-                    if task.durationMinutes >= 60 {
-                        let hrs = Int(task.durationMinutes) / 60
-                        let mins = Int(task.durationMinutes) % 60
-                        return mins > 0 ? "\(hrs) hr \(mins) min" : "\(hrs) hr"
-                    }
-                    return "\(Int(task.durationMinutes)) min"
-                }()
-
-                timelineRow(
-                    icon: task.icon,
-                    colorHex: task.colorHex,
-                    title: task.title,
-                    timeStr: "\(TimeFormatting.timeString(from: startDate)) – \(TimeFormatting.timeString(from: endDate)) (\(durationStr))",
-                    isCompleted: false,
-                    isLast: false,
-                    nextColorHex: index == createdTasks.count - 1 ? "#7C97AB" : createdTasks[index + 1].colorHex
-                )
+            // User-created task
+            if let firstTask = createdTasks.first {
+                userTaskRow(task: firstTask, index: 0)
             }
 
             // Bedtime task
@@ -112,6 +92,31 @@ struct OnboardingSummaryPage: View {
         .overlay(
             RoundedRectangle(cornerRadius: scaled(16))
                 .strokeBorder(Color(.systemGray5), lineWidth: 1)
+        )
+    }
+
+    @ViewBuilder
+    private func userTaskRow(task: OnboardingTaskData, index: Int) -> some View {
+        let startHour = wakeUpTime.hour + 2 + index * 2
+        let startDate = Date().atTime(hour: min(startHour, 22))
+        let endDate = startDate.addingTimeInterval(task.durationMinutes * 60)
+        let durationStr: String = {
+            if task.durationMinutes >= 60 {
+                let hrs = Int(task.durationMinutes) / 60
+                let mins = Int(task.durationMinutes) % 60
+                return mins > 0 ? "\(hrs) hr \(mins) min" : "\(hrs) hr"
+            }
+            return "\(Int(task.durationMinutes)) min"
+        }()
+
+        timelineRow(
+            icon: task.icon,
+            colorHex: task.colorHex,
+            title: task.title,
+            timeStr: "\(TimeFormatting.timeString(from: startDate)) – \(TimeFormatting.timeString(from: endDate)) (\(durationStr))",
+            isCompleted: false,
+            isLast: false,
+            nextColorHex: index == createdTasks.count - 1 ? "#7C97AB" : createdTasks[index + 1].colorHex
         )
     }
 
@@ -183,9 +188,9 @@ struct DottedLine: Shape {
 #Preview {
     OnboardingSummaryPage(
         wakeUpTime: Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!,
-        createdTasks: [
+        createdTasks: .constant([
             OnboardingTaskData(title: "Answer Emails", icon: "envelope.fill", colorHex: "#8FB872", durationMinutes: 15),
-        ],
+        ]),
         bedTime: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: Date())!
     )
 }
