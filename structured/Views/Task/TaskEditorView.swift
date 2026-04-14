@@ -13,6 +13,7 @@ struct TaskEditorView: View {
 
     // Form state
     @State private var title = ""
+    @State private var taskDate: Date = Date()
     @State private var isAllDay = false
     @State private var startTime = Date()
     @State private var durationMinutes: Double = 30
@@ -31,6 +32,8 @@ struct TaskEditorView: View {
 
     // Sheet state
     @State private var showIconPicker = false
+    @State private var showDatePicker = false
+    @State private var userPickedIcon = false
 
     private var isEditing: Bool { task != nil }
 
@@ -57,6 +60,7 @@ struct TaskEditorView: View {
                     HStack(spacing: scaled(12)) {
                         Button {
                             showIconPicker = true
+                            userPickedIcon = true
                             Analytics.track(Analytics.Event.iconPickerOpened)
                         } label: {
                             TaskIconView(iconName: iconName, colorHex: colorHex, size: scaled(44))
@@ -65,12 +69,88 @@ struct TaskEditorView: View {
 
                         TextField("Task name", text: $title)
                             .font(.title3.weight(.semibold))
+                            .onChange(of: title) { _, newTitle in
+                                guard !userPickedIcon, !isEditing else { return }
+                                if let predicted = IconPredictor.predict(for: newTitle) {
+                                    withAnimation(.snappy(duration: 0.2)) {
+                                        iconName = predicted
+                                    }
+                                } else {
+                                    withAnimation(.snappy(duration: 0.2)) {
+                                        iconName = "star.fill"
+                                    }
+                                }
+                            }
                     }
                 }
 
                 // Color
                 Section("Color") {
                     TaskColorPickerView(selectedHex: $colorHex)
+                }
+
+                // Date
+                if !startAsInbox {
+                    Section {
+                        HStack {
+                            Button {
+                                withAnimation(.snappy(duration: 0.25)) {
+                                    showDatePicker.toggle()
+                                }
+                            } label: {
+                                Label {
+                                    Text("Date")
+                                        .foregroundStyle(.primary)
+                                } icon: {
+                                    Image(systemName: "calendar")
+                                        .foregroundStyle(Color(hex: colorHex))
+                                }
+                            }
+                            .buttonStyle(.plain)
+
+                            Spacer()
+
+                            // Quick pills
+                            HStack(spacing: scaled(6)) {
+                                quickDatePill("Today", date: Date().startOfDay, isActive: Calendar.current.isDateInToday(taskDate))
+                                quickDatePill("Tomorrow", date: Date().startOfDay.nextDay, isActive: Calendar.current.isDateInTomorrow(taskDate))
+                            }
+
+                            if !Calendar.current.isDateInToday(taskDate) && !Calendar.current.isDateInTomorrow(taskDate) {
+                                Text(taskDateLabel)
+                                    .font(.caption.weight(.medium))
+                                    .foregroundStyle(Color(hex: colorHex))
+                            }
+
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(Color(.systemGray3))
+                                .rotationEffect(.degrees(showDatePicker ? 90 : 0))
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            withAnimation(.snappy(duration: 0.25)) {
+                                showDatePicker.toggle()
+                            }
+                        }
+
+                        if showDatePicker {
+                            DatePicker(
+                                "Select date",
+                                selection: $taskDate,
+                                in: Date().startOfDay...,
+                                displayedComponents: .date
+                            )
+                            .datePickerStyle(.graphical)
+                            .tint(Color(hex: colorHex))
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .onChange(of: taskDate) { _, _ in
+                                withAnimation(.snappy(duration: 0.25)) {
+                                    showDatePicker = false
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // Option C — Scheduled toggle (editing only)
@@ -309,6 +389,42 @@ struct TaskEditorView: View {
         .buttonStyle(.plain)
     }
 
+    // MARK: - Date Label
+
+    private var taskDateLabel: String {
+        if Calendar.current.isDateInToday(taskDate) {
+            return "Today"
+        } else if Calendar.current.isDateInTomorrow(taskDate) {
+            return "Tomorrow"
+        } else {
+            let fmt = DateFormatter()
+            fmt.dateFormat = "EEE, d MMM"
+            return fmt.string(from: taskDate)
+        }
+    }
+
+    // MARK: - Quick Date Pill
+
+    private func quickDatePill(_ label: String, date: Date, isActive: Bool) -> some View {
+        Button {
+            taskDate = date
+            withAnimation(.snappy(duration: 0.25)) {
+                showDatePicker = false
+            }
+        } label: {
+            Text(label)
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, scaled(10))
+                .padding(.vertical, scaled(4))
+                .background(
+                    Capsule()
+                        .fill(isActive ? Color(hex: colorHex) : Color(.systemGray5))
+                )
+                .foregroundStyle(isActive ? .white : .primary)
+        }
+        .buttonStyle(.plain)
+    }
+
     // MARK: - Custom Duration Helpers
 
     private var customDurationLabel: String {
@@ -337,8 +453,10 @@ struct TaskEditorView: View {
     // MARK: - Data Loading
 
     private func loadTaskData() {
+        taskDate = selectedDate
         if let task {
             title = task.title
+            taskDate = task.date
             isAllDay = task.isAllDay
             isScheduled = !task.isInbox
             startTime = task.startTime ?? selectedDate.atTime(hour: 9)
@@ -377,6 +495,7 @@ struct TaskEditorView: View {
         if let task {
             // Update existing — scheduling always moves out of inbox
             task.title = trimmedTitle
+            task.date = taskDate
             task.isAllDay = isAllDay
             task.startTime = isAllDay ? nil : startTime
             task.duration = durationMinutes * 60
@@ -402,7 +521,7 @@ struct TaskEditorView: View {
                 title: trimmedTitle,
                 startTime: isAllDay ? nil : startTime,
                 duration: durationMinutes * 60,
-                date: selectedDate,
+                date: taskDate,
                 colorHex: colorHex,
                 iconName: iconName,
                 isAllDay: isAllDay,
