@@ -10,7 +10,7 @@ class StructuredTask {
     var date: Date = Date()
     var notes: String = ""
     var colorHex: String = "#FF6B6B"
-    var iconName: String = "star.fill"
+    var iconName: String = "checklist"
     var isCompleted: Bool = false
     var isAllDay: Bool = false
     var isInbox: Bool = false
@@ -35,7 +35,7 @@ class StructuredTask {
         date: Date = Date(),
         notes: String = "",
         colorHex: String = "#FF6B6B",
-        iconName: String = "star.fill",
+        iconName: String = "checklist",
         isCompleted: Bool = false,
         isAllDay: Bool = false,
         isInbox: Bool = false,

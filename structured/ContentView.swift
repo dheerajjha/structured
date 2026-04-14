@@ -441,7 +441,7 @@ struct ContentView: View {
                     duration: TimeInterval(duration * 60),
                     date: targetDay,
                     colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
+                    iconName: IconPredictor.predict(for: title) ?? "checklist",
                     isAllDay: false
                 )
                 modelContext.insert(newTask)
@@ -453,7 +453,7 @@ struct ContentView: View {
                     duration: TimeInterval(duration * 60),
                     date: today.startOfDay,
                     colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
+                    iconName: IconPredictor.predict(for: title) ?? "checklist",
                     isAllDay: false,
                     isInbox: true
                 )

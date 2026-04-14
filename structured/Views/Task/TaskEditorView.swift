@@ -18,7 +18,7 @@ struct TaskEditorView: View {
     @State private var startTime = Date()
     @State private var durationMinutes: Double = 30
     @State private var colorHex = TaskColors.default.hex
-    @State private var iconName = "star.fill"
+    @State private var iconName = "checklist"
     @State private var notes = ""
     @State private var subtaskTexts: [String] = []
 
@@ -77,7 +77,7 @@ struct TaskEditorView: View {
                                     }
                                 } else {
                                     withAnimation(.snappy(duration: 0.2)) {
-                                        iconName = "star.fill"
+                                        iconName = "checklist"
                                     }
                                 }
                             }
