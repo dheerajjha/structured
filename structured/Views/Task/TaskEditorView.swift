@@ -167,15 +167,18 @@ struct TaskEditorView: View {
                 }
 
                 // Time section
-                Section("Time") {
-                    Toggle("All Day", isOn: $isAllDay)
+                Section(startAsInbox ? "Duration" : "Time") {
+                    if !startAsInbox {
+                        Toggle("All Day", isOn: $isAllDay)
+                    }
 
-                    if !isAllDay {
+                    if !startAsInbox && !isAllDay {
                         DatePicker(
                             "Start Time",
                             selection: $startTime,
                             displayedComponents: .hourAndMinute
                         )
+                    }
 
                         VStack(alignment: .leading, spacing: scaled(8)) {
                             Text("Duration")
@@ -274,7 +277,6 @@ struct TaskEditorView: View {
                                 .transition(.opacity.combined(with: .move(edge: .top)))
                             }
                         }
-                    }
                 }
 
                 // Notes section
