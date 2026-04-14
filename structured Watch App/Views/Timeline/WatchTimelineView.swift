@@ -140,6 +140,9 @@ struct WatchTimelineView: View {
                                 task.startTime = nil
                                 task.modifiedAt = Date()
                             }
+                            WatchConnectivityManager.shared.sendTaskUpdate(
+                                "unschedule", taskId: task.id.uuidString
+                            )
                         } label: {
                             Label("Later", systemImage: "tray")
                         }

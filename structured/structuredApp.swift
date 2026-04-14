@@ -16,7 +16,6 @@ struct structuredApp: App {
         ))
         Analytics.setup()
         Analytics.track(Analytics.Event.appOpened)
-        WatchSyncManager.shared.activate()
     }
 
     var sharedModelContainer: ModelContainer = {
@@ -41,6 +40,10 @@ struct structuredApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    WatchSyncManager.shared.modelContainer = sharedModelContainer
+                    WatchSyncManager.shared.activate()
+                }
         }
         .modelContainer(sharedModelContainer)
     }

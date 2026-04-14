@@ -52,7 +52,11 @@ struct WatchInboxView: View {
                             )
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
+                                    let taskId = task.id.uuidString
                                     withAnimation { modelContext.delete(task) }
+                                    WatchConnectivityManager.shared.sendTaskUpdate(
+                                        "delete", taskId: taskId
+                                    )
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }

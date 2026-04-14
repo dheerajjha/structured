@@ -2,6 +2,10 @@ import Foundation
 import WatchConnectivity
 import SwiftData
 
+extension Notification.Name {
+    static let watchSyncNeeded = Notification.Name("watchSyncNeeded")
+}
+
 class WatchSyncManager: NSObject, @unchecked Sendable {
     static let shared = WatchSyncManager()
     var modelContainer: ModelContainer?
@@ -114,10 +118,16 @@ extension WatchSyncManager: WCSessionDelegate {
             task.isCompleted = true
         case "uncomplete":
             task.isCompleted = false
+        case "unschedule":
+            task.isInbox = true
+            task.startTime = nil
+        case "delete":
+            context.delete(task)
         default:
             break
         }
 
         try? context.save()
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
     }
 }

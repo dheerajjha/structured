@@ -419,6 +419,7 @@ struct TaskEditorView: View {
             ])
         }
 
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
         dismiss()
     }
 

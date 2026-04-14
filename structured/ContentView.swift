@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import Combine
 
 // MARK: - App Tabs
 
@@ -70,8 +71,12 @@ struct ContentView: View {
                     guard count > 0 else { return }
                     executeAIActions(aiViewModel.pendingActions)
                     aiViewModel.pendingActions = []
+                    syncToWatch()
                 }
                 .onChange(of: allTasks.count) { _, _ in
+                    syncToWatch()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .watchSyncNeeded)) { _ in
                     syncToWatch()
                 }
         }

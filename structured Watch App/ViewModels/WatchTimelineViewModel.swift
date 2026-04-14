@@ -30,5 +30,9 @@ class WatchTimelineViewModel {
             task.isCompleted.toggle()
             task.modifiedAt = Date()
         }
+        WatchConnectivityManager.shared.sendTaskUpdate(
+            task.isCompleted ? "complete" : "uncomplete",
+            taskId: task.id.uuidString
+        )
     }
 }
