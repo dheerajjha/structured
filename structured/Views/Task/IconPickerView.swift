@@ -51,8 +51,8 @@ struct IconPickerView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(
-                    columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 6),
-                    spacing: 12
+                    columns: Array(repeating: GridItem(.flexible(), spacing: scaled(12)), count: 6),
+                    spacing: scaled(12)
                 ) {
                     ForEach(Self.icons, id: \.self) { icon in
                         Button {
@@ -61,13 +61,13 @@ struct IconPickerView: View {
                         } label: {
                             Image(systemName: icon)
                                 .font(.title3)
-                                .frame(width: 48, height: 48)
+                                .frame(width: scaled(48), height: scaled(48))
                                 .background(
-                                    RoundedRectangle(cornerRadius: 10)
+                                    RoundedRectangle(cornerRadius: scaled(10))
                                         .fill(selectedIcon == icon ? Color.accentColor.opacity(0.15) : Color(.systemGray6))
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
+                                    RoundedRectangle(cornerRadius: scaled(10))
                                         .strokeBorder(selectedIcon == icon ? Color.accentColor : .clear, lineWidth: 2)
                                 )
                         }

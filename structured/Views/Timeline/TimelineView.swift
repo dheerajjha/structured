@@ -139,7 +139,7 @@ struct DayTimelineView: View {
         } else {
             let items = buildItems(from: tasks, isToday: viewModel.isToday)
             List {
-                Color.clear.frame(height: 8)
+                Color.clear.frame(height: scaled(8))
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
                     .listRowInsets(.init())
@@ -151,7 +151,7 @@ struct DayTimelineView: View {
                         .listRowInsets(.init())
                 }
 
-                Color.clear.frame(height: 100)
+                Color.clear.frame(height: scaled(100))
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
                     .listRowInsets(.init())
@@ -169,9 +169,9 @@ struct DayTimelineView: View {
     private func rowView(for item: TimelineItem) -> some View {
         switch item {
         case .task(let task, let overlapName):
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: scaled(2)) {
                 if let overlapName {
-                    HStack(spacing: 4) {
+                    HStack(spacing: scaled(4)) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.caption2)
                             .foregroundStyle(.orange)
@@ -179,7 +179,7 @@ struct DayTimelineView: View {
                             .font(.caption2)
                             .foregroundStyle(.orange)
                     }
-                    .padding(.leading, overlapName.isEmpty ? 16 : 32)
+                    .padding(.leading, overlapName.isEmpty ? scaled(16) : scaled(32))
                 }
 
                 TaskBlockView(
@@ -192,8 +192,8 @@ struct DayTimelineView: View {
                     onTap: { viewModel.startEditingTask(task) }
                 )
             }
-            .padding(.horizontal, overlapName != nil ? 32 : 16)
-            .padding(.vertical, 4)
+            .padding(.horizontal, overlapName != nil ? scaled(32) : scaled(16))
+            .padding(.vertical, scaled(4))
             // Option B — long press context menu
             .contextMenu {
                 Button { viewModel.startEditingTask(task) } label: {
@@ -229,10 +229,10 @@ struct DayTimelineView: View {
     // MARK: - Current Time Badge
 
     private func currentTimeBadge(for date: Date) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: scaled(8)) {
             Circle()
                 .fill(.red)
-                .frame(width: 8, height: 8)
+                .frame(width: scaled(8), height: scaled(8))
             Text(TimeFormatting.timeString(from: date))
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.red)
@@ -240,23 +240,23 @@ struct DayTimelineView: View {
                 .fill(.red.opacity(0.25))
                 .frame(height: 1)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 6)
+        .padding(.horizontal, scaled(16))
+        .padding(.vertical, scaled(6))
     }
 
     // MARK: - Gap View
 
     private func gapView(minutes: Int, afterTaskID: UUID) -> some View {
-        HStack(spacing: 8) {
-            VStack(spacing: 3) {
+        HStack(spacing: scaled(8)) {
+            VStack(spacing: scaled(3)) {
                 ForEach(0..<3, id: \.self) { _ in
                     RoundedRectangle(cornerRadius: 1)
                         .fill(Color(.systemGray4))
-                        .frame(width: 2, height: 4)
+                        .frame(width: scaled(2), height: scaled(4))
                 }
             }
-            .frame(width: 16)
-            .padding(.leading, 20)
+            .frame(width: scaled(16))
+            .padding(.leading, scaled(20))
 
             Text(gapLabel(minutes: minutes))
                 .font(.caption)
@@ -273,15 +273,15 @@ struct DayTimelineView: View {
                         viewModel.showingTaskEditor = true
                     }
                 } label: {
-                    HStack(spacing: 4) {
+                    HStack(spacing: scaled(4)) {
                         Image(systemName: "plus.circle.fill")
                             .font(.caption)
                         Text("Add Task")
                             .font(.caption.weight(.medium))
                     }
                     .foregroundStyle(Color(hex: "#E8907E"))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
+                    .padding(.horizontal, scaled(10))
+                    .padding(.vertical, scaled(5))
                     .background(Capsule().fill(Color(hex: "#E8907E").opacity(0.1)))
                 }
                 .buttonStyle(.plain)
@@ -289,7 +289,7 @@ struct DayTimelineView: View {
 
             Spacer()
         }
-        .frame(minHeight: 28)
+        .frame(minHeight: scaled(28))
     }
 
     private func gapLabel(minutes: Int) -> String {
@@ -304,10 +304,10 @@ struct DayTimelineView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: scaled(16)) {
             Spacer()
             Image(systemName: "calendar.badge.plus")
-                .font(.system(size: 48))
+                .font(.system(size: scaled(48)))
                 .foregroundStyle(Color(.systemGray4))
             Text("No tasks scheduled")
                 .font(.title3.weight(.semibold))
@@ -317,6 +317,6 @@ struct DayTimelineView: View {
                 .foregroundStyle(Color(.systemGray3))
             Spacer()
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, scaled(40))
     }
 }

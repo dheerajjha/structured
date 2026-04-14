@@ -8,22 +8,22 @@ struct AllDayTasksView: View {
 
     var body: some View {
         if !tasks.isEmpty {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: scaled(8)) {
                 Text("ALL DAY")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal)
+                    .padding(.horizontal, scaled(16))
 
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: scaled(8)) {
                         ForEach(tasks, id: \.id) { task in
                             allDayChip(task)
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, scaled(16))
                 }
             }
-            .padding(.vertical, 8)
+            .padding(.vertical, scaled(8))
             .background(.ultraThinMaterial)
         }
     }
@@ -33,11 +33,11 @@ struct AllDayTasksView: View {
         Button {
             onTap(task)
         } label: {
-            HStack(spacing: 8) {
+            HStack(spacing: scaled(8)) {
                 TaskIconView(
                     iconName: task.iconName,
                     colorHex: task.colorHex,
-                    size: 28
+                    size: scaled(28)
                 )
 
                 Text(task.title)
@@ -52,15 +52,15 @@ struct AllDayTasksView: View {
                     CompletionCircleView(
                         isCompleted: task.isCompleted,
                         colorHex: task.colorHex,
-                        size: 22
+                        size: scaled(22)
                     )
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, scaled(12))
+            .padding(.vertical, scaled(8))
             .background(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: scaled(10))
                     .fill(Color(hex: task.colorHex).pastel())
             )
         }

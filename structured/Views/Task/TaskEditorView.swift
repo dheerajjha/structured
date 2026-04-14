@@ -54,12 +54,12 @@ struct TaskEditorView: View {
             Form {
                 // Title section
                 Section {
-                    HStack(spacing: 12) {
+                    HStack(spacing: scaled(12)) {
                         Button {
                             showIconPicker = true
                             Analytics.track(Analytics.Event.iconPickerOpened)
                         } label: {
-                            TaskIconView(iconName: iconName, colorHex: colorHex, size: 44)
+                            TaskIconView(iconName: iconName, colorHex: colorHex, size: scaled(44))
                         }
                         .buttonStyle(.plain)
 
@@ -97,13 +97,13 @@ struct TaskEditorView: View {
                             displayedComponents: .hourAndMinute
                         )
 
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: scaled(8)) {
                             Text("Duration")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
 
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 8) {
+                                HStack(spacing: scaled(8)) {
                                     customPill
 
                                     ForEach(durationOptions, id: \.1) { label, mins in
@@ -116,8 +116,8 @@ struct TaskEditorView: View {
                                         } label: {
                                             Text(label)
                                                 .font(.subheadline.weight(.medium))
-                                                .padding(.horizontal, 12)
-                                                .padding(.vertical, 6)
+                                                .padding(.horizontal, scaled(12))
+                                                .padding(.vertical, scaled(6))
                                                 .background(
                                                     Capsule()
                                                         .fill(!showCustomDuration && durationMinutes == mins
@@ -134,30 +134,30 @@ struct TaskEditorView: View {
                             }
 
                             if showCustomDuration {
-                                VStack(spacing: 12) {
-                                    HStack(spacing: 16) {
-                                        HStack(spacing: 4) {
+                                VStack(spacing: scaled(12)) {
+                                    HStack(spacing: scaled(16)) {
+                                        HStack(spacing: scaled(4)) {
                                             Picker("Hours", selection: $customHours) {
                                                 ForEach(0...8, id: \.self) { h in
                                                     Text("\(h)").tag(h)
                                                 }
                                             }
                                             .pickerStyle(.wheel)
-                                            .frame(width: 60, height: 100)
+                                            .frame(width: scaled(60), height: scaled(100))
                                             .clipped()
                                             Text("hr")
                                                 .font(.subheadline)
                                                 .foregroundStyle(.secondary)
                                         }
 
-                                        HStack(spacing: 4) {
+                                        HStack(spacing: scaled(4)) {
                                             Picker("Minutes", selection: $customMinutes) {
                                                 ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { m in
                                                     Text("\(m)").tag(m)
                                                 }
                                             }
                                             .pickerStyle(.wheel)
-                                            .frame(width: 60, height: 100)
+                                            .frame(width: scaled(60), height: scaled(100))
                                             .clipped()
                                             Text("min")
                                                 .font(.subheadline)
@@ -176,17 +176,17 @@ struct TaskEditorView: View {
                                             .font(.subheadline.weight(.semibold))
                                             .foregroundStyle(.white)
                                             .frame(maxWidth: .infinity)
-                                            .padding(.vertical, 10)
+                                            .padding(.vertical, scaled(10))
                                             .background(
-                                                RoundedRectangle(cornerRadius: 10)
+                                                RoundedRectangle(cornerRadius: scaled(10))
                                                     .fill(Color(hex: colorHex))
                                             )
                                     }
                                     .buttonStyle(.plain)
                                 }
-                                .padding(12)
+                                .padding(scaled(12))
                                 .background(
-                                    RoundedRectangle(cornerRadius: 12)
+                                    RoundedRectangle(cornerRadius: scaled(12))
                                         .fill(Color(.systemGray6))
                                 )
                                 .onChange(of: customHours) { _, _ in syncCustomDuration() }
@@ -294,8 +294,8 @@ struct TaskEditorView: View {
         } label: {
             Text(isCustomActive ? customDurationLabel : "Custom")
                 .font(.subheadline.weight(.medium))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
+                .padding(.horizontal, scaled(12))
+                .padding(.vertical, scaled(6))
                 .background(
                     Capsule()
                         .fill(isCustomActive

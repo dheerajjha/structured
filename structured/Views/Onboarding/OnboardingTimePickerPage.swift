@@ -102,20 +102,20 @@ struct OnboardingTimePickerPage: View {
 
             VStack(alignment: .leading, spacing: 0) {
             // Clear floating topBar
-            Spacer().frame(height: 80)
+            Spacer().frame(height: scaled(80))
 
             // Title
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: scaled(8)) {
                 (Text(title + " ")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme == .night ? .white : .primary)
                  +
                  Text(highlightedWord)
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme.accentColor)
                  +
                  Text("?")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme == .night ? .white : .primary)
                 )
 
@@ -123,15 +123,15 @@ struct OnboardingTimePickerPage: View {
                     .font(.body)
                     .foregroundStyle(theme == .night ? .white.opacity(0.8) : .secondary)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 8)
+            .padding(.horizontal, scaled(24))
+            .padding(.top, scaled(8))
 
             Spacer()
 
             // Time picker area with background
             ZStack {
                 // Gradient background
-                RoundedRectangle(cornerRadius: 24)
+                RoundedRectangle(cornerRadius: scaled(24))
                     .fill(
                         LinearGradient(
                             colors: theme.gradientColors,
@@ -139,18 +139,18 @@ struct OnboardingTimePickerPage: View {
                             endPoint: .bottom
                         )
                     )
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, scaled(16))
 
                 VStack(spacing: 0) {
                     // Decorative icon
                     themeIcon
-                        .padding(.bottom, 8)
+                        .padding(.bottom, scaled(8))
 
                     // Up arrow
                     Image(systemName: "chevron.up")
                         .font(.title3.weight(.medium))
                         .foregroundStyle(theme == .night ? .white.opacity(0.6) : .secondary)
-                        .padding(.bottom, 8)
+                        .padding(.bottom, scaled(8))
 
                     // Time list
                     timeListView
@@ -159,11 +159,11 @@ struct OnboardingTimePickerPage: View {
                     Image(systemName: "chevron.down")
                         .font(.title3.weight(.medium))
                         .foregroundStyle(theme == .night ? .white.opacity(0.6) : .secondary)
-                        .padding(.top, 8)
+                        .padding(.top, scaled(8))
                 }
-                .padding(.vertical, 16)
+                .padding(.vertical, scaled(16))
             }
-            .frame(height: 340)
+            .frame(height: scaled(340))
 
             Spacer()
 
@@ -174,14 +174,14 @@ struct OnboardingTimePickerPage: View {
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 56)
+                        .frame(height: scaled(56))
                         .background(
-                            RoundedRectangle(cornerRadius: 28)
+                            RoundedRectangle(cornerRadius: scaled(28))
                                 .fill(Color(hex: theme.buttonColor))
                         )
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 32)
+                .padding(.horizontal, scaled(24))
+                .padding(.bottom, scaled(32))
             }
             } // VStack
         } // ZStack
@@ -197,10 +197,10 @@ struct OnboardingTimePickerPage: View {
             ZStack {
                 Circle()
                     .fill(Color(hex: "#F5D547").opacity(0.8))
-                    .frame(width: 60, height: 60)
+                    .frame(width: scaled(60), height: scaled(60))
 
                 Image(systemName: "sun.max.fill")
-                    .font(.system(size: 30))
+                    .font(.system(size: scaled(30)))
                     .foregroundStyle(Color(hex: "#F5D547"))
             }
 
@@ -208,17 +208,17 @@ struct OnboardingTimePickerPage: View {
             // Moon
             ZStack {
                 Image(systemName: "moon.fill")
-                    .font(.system(size: 44))
+                    .font(.system(size: scaled(44)))
                     .foregroundStyle(Color(hex: "#F5E0A0"))
 
                 // Stars
                 ForEach(0..<5, id: \.self) { i in
                     Circle()
                         .fill(Color(hex: "#F5E0A0").opacity(0.6))
-                        .frame(width: CGFloat.random(in: 2...4), height: CGFloat.random(in: 2...4))
+                        .frame(width: CGFloat.random(in: scaled(2)...scaled(4)), height: CGFloat.random(in: scaled(2)...scaled(4)))
                         .offset(
-                            x: CGFloat([-40, 30, -20, 50, -10][i]),
-                            y: CGFloat([-15, -25, 20, 10, -30][i])
+                            x: scaled(CGFloat([-40, 30, -20, 50, -10][i])),
+                            y: scaled(CGFloat([-15, -25, 20, 10, -30][i]))
                         )
                 }
             }
@@ -229,7 +229,7 @@ struct OnboardingTimePickerPage: View {
 
     private var timeListView: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: 4) {
+            LazyVStack(spacing: scaled(4)) {
                 ForEach(Array(timeSlots.enumerated()), id: \.offset) { index, time in
                     let isSelected = index == selectedIndex
                     let distance = abs(index - selectedIndex)
@@ -238,12 +238,12 @@ struct OnboardingTimePickerPage: View {
                         .id(index)
                 }
             }
-            .padding(.vertical, 40)
+            .padding(.vertical, scaled(40))
             .scrollTargetLayout()
         }
         .scrollPosition(id: $scrollPositionID, anchor: .center)
         .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
-        .frame(height: 220)
+        .frame(height: scaled(220))
         .mask(
             LinearGradient(
                 stops: [
@@ -272,7 +272,7 @@ struct OnboardingTimePickerPage: View {
     // MARK: - Time Slot Button (extracted to help type checker)
 
     private func timeSlotButton(time: Date, index: Int, isSelected: Bool, distance: Int) -> some View {
-        let fontSize: CGFloat = isSelected ? 20 : max(16 - CGFloat(distance) * 1.5, 12)
+        let fontSize: CGFloat = isSelected ? scaled(20) : max(scaled(16) - CGFloat(distance) * scaled(1.5), scaled(12))
         let fontWeight: Font.Weight = isSelected ? .bold : .regular
         let textOpacity: Double = isSelected ? 1.0 : max(1.0 - Double(distance) * 0.2, 0.3)
         let textColor: Color = isSelected ? theme.pillTextColor : (theme == .night ? Color.white.opacity(textOpacity) : Color.primary.opacity(textOpacity))
@@ -283,7 +283,7 @@ struct OnboardingTimePickerPage: View {
                 scrollPositionID = index
             }
         } label: {
-            HStack(spacing: 8) {
+            HStack(spacing: scaled(8)) {
                 if isSelected {
                     Image(systemName: theme.icon)
                         .font(.body.weight(.semibold))
@@ -294,8 +294,8 @@ struct OnboardingTimePickerPage: View {
                     .font(.system(size: fontSize, weight: fontWeight))
                     .foregroundStyle(textColor)
             }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 10)
+            .padding(.horizontal, scaled(24))
+            .padding(.vertical, scaled(10))
             .background {
                 if isSelected {
                     Capsule().fill(theme.pillBackgroundColor)

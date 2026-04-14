@@ -71,12 +71,12 @@ struct AIView: View {
                     Text(err)
                         .font(.caption)
                         .foregroundStyle(.red)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
+                        .padding(.horizontal, scaled(16))
+                        .padding(.vertical, scaled(4))
                 }
 
                 suggestionRow
-                inputBar.padding(.bottom, 8)
+                inputBar.padding(.bottom, scaled(8))
             }
         }
         .onChange(of: todayScheduled.count)   { _, _ in refreshContext() }
@@ -88,17 +88,17 @@ struct AIView: View {
 
     private var headerBar: some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: scaled(4)) {
                 Text(greeting)
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: scaled(28), weight: .bold))
                     .foregroundStyle(coral)
                 Text(greetingSubtitle)
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: scaled(20), weight: .bold))
                     .foregroundStyle(.primary)
             }
             Spacer()
 
-            HStack(spacing: 10) {
+            HStack(spacing: scaled(10)) {
                 // Reset button — only when there are messages
                 if !viewModel.messages.isEmpty {
                     Button {
@@ -107,11 +107,11 @@ struct AIView: View {
                         Image(systemName: "arrow.counterclockwise")
                             .font(.body.weight(.medium))
                             .foregroundStyle(Color.blue)
-                            .frame(width: 36, height: 36)
+                            .frame(width: scaled(36), height: scaled(36))
                             .background(
                                 Circle()
                                     .fill(Color(.systemBackground))
-                                    .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                                    .shadow(color: .black.opacity(0.06), radius: scaled(4), y: scaled(2))
                             )
                     }
                 }
@@ -121,18 +121,18 @@ struct AIView: View {
                     Image(systemName: "questionmark")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(Color.primary)
-                        .frame(width: 36, height: 36)
+                        .frame(width: scaled(36), height: scaled(36))
                         .background(
                             Circle()
                                 .fill(Color(.systemBackground))
-                                .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                                .shadow(color: .black.opacity(0.06), radius: scaled(4), y: scaled(2))
                         )
                 }
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-        .padding(.bottom, 16)
+        .padding(.horizontal, scaled(20))
+        .padding(.top, scaled(20))
+        .padding(.bottom, scaled(16))
         .sheet(isPresented: $showHelp) {
             AIHelpSheet()
                 .presentationDetents([.medium])
@@ -157,7 +157,7 @@ struct AIView: View {
     private var chatHistory: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: 12) {
+                LazyVStack(spacing: scaled(12)) {
                     ForEach(viewModel.messages) { msg in
                         MessageBubble(message: msg, coral: coral)
                             .id(msg.id)
@@ -166,9 +166,9 @@ struct AIView: View {
                         TypingIndicator(coral: coral).id("typing")
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 12)
-                .padding(.bottom, 8)
+                .padding(.horizontal, scaled(16))
+                .padding(.top, scaled(12))
+                .padding(.bottom, scaled(8))
             }
             .onChange(of: viewModel.messages.count) { _, _ in
                 withAnimation {
@@ -185,10 +185,10 @@ struct AIView: View {
 
     private var suggestionRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: scaled(10)) {
                 ForEach(suggestions, id: \.label) { s in
                     Button { viewModel.sendSuggestion(s.prompt) } label: {
-                        HStack(spacing: 6) {
+                        HStack(spacing: scaled(6)) {
                             Image(systemName: s.icon)
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(coral)
@@ -197,28 +197,28 @@ struct AIView: View {
                                 .foregroundStyle(.primary)
                                 .lineLimit(1)
                         }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 9)
+                        .padding(.horizontal, scaled(14))
+                        .padding(.vertical, scaled(9))
                         .background(
-                            RoundedRectangle(cornerRadius: 20)
+                            RoundedRectangle(cornerRadius: scaled(20))
                                 .fill(Color(.systemBackground))
-                                .shadow(color: .black.opacity(0.05), radius: 4, y: 1)
+                                .shadow(color: .black.opacity(0.05), radius: scaled(4), y: 1)
                         )
                     }
                     .buttonStyle(.plain)
                     .disabled(viewModel.isLoading)
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.horizontal, scaled(16))
+            .padding(.vertical, scaled(8))
         }
     }
 
     // MARK: - Input Bar
 
     private var inputBar: some View {
-        HStack(spacing: 10) {
-            HStack(spacing: 8) {
+        HStack(spacing: scaled(10)) {
+            HStack(spacing: scaled(8)) {
                 TextField("Tell me your plans...", text: $viewModel.inputText, axis: .vertical)
                     .font(.subheadline)
                     .lineLimit(1...4)
@@ -241,14 +241,14 @@ struct AIView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
+            .padding(.horizontal, scaled(14))
+            .padding(.vertical, scaled(10))
             .background(
-                RoundedRectangle(cornerRadius: 22)
+                RoundedRectangle(cornerRadius: scaled(22))
                     .fill(Color(.systemBackground))
-                    .shadow(color: .black.opacity(0.06), radius: 6, y: 2)
+                    .shadow(color: .black.opacity(0.06), radius: scaled(6), y: scaled(2))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 22)
+                        RoundedRectangle(cornerRadius: scaled(22))
                             .stroke(speechRecognizer.isListening ? coral.opacity(0.5) : .clear, lineWidth: 1.5)
                     )
             )
@@ -259,7 +259,7 @@ struct AIView: View {
                     Image(systemName: "arrow.up")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(.white)
-                        .frame(width: 38, height: 38)
+                        .frame(width: scaled(38), height: scaled(38))
                         .background(Circle().fill(coral))
                 }
                 .disabled(viewModel.isLoading)
@@ -267,7 +267,7 @@ struct AIView: View {
             }
         }
         .animation(.snappy(duration: 0.2), value: viewModel.inputText.isEmpty)
-        .padding(.horizontal, 16)
+        .padding(.horizontal, scaled(16))
         // Sync live transcript into the input field
         .onChange(of: speechRecognizer.transcript) { _, text in
             if !text.isEmpty { viewModel.inputText = text }
@@ -296,19 +296,19 @@ private struct MessageBubble: View {
 
     var body: some View {
         HStack {
-            if isUser { Spacer(minLength: 60) }
+            if isUser { Spacer(minLength: scaled(60)) }
             Text(message.content)
                 .font(.subheadline)
                 .foregroundStyle(isUser ? .white : .primary)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
+                .padding(.horizontal, scaled(14))
+                .padding(.vertical, scaled(10))
                 .background(
-                    RoundedRectangle(cornerRadius: 18)
+                    RoundedRectangle(cornerRadius: scaled(18))
                         .fill(isUser ? coral.opacity(0.9) : Color(.systemBackground))
-                        .shadow(color: .black.opacity(isUser ? 0 : 0.05), radius: 4, y: 1)
+                        .shadow(color: .black.opacity(isUser ? 0 : 0.05), radius: scaled(4), y: 1)
                 )
                 .frame(maxWidth: .infinity, alignment: isUser ? .trailing : .leading)
-            if !isUser { Spacer(minLength: 60) }
+            if !isUser { Spacer(minLength: scaled(60)) }
         }
     }
 }
@@ -321,11 +321,11 @@ private struct TypingIndicator: View {
 
     var body: some View {
         HStack {
-            HStack(spacing: 4) {
+            HStack(spacing: scaled(4)) {
                 ForEach(0..<3, id: \.self) { i in
                     Circle()
                         .fill(coral.opacity(0.6))
-                        .frame(width: 7, height: 7)
+                        .frame(width: scaled(7), height: scaled(7))
                         .scaleEffect(phase == i ? 1.3 : 0.8)
                         .animation(
                             .easeInOut(duration: 0.4).repeatForever().delay(Double(i) * 0.15),
@@ -333,12 +333,12 @@ private struct TypingIndicator: View {
                         )
                 }
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
+            .padding(.horizontal, scaled(14))
+            .padding(.vertical, scaled(12))
             .background(
-                RoundedRectangle(cornerRadius: 18)
+                RoundedRectangle(cornerRadius: scaled(18))
                     .fill(Color(.systemBackground))
-                    .shadow(color: .black.opacity(0.05), radius: 4, y: 1)
+                    .shadow(color: .black.opacity(0.05), radius: scaled(4), y: 1)
             )
             Spacer()
         }
@@ -374,13 +374,13 @@ private struct AIHelpSheet: View {
 
                 Section("What you can ask") {
                     ForEach(examples, id: \.title) { item in
-                        HStack(alignment: .top, spacing: 12) {
+                        HStack(alignment: .top, spacing: scaled(12)) {
                             Image(systemName: item.icon)
                                 .font(.body)
                                 .foregroundStyle(coral)
-                                .frame(width: 24)
+                                .frame(width: scaled(24))
 
-                            VStack(alignment: .leading, spacing: 2) {
+                            VStack(alignment: .leading, spacing: scaled(2)) {
                                 Text(item.title)
                                     .font(.subheadline.weight(.semibold))
                                 Text("\"\(item.example)\"")
@@ -389,7 +389,7 @@ private struct AIHelpSheet: View {
                                     .italic()
                             }
                         }
-                        .padding(.vertical, 2)
+                        .padding(.vertical, scaled(2))
                     }
                 }
             }

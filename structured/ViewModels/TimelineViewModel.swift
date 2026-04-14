@@ -9,7 +9,7 @@ class TimelineViewModel {
 
     // MARK: - Timeline Layout Constants
 
-    static let hourHeight: CGFloat = 70
+    static let hourHeight: CGFloat = scaled(70)
     static let totalHeight: CGFloat = hourHeight * 24
     static let startHour: Int = 0
     static let endHour: Int = 24

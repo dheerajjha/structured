@@ -27,10 +27,10 @@ struct OnboardingTaskEntryPage: View {
             Color(hex: "#F5F0EB").ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 0) {
-                Spacer().frame(height: 80)
+                Spacer().frame(height: scaled(80))
 
                 // Title
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: scaled(6)) {
                     (Text("What's up ")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                      + Text("next")
@@ -38,19 +38,19 @@ struct OnboardingTaskEntryPage: View {
                      + Text("?")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                     )
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
 
                     Text("Enter something you want to achieve today.")
                         .font(.body)
                         .foregroundStyle(.secondary)
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, scaled(24))
 
-                Spacer().frame(height: 32)
+                Spacer().frame(height: scaled(32))
 
                 // Task name input
-                HStack(spacing: 12) {
-                    TaskIconView(iconName: taskIcon, colorHex: coral.description, size: 44)
+                HStack(spacing: scaled(12)) {
+                    TaskIconView(iconName: taskIcon, colorHex: coral.description, size: scaled(44))
 
                     TextField("Task name", text: $taskTitle)
                         .font(.title3.weight(.medium))
@@ -64,22 +64,22 @@ struct OnboardingTaskEntryPage: View {
                             .transition(.scale.combined(with: .opacity))
                     }
                 }
-                .padding(16)
-                .background(RoundedRectangle(cornerRadius: 16).fill(.white).shadow(color: .black.opacity(0.05), radius: 8, y: 2))
-                .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(coral.opacity(0.2), lineWidth: 1))
-                .padding(.horizontal, 24)
+                .padding(scaled(16))
+                .background(RoundedRectangle(cornerRadius: scaled(16)).fill(.white).shadow(color: .black.opacity(0.05), radius: scaled(8), y: scaled(2)))
+                .overlay(RoundedRectangle(cornerRadius: scaled(16)).strokeBorder(coral.opacity(0.2), lineWidth: 1))
+                .padding(.horizontal, scaled(24))
 
-                Spacer().frame(height: 28)
+                Spacer().frame(height: scaled(28))
 
                 // Suggestions grid — all visible, no scrolling
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: scaled(10)) {
                     Text("Suggestions:")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.secondary)
 
                     LazyVGrid(
                         columns: [GridItem(.flexible()), GridItem(.flexible())],
-                        spacing: 10
+                        spacing: scaled(10)
                     ) {
                         ForEach(suggestions, id: \.title) { s in
                             Button {
@@ -89,7 +89,7 @@ struct OnboardingTaskEntryPage: View {
                                     focused   = false
                                 }
                             } label: {
-                                HStack(spacing: 8) {
+                                HStack(spacing: scaled(8)) {
                                     Image(systemName: s.icon)
                                         .font(.subheadline)
                                         .foregroundStyle(coral)
@@ -99,16 +99,16 @@ struct OnboardingTaskEntryPage: View {
                                         .lineLimit(1)
                                     Spacer(minLength: 0)
                                 }
-                                .padding(.horizontal, 14)
-                                .padding(.vertical, 12)
+                                .padding(.horizontal, scaled(14))
+                                .padding(.vertical, scaled(12))
                                 .frame(maxWidth: .infinity)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 12)
+                                    RoundedRectangle(cornerRadius: scaled(12))
                                         .fill(.white)
-                                        .shadow(color: .black.opacity(0.04), radius: 4, y: 1)
+                                        .shadow(color: .black.opacity(0.04), radius: scaled(4), y: 1)
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
+                                    RoundedRectangle(cornerRadius: scaled(12))
                                         .strokeBorder(taskTitle == s.title ? coral.opacity(0.5) : Color(.systemGray5), lineWidth: 1)
                                 )
                             }
@@ -116,7 +116,7 @@ struct OnboardingTaskEntryPage: View {
                         }
                     }
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, scaled(24))
 
                 Spacer()
 
@@ -127,8 +127,8 @@ struct OnboardingTaskEntryPage: View {
                         isDisabled: taskTitle.trimmingCharacters(in: .whitespaces).isEmpty,
                         action: onContinue
                     )
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 32)
+                    .padding(.horizontal, scaled(24))
+                    .padding(.bottom, scaled(32))
                 }
             }
         }

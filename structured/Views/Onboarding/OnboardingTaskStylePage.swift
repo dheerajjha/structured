@@ -44,10 +44,10 @@ struct OnboardingTaskStylePage: View {
             decorativeBg
 
             VStack(alignment: .leading, spacing: 0) {
-                Spacer().frame(height: 80)
+                Spacer().frame(height: scaled(80))
 
                 // Title
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: scaled(6)) {
                     (Text("How ")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                      + Text("long")
@@ -59,24 +59,24 @@ struct OnboardingTaskStylePage: View {
                      + Text("?")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                     )
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: scaled(28), weight: .bold))
 
                     Text("Set a duration and pick a color for your task.")
                         .font(.body)
                         .foregroundStyle(.secondary)
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, scaled(24))
 
-                Spacer().frame(height: 24)
+                Spacer().frame(height: scaled(24))
 
                 // Task preview card
-                taskCard.padding(.horizontal, 24)
+                taskCard.padding(.horizontal, scaled(24))
 
-                Spacer().frame(height: 36)
+                Spacer().frame(height: scaled(36))
 
                 // Duration pills
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
+                    HStack(spacing: scaled(10)) {
                         ForEach(durations, id: \.mins) { opt in
                             Button {
                                 withAnimation(.snappy(duration: 0.2)) { duration = opt.mins }
@@ -84,8 +84,8 @@ struct OnboardingTaskStylePage: View {
                                 Text(opt.label)
                                     .font(.subheadline.weight(duration == opt.mins ? .bold : .medium))
                                     .foregroundStyle(duration == opt.mins ? .white : Color(hex: "#8B7355"))
-                                    .padding(.horizontal, 18)
-                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, scaled(18))
+                                    .padding(.vertical, scaled(10))
                                     .background(
                                         Capsule().fill(duration == opt.mins ? coral : Color(.systemGray6))
                                     )
@@ -93,14 +93,14 @@ struct OnboardingTaskStylePage: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, scaled(24))
                 }
 
-                Spacer().frame(height: 28)
+                Spacer().frame(height: scaled(28))
 
                 // Color circles
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
+                    HStack(spacing: scaled(14)) {
                         ForEach(colors, id: \.self) { c in
                             Button {
                                 withAnimation(.snappy(duration: 0.25)) { colorHex = c }
@@ -108,22 +108,22 @@ struct OnboardingTaskStylePage: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(hex: c))
-                                        .frame(width: 44, height: 44)
+                                        .frame(width: scaled(44), height: scaled(44))
                                     if colorHex == c {
                                         Circle()
-                                            .strokeBorder(.white, lineWidth: 3)
-                                            .frame(width: 44, height: 44)
+                                            .strokeBorder(.white, lineWidth: scaled(3))
+                                            .frame(width: scaled(44), height: scaled(44))
                                         Circle()
                                             .strokeBorder(Color(hex: c).opacity(0.5), lineWidth: 1)
-                                            .frame(width: 50, height: 50)
+                                            .frame(width: scaled(50), height: scaled(50))
                                     }
                                 }
                             }
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, scaled(24))
+                    .padding(.vertical, scaled(8))
                 }
 
                 Spacer()
@@ -134,17 +134,17 @@ struct OnboardingTaskStylePage: View {
                         colorHex: colorHex,
                         action: onContinue
                     )
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 32)
+                    .padding(.horizontal, scaled(24))
+                    .padding(.bottom, scaled(32))
                 }
             }
         }
     }
 
     private var taskCard: some View {
-        HStack(spacing: 12) {
-            TaskIconView(iconName: taskIcon, colorHex: colorHex, size: 44)
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(spacing: scaled(12)) {
+            TaskIconView(iconName: taskIcon, colorHex: colorHex, size: scaled(44))
+            VStack(alignment: .leading, spacing: scaled(2)) {
                 Text(previewRange)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -152,21 +152,21 @@ struct OnboardingTaskStylePage: View {
                     .font(.subheadline.weight(.semibold))
             }
             Spacer()
-            CompletionCircleView(isCompleted: false, colorHex: colorHex, size: 24)
+            CompletionCircleView(isCompleted: false, colorHex: colorHex, size: scaled(24))
         }
-        .padding(16)
-        .background(RoundedRectangle(cornerRadius: 16).fill(.white).shadow(color: .black.opacity(0.04), radius: 6, y: 2))
-        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Color(hex: colorHex).opacity(0.25), lineWidth: 1.5))
+        .padding(scaled(16))
+        .background(RoundedRectangle(cornerRadius: scaled(16)).fill(.white).shadow(color: .black.opacity(0.04), radius: scaled(6), y: scaled(2)))
+        .overlay(RoundedRectangle(cornerRadius: scaled(16)).strokeBorder(Color(hex: colorHex).opacity(0.25), lineWidth: 1.5))
     }
 
     private var decorativeBg: some View {
         ZStack {
             ForEach(0..<5, id: \.self) { i in
-                RoundedRectangle(cornerRadius: 2)
+                RoundedRectangle(cornerRadius: scaled(2))
                     .fill(Color(hex: colors[i % colors.count]).opacity(0.08))
-                    .frame(width: CGFloat([80,110,70,120,90][i]), height: CGFloat([80,110,70,120,90][i]))
+                    .frame(width: scaled(CGFloat([80,110,70,120,90][i])), height: scaled(CGFloat([80,110,70,120,90][i])))
                     .rotationEffect(.degrees(Double([-20,15,-30,25,-10][i])))
-                    .offset(x: CGFloat([-130,140,-90,150,-50][i]), y: CGFloat([200,-40,380,430,100][i]))
+                    .offset(x: scaled(CGFloat([-130,140,-90,150,-50][i])), y: scaled(CGFloat([200,-40,380,430,100][i])))
             }
         }
         .ignoresSafeArea()

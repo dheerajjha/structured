@@ -9,17 +9,17 @@ struct PianoWeekView: View {
 
     private let startHour  = 5
     private let endHour    = 25   // 1 AM next day
-    private let minuteHeight: CGFloat = 1.0   // pt per minute → scrollable
+    private let minuteHeight: CGFloat = scaled(1.0)   // pt per minute → scrollable
 
     private var totalMinutes: CGFloat { CGFloat((endHour - startHour) * 60) }
     private var totalHeight: CGFloat { totalMinutes * minuteHeight }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            HStack(alignment: .top, spacing: 3) {
+            HStack(alignment: .top, spacing: scaled(3)) {
                 // Time gutter
                 timeGutter
-                    .frame(width: 24, height: totalHeight)
+                    .frame(width: scaled(24), height: totalHeight)
 
                 // Day columns (density dots are inside each column header)
                 ForEach(weekDays, id: \.self) { day in
@@ -34,7 +34,7 @@ struct PianoWeekView: View {
                     .frame(height: totalHeight)
                 }
             }
-            .padding(.horizontal, 6)
+            .padding(.horizontal, scaled(6))
         }
     }
 
@@ -45,9 +45,9 @@ struct PianoWeekView: View {
             ForEach(Array(stride(from: startHour, through: endHour - 1, by: 3)), id: \.self) { hour in
                 let y = CGFloat((hour - startHour) * 60) * minuteHeight
                 Text(hourLabel(hour))
-                    .font(.system(size: 8, weight: .medium, design: .monospaced))
+                    .font(.system(size: scaled(8), weight: .medium, design: .monospaced))
                     .foregroundStyle(Color(.systemGray3))
-                    .position(x: 12, y: y)
+                    .position(x: scaled(12), y: y)
             }
         }
     }
@@ -85,7 +85,7 @@ private struct PianoDayColumn: View {
 
             ZStack(alignment: .top) {
                 // Column background
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: scaled(10))
                     .fill(isSelected
                           ? Color(.systemGray5).opacity(0.7)
                           : Color(.systemGray6).opacity(0.4))
@@ -114,8 +114,8 @@ private struct PianoDayColumn: View {
                     p.move(to: CGPoint(x: 0, y: topY))
                     p.addLine(to: CGPoint(x: 0, y: botY))
                 }
-                .stroke(Color(hex: first.colorHex).opacity(0.2), lineWidth: 2)
-                .frame(width: 2)
+                .stroke(Color(hex: first.colorHex).opacity(0.2), lineWidth: scaled(2))
+                .frame(width: scaled(2))
                 .frame(maxWidth: .infinity)
             }
         }
@@ -128,19 +128,19 @@ private struct PianoDayColumn: View {
         let h = height(for: task)
         let color = Color(hex: task.colorHex)
         let w = colWidth * 0.82
-        let radius: CGFloat = h > 36 ? 16 : h / 2
+        let radius: CGFloat = h > scaled(36) ? scaled(16) : h / 2
 
         return ZStack {
             RoundedRectangle(cornerRadius: radius)
                 .fill(color)
-                .shadow(color: color.opacity(0.25), radius: 3, y: 2)
+                .shadow(color: color.opacity(0.25), radius: scaled(3), y: scaled(2))
 
             Image(systemName: task.iconName)
-                .font(.system(size: min(h * 0.38, 16), weight: .bold))
+                .font(.system(size: min(h * 0.38, scaled(16)), weight: .bold))
                 .foregroundStyle(.white)
         }
-        .frame(width: w, height: max(h, 22))
-        .position(x: colWidth / 2, y: y + max(h, 22) / 2)
+        .frame(width: w, height: max(h, scaled(22)))
+        .position(x: colWidth / 2, y: y + max(h, scaled(22)) / 2)
     }
 
     // MARK: - Position Math

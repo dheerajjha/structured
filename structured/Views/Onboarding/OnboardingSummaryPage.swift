@@ -12,16 +12,16 @@ struct OnboardingSummaryPage: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Clear the floating topBar
-            Spacer().frame(height: 80)
+            Spacer().frame(height: scaled(80))
 
             // Title
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: scaled(8)) {
                 (Text("Awesome! ")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(greenColor)
                  +
                  Text("That's a great plan.")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(.primary)
                 )
 
@@ -29,27 +29,27 @@ struct OnboardingSummaryPage: View {
                     .font(.body)
                     .foregroundStyle(.secondary)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 4)
+            .padding(.horizontal, scaled(24))
+            .padding(.top, scaled(4))
 
             // Plan label
             Text("Your Tickd Plan:")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 24)
-                .padding(.top, 32)
+                .padding(.horizontal, scaled(24))
+                .padding(.top, scaled(32))
 
             // Task timeline
             taskTimeline
-                .padding(.horizontal, 24)
-                .padding(.top, 12)
+                .padding(.horizontal, scaled(24))
+                .padding(.top, scaled(12))
 
             Spacer()
 
             if let onFinish {
                 OnboardingPrimaryButton(title: "Finish Setup", colorHex: "#7A9A6A", action: onFinish)
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 32)
+                    .padding(.horizontal, scaled(24))
+                    .padding(.bottom, scaled(32))
             }
         }
     }
@@ -103,14 +103,14 @@ struct OnboardingSummaryPage: View {
                 nextColorHex: ""
             )
         }
-        .padding(20)
+        .padding(scaled(20))
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: scaled(16))
                 .fill(.white)
-                .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+                .shadow(color: .black.opacity(0.04), radius: scaled(8), y: scaled(2))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: scaled(16))
                 .strokeBorder(Color(.systemGray5), lineWidth: 1)
         )
     }
@@ -124,29 +124,29 @@ struct OnboardingSummaryPage: View {
         isLast: Bool,
         nextColorHex: String
     ) -> some View {
-        HStack(spacing: 14) {
+        HStack(spacing: scaled(14)) {
             // Icon + connector line
             VStack(spacing: 0) {
                 ZStack {
                     Circle()
                         .fill(Color(hex: colorHex))
-                        .frame(width: 40, height: 40)
+                        .frame(width: scaled(40), height: scaled(40))
 
                     Image(systemName: icon)
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.system(size: scaled(16), weight: .semibold))
                         .foregroundStyle(.white)
                 }
 
                 if !isLast {
                     // Dotted connector line
                     DottedLine()
-                        .stroke(Color(hex: nextColorHex).opacity(0.4), style: StrokeStyle(lineWidth: 2, dash: [4, 3]))
-                        .frame(width: 2, height: 24)
+                        .stroke(Color(hex: nextColorHex).opacity(0.4), style: StrokeStyle(lineWidth: scaled(2), dash: [scaled(4), scaled(3)]))
+                        .frame(width: scaled(2), height: scaled(24))
                 }
             }
 
             // Text
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: scaled(2)) {
                 Text(timeStr)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -163,7 +163,7 @@ struct OnboardingSummaryPage: View {
             CompletionCircleView(
                 isCompleted: isCompleted,
                 colorHex: colorHex,
-                size: 24
+                size: scaled(24)
             )
         }
     }

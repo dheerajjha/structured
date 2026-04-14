@@ -4,7 +4,7 @@ import SwiftUI
 struct TaskIconView: View {
     let iconName: String
     let colorHex: String
-    var size: CGFloat = 40
+    var size: CGFloat = scaled(40)
 
     var body: some View {
         ZStack {
@@ -23,7 +23,7 @@ struct TaskIconView: View {
 struct CompletionCircleView: View {
     let isCompleted: Bool
     let colorHex: String
-    var size: CGFloat = 26
+    var size: CGFloat = scaled(26)
 
     var body: some View {
         ZStack {

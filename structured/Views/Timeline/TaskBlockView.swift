@@ -8,22 +8,22 @@ struct TaskBlockView: View {
 
     private var taskColor: Color { Color(hex: task.colorHex) }
     private var blockHeight: CGFloat {
-        max(TimelineViewModel.height(for: task.duration), 56)
+        max(TimelineViewModel.height(for: task.duration), scaled(56))
     }
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
+            HStack(spacing: scaled(12)) {
                 // Colored icon circle
                 TaskIconView(
                     iconName: task.iconName,
                     colorHex: task.colorHex,
-                    size: blockHeight > 50 ? 40 : 32
+                    size: blockHeight > scaled(50) ? scaled(40) : scaled(32)
                 )
 
                 // Title + time info
-                VStack(alignment: .leading, spacing: 2) {
-                    if blockHeight > 50 {
+                VStack(alignment: .leading, spacing: scaled(2)) {
+                    if blockHeight > scaled(50) {
                         Text(task.timeRangeString)
                             .font(.caption)
                             .foregroundStyle(taskColor.opacity(0.8))
@@ -33,10 +33,10 @@ struct TaskBlockView: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(task.isCompleted ? .secondary : .primary)
                         .strikethrough(task.isCompleted)
-                        .lineLimit(blockHeight > 70 ? 2 : 1)
+                        .lineLimit(blockHeight > scaled(70) ? 2 : 1)
 
                     // Show subtask progress if space allows
-                    if blockHeight > 85, let subtasks = task.subtasks, !subtasks.isEmpty {
+                    if blockHeight > scaled(85), let subtasks = task.subtasks, !subtasks.isEmpty {
                         let completed = subtasks.filter(\.isCompleted).count
                         Text("\(completed)/\(subtasks.count) subtasks")
                             .font(.caption2)
@@ -57,16 +57,16 @@ struct TaskBlockView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, scaled(12))
+            .padding(.vertical, scaled(8))
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: blockHeight)
             .background(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: scaled(12))
                     .fill(taskColor.pastel(opacity: task.isCompleted ? 0.08 : 0.15))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: scaled(12))
                     .strokeBorder(taskColor.opacity(0.2), lineWidth: 1)
             )
         }

@@ -21,20 +21,20 @@ struct OnboardingWelcomePage: View {
 
             VStack(alignment: .leading) {
                 // Top padding to clear the topBar overlay
-                Spacer().frame(height: 80)
+                Spacer().frame(height: scaled(80))
 
                 // Title
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: scaled(6)) {
                     Text("Welcome to")
-                        .font(.system(size: 38, weight: .light))
+                        .font(.system(size: scaled(38), weight: .light))
                         .foregroundStyle(.white.opacity(0.88))
                     Text("Tickd")
-                        .font(.system(size: 44, weight: .bold))
+                        .font(.system(size: scaled(44), weight: .bold))
                         .foregroundStyle(.white)
                 }
-                .padding(.horizontal, 28)
+                .padding(.horizontal, scaled(28))
                 .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 14)
+                .offset(y: appeared ? 0 : scaled(14))
 
                 Spacer()
 
@@ -46,14 +46,14 @@ struct OnboardingWelcomePage: View {
                             Image(systemName: "arrow.right")
                                 .font(.title2.weight(.semibold))
                                 .foregroundStyle(.white)
-                                .frame(width: 60, height: 60)
+                                .frame(width: scaled(60), height: scaled(60))
                                 .background(Circle().fill(.white.opacity(0.25)))
                                 .overlay(Circle().strokeBorder(.white.opacity(0.4), lineWidth: 1))
                         }
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 40)
+                .padding(.horizontal, scaled(24))
+                .padding(.bottom, scaled(40))
                 .opacity(appeared ? 1 : 0)
             }
         }

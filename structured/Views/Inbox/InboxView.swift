@@ -30,7 +30,7 @@ struct InboxView: View {
                             }
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 16, bottom: 5, trailing: 16))
+                            .listRowInsets(.init(top: scaled(5), leading: scaled(16), bottom: scaled(5), trailing: scaled(16)))
                             .contextMenu {
                                 Button {
                                     editingTask = task
@@ -81,10 +81,10 @@ struct InboxView: View {
     }
 
     private var emptyState: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: scaled(20)) {
             Spacer()
             Image(systemName: "tray")
-                .font(.system(size: 48))
+                .font(.system(size: scaled(48)))
                 .foregroundStyle(Color(.systemGray4))
             Text("No tasks yet")
                 .font(.title3.weight(.semibold))
@@ -97,22 +97,22 @@ struct InboxView: View {
             Button {
                 showingNewTask = true
             } label: {
-                HStack(spacing: 8) {
+                HStack(spacing: scaled(8)) {
                     Image(systemName: "plus.circle.fill")
                         .font(.body)
                     Text("Add Task")
                         .font(.subheadline.weight(.semibold))
                 }
                 .foregroundStyle(.white)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 12)
+                .padding(.horizontal, scaled(24))
+                .padding(.vertical, scaled(12))
                 .background(Capsule().fill(Color(hex: "#E8907E")))
             }
-            .padding(.top, 4)
+            .padding(.top, scaled(4))
 
             Spacer()
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, scaled(40))
         .sheet(isPresented: $showingNewTask) {
             TaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
         }
@@ -137,10 +137,10 @@ struct InboxRowView: View {
     }
 
     var body: some View {
-        HStack(spacing: 14) {
-            TaskIconView(iconName: task.iconName, colorHex: task.colorHex, size: 44)
+        HStack(spacing: scaled(14)) {
+            TaskIconView(iconName: task.iconName, colorHex: task.colorHex, size: scaled(44))
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: scaled(2)) {
                 if !durationLabel.isEmpty {
                     Text(durationLabel)
                         .font(.caption)
@@ -158,18 +158,18 @@ struct InboxRowView: View {
                 Image(systemName: "plus")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(Color(hex: task.colorHex))
-                    .frame(width: 36, height: 36)
+                    .frame(width: scaled(36), height: scaled(36))
                     .background(Color(hex: task.colorHex).opacity(0.1))
                     .clipShape(Circle())
             }
             .buttonStyle(.plain)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.horizontal, scaled(16))
+        .padding(.vertical, scaled(12))
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: scaled(16))
                 .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
+                .shadow(color: .black.opacity(0.04), radius: scaled(6), y: scaled(2))
         )
     }
 }

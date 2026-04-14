@@ -113,7 +113,7 @@ struct ContentView: View {
             // Piano overview behind, task sheet in front
             GeometryReader { geo in
                 let fullHeight = geo.size.height
-                let pianoHeight: CGFloat = fullHeight - 90  // leave room for ~1 card
+                let pianoHeight: CGFloat = fullHeight - scaled(90)  // leave room for ~1 card
                 let collapsedOffset: CGFloat = 0
                 let expandedOffset: CGFloat = pianoHeight
                 let currentOffset = pianoRevealed ? expandedOffset : collapsedOffset
@@ -134,18 +134,18 @@ struct ContentView: View {
                         // Grab handle
                         Capsule()
                             .fill(Color(.systemGray4))
-                            .frame(width: 36, height: 5)
-                            .padding(.top, 10)
-                            .padding(.bottom, 6)
+                            .frame(width: scaled(36), height: scaled(5))
+                            .padding(.top, scaled(10))
+                            .padding(.bottom, scaled(6))
 
                         Divider()
                         DayTimelineView(viewModel: viewModel)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
-                        UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16)
+                        UnevenRoundedRectangle(topLeadingRadius: scaled(16), topTrailingRadius: scaled(16))
                             .fill(Color(.systemGroupedBackground))
-                            .shadow(color: .black.opacity(0.08), radius: 8, y: -2)
+                            .shadow(color: .black.opacity(0.08), radius: scaled(8), y: -2)
                     )
                     .offset(y: currentOffset + sheetDragOffset)
                     // Vertical drag → reveal/collapse piano
@@ -199,7 +199,7 @@ struct ContentView: View {
     // MARK: - Bottom Bar
 
     private var bottomBar: some View {
-        HStack(alignment: .center, spacing: 10) {
+        HStack(alignment: .center, spacing: scaled(10)) {
             // Tab pill
             HStack(spacing: 0) {
                 ForEach(AppTab.allCases, id: \.self) { tab in
@@ -207,15 +207,15 @@ struct ContentView: View {
                         selectedTab = tab
                         Analytics.track(Analytics.Event.tabSwitched, properties: ["tab": tab.title])
                     } label: {
-                        VStack(spacing: 3) {
+                        VStack(spacing: scaled(3)) {
                             Image(systemName: tab.icon)
-                                .font(.system(size: 20, weight: .medium))
+                                .font(.system(size: scaled(20), weight: .medium))
                             Text(tab.title)
-                                .font(.system(size: 10, weight: .medium))
+                                .font(.system(size: scaled(10), weight: .medium))
                         }
                         .foregroundStyle(selectedTab == tab ? Color(hex: "#E8907E") : Color.primary)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, scaled(12))
                     }
                     .buttonStyle(.plain)
                 }
@@ -223,7 +223,7 @@ struct ContentView: View {
             .background(
                 Capsule()
                     .fill(Color(.systemBackground))
-                    .shadow(color: .black.opacity(0.1), radius: 16, y: 4)
+                    .shadow(color: .black.opacity(0.1), radius: scaled(16), y: scaled(4))
             )
 
             // FAB
@@ -234,17 +234,17 @@ struct ContentView: View {
                 Image(systemName: "plus")
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(.white)
-                    .frame(width: 52, height: 52)
+                    .frame(width: scaled(52), height: scaled(52))
                     .background(
                         Circle()
                             .fill(Color(hex: "#E8907E"))
-                            .shadow(color: Color(hex: "#E8907E").opacity(0.35), radius: 8, y: 3)
+                            .shadow(color: Color(hex: "#E8907E").opacity(0.35), radius: scaled(8), y: scaled(3))
                     )
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 6)
-        .padding(.bottom, 16)
+        .padding(.horizontal, scaled(16))
+        .padding(.top, scaled(6))
+        .padding(.bottom, scaled(16))
     }
 
     // MARK: - Timeline Header
@@ -257,7 +257,7 @@ struct ContentView: View {
                     Analytics.track(Analytics.Event.datePickerOpened)
                 }
             } label: {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: scaled(2)) {
                     if viewModel.isToday {
                         Text("Today")
                             .font(.caption.weight(.semibold))
@@ -285,7 +285,7 @@ struct ContentView: View {
 
             Spacer()
 
-            HStack(spacing: 16) {
+            HStack(spacing: scaled(16)) {
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         viewModel.goToPreviousDay()
@@ -302,8 +302,8 @@ struct ContentView: View {
                 } label: {
                     Text("Today")
                         .font(.subheadline.weight(.semibold))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
+                        .padding(.horizontal, scaled(12))
+                        .padding(.vertical, scaled(6))
                         .background(
                             Capsule()
                                 .fill(viewModel.isToday ? Color(.systemGray5) : Color(hex: "#FF6B6B"))
@@ -322,8 +322,8 @@ struct ContentView: View {
                 }
             }
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.horizontal, scaled(16))
+        .padding(.vertical, scaled(8))
     }
 
     // MARK: - Week Strip
@@ -338,7 +338,7 @@ struct ContentView: View {
                         viewModel.selectDate(day)
                     }
                 } label: {
-                    VStack(spacing: 4) {
+                    VStack(spacing: scaled(4)) {
                         Text(day.shortDayName)
                             .font(.caption2.weight(.medium))
                             .foregroundStyle(.secondary)
@@ -347,7 +347,7 @@ struct ContentView: View {
                             .font(.callout.weight(day.isSameDay(as: viewModel.selectedDate) ? .bold : .regular))
                             .foregroundStyle(day.isSameDay(as: viewModel.selectedDate) ? .white
                                              : day.isToday ? Color(hex: "#FF6B6B") : .primary)
-                            .frame(width: 32, height: 32)
+                            .frame(width: scaled(32), height: scaled(32))
                             .background(
                                 Circle()
                                     .fill(day.isSameDay(as: viewModel.selectedDate)
@@ -355,23 +355,23 @@ struct ContentView: View {
                             )
 
                         // Task indicator dots
-                        HStack(spacing: 3) {
+                        HStack(spacing: scaled(3)) {
                             let dayColors = taskColors(for: day)
                             ForEach(dayColors, id: \.self) { hex in
                                 Circle()
                                     .fill(Color(hex: hex))
-                                    .frame(width: 5, height: 5)
+                                    .frame(width: scaled(5), height: scaled(5))
                             }
                         }
-                        .frame(height: 5)
+                        .frame(height: scaled(5))
                     }
                     .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
+        .padding(.horizontal, scaled(8))
+        .padding(.vertical, scaled(4))
     }
 
     // MARK: - Week Strip Helpers

@@ -79,7 +79,7 @@ struct SettingsView: View {
             Button { showWakePicker = true } label: {
                 HStack {
                     Label {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: scaled(2)) {
                             Text("Wake Up Time")
                                 .foregroundStyle(.primary)
                             Text("Rise and Shine default")
@@ -88,11 +88,11 @@ struct SettingsView: View {
                         }
                     } icon: {
                         ZStack {
-                            RoundedRectangle(cornerRadius: 8)
+                            RoundedRectangle(cornerRadius: scaled(8))
                                 .fill(coral)
-                                .frame(width: 32, height: 32)
+                                .frame(width: scaled(32), height: scaled(32))
                             Image(systemName: "sun.max.fill")
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.system(size: scaled(14), weight: .semibold))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -110,7 +110,7 @@ struct SettingsView: View {
             Button { showBedPicker = true } label: {
                 HStack {
                     Label {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: scaled(2)) {
                             Text("Bedtime")
                                 .foregroundStyle(.primary)
                             Text("Wind Down default")
@@ -119,11 +119,11 @@ struct SettingsView: View {
                         }
                     } icon: {
                         ZStack {
-                            RoundedRectangle(cornerRadius: 8)
+                            RoundedRectangle(cornerRadius: scaled(8))
                                 .fill(slateBlue)
-                                .frame(width: 32, height: 32)
+                                .frame(width: scaled(32), height: scaled(32))
                             Image(systemName: "moon.fill")
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.system(size: scaled(14), weight: .semibold))
                                 .foregroundStyle(.white)
                         }
                     }

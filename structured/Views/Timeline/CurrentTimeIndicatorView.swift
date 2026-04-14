@@ -13,12 +13,12 @@ struct CurrentTimeIndicatorView: View {
                 // Red dot on the left
                 Circle()
                     .fill(.red)
-                    .frame(width: 10, height: 10)
+                    .frame(width: scaled(10), height: scaled(10))
 
                 // Red line extending full width
                 Rectangle()
                     .fill(.red)
-                    .frame(height: 1.5)
+                    .frame(height: scaled(1.5))
             }
             .offset(y: y)
         }

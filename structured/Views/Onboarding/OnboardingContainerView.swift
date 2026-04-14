@@ -101,24 +101,24 @@ struct OnboardingContainerView: View {
     private var isIntroPage: Bool { pageIndex <= Page.benefits.rawValue }
 
     private var topBar: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: scaled(12)) {
             // Back arrow (all pages except welcome)
             if pageIndex > 0 {
                 Button { goTo(pageIndex - 1) } label: {
                     Image(systemName: "arrow.left")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(isIntroPage ? Color.white : warmBrown)
-                        .frame(width: 36, height: 36)
+                        .frame(width: scaled(36), height: scaled(36))
                 }
             }
 
             if isIntroPage {
                 // Dot indicators — white on coral
-                HStack(spacing: 8) {
+                HStack(spacing: scaled(8)) {
                     ForEach(0..<2, id: \.self) { i in
                         Capsule()
                             .fill(Color.white.opacity(i == pageIndex ? 0.9 : 0.35))
-                            .frame(width: i == pageIndex ? 20 : 7, height: 7)
+                            .frame(width: i == pageIndex ? scaled(20) : scaled(7), height: scaled(7))
                     }
                 }
                 Spacer()
@@ -134,14 +134,14 @@ struct OnboardingContainerView: View {
                     ZStack(alignment: .leading) {
                         Capsule()
                             .fill(warmBrown.opacity(0.12))
-                            .frame(height: 5)
+                            .frame(height: scaled(5))
                         Capsule()
                             .fill(pageIndex == Page.summary.rawValue ? sageGreen : accentSage)
-                            .frame(width: geo.size.width * progressFraction, height: 5)
+                            .frame(width: geo.size.width * progressFraction, height: scaled(5))
                             .animation(.easeInOut(duration: 0.3), value: pageIndex)
                     }
                 }
-                .frame(height: 5)
+                .frame(height: scaled(5))
 
                 Button("Skip") {
                     Analytics.track(Analytics.Event.onboardingSkipped, properties: ["page_index": pageIndex])
@@ -151,8 +151,8 @@ struct OnboardingContainerView: View {
                     .foregroundStyle(warmBrown.opacity(0.55))
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
+        .padding(.horizontal, scaled(20))
+        .padding(.vertical, scaled(10))
     }
 
     // MARK: - Helpers
@@ -260,9 +260,9 @@ struct OnboardingPrimaryButton: View {
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 56)
+                .frame(height: scaled(56))
                 .background(
-                    RoundedRectangle(cornerRadius: 28)
+                    RoundedRectangle(cornerRadius: scaled(28))
                         .fill(Color(hex: colorHex).opacity(isDisabled ? 0.4 : 1))
                 )
         }
