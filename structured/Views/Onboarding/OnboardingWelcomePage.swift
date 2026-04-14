@@ -11,13 +11,16 @@ struct OnboardingWelcomePage: View {
         ZStack {
             coral.ignoresSafeArea()
 
-            Image("OnboardingWelcome")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
-                .opacity(appeared ? 0.18 : 0)
-                .scaleEffect(appeared ? 1.0 : 1.06)
+            GeometryReader { geo in
+                Image("OnboardingWelcome")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
+                    .opacity(appeared ? 0.18 : 0)
+                    .scaleEffect(appeared ? 1.0 : 1.06)
+            }
+            .ignoresSafeArea()
 
             VStack(alignment: .leading) {
                 // Top padding to clear the topBar overlay
@@ -56,6 +59,7 @@ struct OnboardingWelcomePage: View {
                 .padding(.bottom, scaled(40))
                 .opacity(appeared ? 1 : 0)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.9).delay(0.15)) { appeared = true }

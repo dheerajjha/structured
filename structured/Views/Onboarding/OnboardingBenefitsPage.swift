@@ -17,16 +17,20 @@ struct OnboardingBenefitsPage: View {
         ZStack {
             coral.ignoresSafeArea()
 
-            Image("OnboardingBenefits")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
-                .opacity(appeared ? 0.14 : 0)
-                .scaleEffect(appeared ? 1.0 : 1.04)
+            GeometryReader { geo in
+                Image("OnboardingBenefits")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
+                    .opacity(appeared ? 0.14 : 0)
+                    .scaleEffect(appeared ? 1.0 : 1.04)
+            }
+            .ignoresSafeArea()
 
             VStack(alignment: .leading) {
                 Spacer().frame(height: scaled(80))
+
 
                 // Title
                 VStack(alignment: .leading, spacing: scaled(4)) {
@@ -71,6 +75,7 @@ struct OnboardingBenefitsPage: View {
                 .padding(.bottom, scaled(40))
                 .opacity(appeared ? 1 : 0)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.8).delay(0.1)) { appeared = true }
