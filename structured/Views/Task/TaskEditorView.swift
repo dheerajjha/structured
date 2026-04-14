@@ -24,6 +24,11 @@ struct TaskEditorView: View {
     // Scheduling state (Option C)
     @State private var isScheduled: Bool = true
 
+    // Custom duration state
+    @State private var showCustomDuration = false
+    @State private var customHours: Int = 0
+    @State private var customMinutes: Int = 0
+
     // Sheet state
     @State private var showIconPicker = false
 
@@ -102,6 +107,7 @@ struct TaskEditorView: View {
                                     ForEach(durationOptions, id: \.1) { label, mins in
                                         Button {
                                             durationMinutes = mins
+                                            showCustomDuration = false
                                             Analytics.track(Analytics.Event.durationSelected, properties: ["minutes": mins])
                                         } label: {
                                             Text(label)
@@ -110,15 +116,71 @@ struct TaskEditorView: View {
                                                 .padding(.vertical, 6)
                                                 .background(
                                                     Capsule()
-                                                        .fill(durationMinutes == mins
+                                                        .fill(!showCustomDuration && durationMinutes == mins
                                                               ? Color(hex: colorHex)
                                                               : Color(.systemGray5))
                                                 )
-                                                .foregroundStyle(durationMinutes == mins ? .white : .primary)
+                                                .foregroundStyle(!showCustomDuration && durationMinutes == mins ? .white : .primary)
                                         }
                                         .buttonStyle(.plain)
                                     }
+
+                                    // Custom pill
+                                    Button {
+                                        showCustomDuration.toggle()
+                                        if showCustomDuration {
+                                            customHours = Int(durationMinutes) / 60
+                                            customMinutes = Int(durationMinutes) % 60
+                                        }
+                                    } label: {
+                                        Text(showCustomDuration ? customDurationLabel : "Custom")
+                                            .font(.subheadline.weight(.medium))
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 6)
+                                            .background(
+                                                Capsule()
+                                                    .fill(showCustomDuration
+                                                          ? Color(hex: colorHex)
+                                                          : Color(.systemGray5))
+                                            )
+                                            .foregroundStyle(showCustomDuration ? .white : .primary)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
+                            }
+
+                            if showCustomDuration {
+                                HStack(spacing: 16) {
+                                    HStack(spacing: 4) {
+                                        Picker("Hours", selection: $customHours) {
+                                            ForEach(0...8, id: \.self) { h in
+                                                Text("\(h)").tag(h)
+                                            }
+                                        }
+                                        .pickerStyle(.wheel)
+                                        .frame(width: 60, height: 100)
+                                        .clipped()
+                                        Text("hr")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                    }
+
+                                    HStack(spacing: 4) {
+                                        Picker("Minutes", selection: $customMinutes) {
+                                            ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { m in
+                                                Text("\(m)").tag(m)
+                                            }
+                                        }
+                                        .pickerStyle(.wheel)
+                                        .frame(width: 60, height: 100)
+                                        .clipped()
+                                        Text("min")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                .onChange(of: customHours) { _, _ in syncCustomDuration() }
+                                .onChange(of: customMinutes) { _, _ in syncCustomDuration() }
                             }
                         }
                     }
@@ -203,6 +265,31 @@ struct TaskEditorView: View {
         }
     }
 
+    // MARK: - Custom Duration Helpers
+
+    private var customDurationLabel: String {
+        let totalMins = customHours * 60 + customMinutes
+        if totalMins == 0 { return "0 min" }
+        if customHours > 0 && customMinutes > 0 {
+            return "\(customHours) hr \(customMinutes) min"
+        } else if customHours > 0 {
+            return "\(customHours) hr"
+        } else {
+            return "\(customMinutes) min"
+        }
+    }
+
+    private var isPresetDuration: Bool {
+        durationOptions.contains { $0.1 == durationMinutes }
+    }
+
+    private func syncCustomDuration() {
+        let total = Double(customHours * 60 + customMinutes)
+        if total > 0 {
+            durationMinutes = total
+        }
+    }
+
     // MARK: - Data Loading
 
     private func loadTaskData() {
@@ -213,6 +300,12 @@ struct TaskEditorView: View {
             startTime = task.startTime ?? selectedDate.atTime(hour: 9)
             durationMinutes = Double(task.durationMinutes)
             colorHex = task.colorHex
+            // If loaded duration isn't a preset, open custom picker
+            if !isPresetDuration {
+                showCustomDuration = true
+                customHours = Int(durationMinutes) / 60
+                customMinutes = Int(durationMinutes) % 60
+            }
             iconName = task.iconName
             notes = task.notes
             subtaskTexts = task.sortedSubtasks.map(\.title)

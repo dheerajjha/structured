@@ -4,8 +4,8 @@ import SwiftUI
 
 enum AIAction {
     case moveTask(title: String, hour: Int, minute: Int)
-    case createTask(title: String, hour: Int, minute: Int, durationMinutes: Int, date: Date?)
-    case createUnscheduledTask(title: String, durationMinutes: Int)
+    case createTask(title: String, hour: Int, minute: Int, durationMinutes: Int, date: Date?, colorHex: String?)
+    case createUnscheduledTask(title: String, durationMinutes: Int, colorHex: String?)
     case completeTask(title: String)
 }
 
@@ -35,7 +35,7 @@ class AIViewModel {
                 let dur       = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
                 let done      = t.isCompleted ? " [completed]" : ""
                 let prot      = t.isProtected ? " [protected]" : ""
-                lines.append("  • \(time) — \(t.title)\(dur)\(done)\(prot)")
+                lines.append("  • \(time) — \(t.title)\(dur) [color:\(t.colorHex)]\(done)\(prot)")
             }
         }
 
@@ -96,11 +96,12 @@ class AIViewModel {
 
         Supported action types:
         • Move a task:              {"type":"move_task","title":"exact title","new_time":"HH:MM"}
-        • Create a scheduled task:  {"type":"create_task","title":"name","time":"HH:MM","date":"YYYY-MM-DD","duration_minutes":30}
-        • Create an UNSCHEDULED task (no time/date known): {"type":"create_unscheduled_task","title":"name","duration_minutes":30}
+        • Create a scheduled task:  {"type":"create_task","title":"name","time":"HH:MM","date":"YYYY-MM-DD","duration_minutes":30,"color":"#HEX"}
+        • Create an UNSCHEDULED task (no time/date known): {"type":"create_unscheduled_task","title":"name","duration_minutes":30,"color":"#HEX"}
         • Complete a task:          {"type":"complete_task","title":"exact title"}
 
         Use 24-hour HH:MM. Default duration 30 min. Always include "date" in create_task using the ISO dates above.
+        When copying tasks, preserve the original color from the [color:#HEX] tag. Default color is #E8907E if not specified.
         If the user says "tomorrow", use \(tomorrowISO). If they say "today", use \(todayISO).
         If the user is unsure about the time or says "no time" / "unscheduled" / "backlog" / "later", use create_unscheduled_task.
 
@@ -184,15 +185,17 @@ class AIViewModel {
                       let timeStr = dict["time"] as? String,
                       let (h, m) = parseTime(timeStr) else { return nil }
                 let dur = dict["duration_minutes"] as? Int ?? 30
+                let color = dict["color"] as? String
                 // YOH-94: parse optional date field
                 let taskDate: Date? = (dict["date"] as? String).flatMap { isoFmt.date(from: $0) }
-                return .createTask(title: title, hour: h, minute: m, durationMinutes: dur, date: taskDate)
+                return .createTask(title: title, hour: h, minute: m, durationMinutes: dur, date: taskDate, colorHex: color)
 
             // YOH-93: create task with no scheduled time
             case "create_unscheduled_task":
                 guard let title = dict["title"] as? String else { return nil }
                 let dur = dict["duration_minutes"] as? Int ?? 30
-                return .createUnscheduledTask(title: title, durationMinutes: dur)
+                let color = dict["color"] as? String
+                return .createUnscheduledTask(title: title, durationMinutes: dur, colorHex: color)
 
             case "complete_task":
                 guard let title = dict["title"] as? String else { return nil }

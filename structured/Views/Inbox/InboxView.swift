@@ -13,6 +13,7 @@ struct InboxView: View {
     private var inboxTasks: [StructuredTask]
 
     @State private var editingTask: StructuredTask?
+    @State private var showingNewTask = false
 
     var body: some View {
         NavigationStack {
@@ -80,20 +81,41 @@ struct InboxView: View {
     }
 
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             Spacer()
             Image(systemName: "tray")
                 .font(.system(size: 48))
                 .foregroundStyle(Color(.systemGray4))
-            Text("Nothing unscheduled")
+            Text("No tasks yet")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.secondary)
-            Text("Tap + to capture tasks without a time.")
+            Text("Tasks without a scheduled time live here.\nGreat for capturing ideas and to-dos.")
                 .font(.subheadline)
                 .foregroundStyle(Color(.systemGray3))
+                .multilineTextAlignment(.center)
+
+            Button {
+                showingNewTask = true
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.body)
+                    Text("Add Task")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(Capsule().fill(Color(hex: "#E8907E")))
+            }
+            .padding(.top, 4)
+
             Spacer()
         }
         .padding(.horizontal, 40)
+        .sheet(isPresented: $showingNewTask) {
+            TaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
+        }
     }
 }
 

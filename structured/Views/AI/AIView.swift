@@ -303,7 +303,7 @@ struct AIView: View {
                 }
 
             // YOH-94: support date field for tasks on other days
-            case .createTask(let title, let hour, let minute, let duration, let taskDate):
+            case .createTask(let title, let hour, let minute, let duration, let taskDate, let colorHex):
                 let targetDay = (taskDate ?? today).startOfDay
                 let start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: targetDay)
                 let newTask = StructuredTask(
@@ -311,20 +311,20 @@ struct AIView: View {
                     startTime: start,
                     duration: TimeInterval(duration * 60),
                     date: targetDay,
-                    colorHex: "#E8907E",
+                    colorHex: colorHex ?? "#E8907E",
                     iconName: "star.fill",
                     isAllDay: false
                 )
                 modelContext.insert(newTask)
 
             // YOH-93: unscheduled / no-time task goes to the Later tab
-            case .createUnscheduledTask(let title, let duration):
+            case .createUnscheduledTask(let title, let duration, let colorHex):
                 let newTask = StructuredTask(
                     title: title,
                     startTime: nil,
                     duration: TimeInterval(duration * 60),
                     date: today.startOfDay,
-                    colorHex: "#E8907E",
+                    colorHex: colorHex ?? "#E8907E",
                     iconName: "star.fill",
                     isAllDay: false,
                     isInbox: true

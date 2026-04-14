@@ -4,13 +4,13 @@ import SwiftData
 // MARK: - Timeline Item Model
 
 private enum TimelineItem: Identifiable {
-    case task(StructuredTask)
+    case task(StructuredTask, overlappingWith: String?)
     case gap(minutes: Int, afterTaskID: UUID)
     case currentTime(date: Date)
 
     var id: String {
         switch self {
-        case .task(let t):        return "task-\(t.id)"
+        case .task(let t, _):     return "task-\(t.id)"
         case .gap(_, let tid):    return "gap-after-\(tid)"
         case .currentTime(let d): return "now-\(Int(d.timeIntervalSince1970 / 60))"
         }
@@ -55,12 +55,16 @@ struct DayTimelineView: View {
                 }
             }
 
+            var overlapName: String? = nil
             if index > 0 {
                 let prev = tasks[index - 1]
                 let prevEnd = (prev.startTime ?? .distantPast).addingTimeInterval(prev.duration)
                 if let thisStart = task.startTime {
                     let gapSecs = thisStart.timeIntervalSince(prevEnd)
-                    if gapSecs >= 15 * 60 {
+                    if gapSecs < 0 {
+                        // Overlap detected
+                        overlapName = prev.title
+                    } else if gapSecs >= 15 * 60 {
                         if isToday && now >= prevEnd && now < thisStart {
                             items.append(.currentTime(date: now))
                         }
@@ -69,7 +73,7 @@ struct DayTimelineView: View {
                 }
             }
 
-            items.append(.task(task))
+            items.append(.task(task, overlappingWith: overlapName))
         }
 
         if isToday {
@@ -164,17 +168,31 @@ struct DayTimelineView: View {
     @ViewBuilder
     private func rowView(for item: TimelineItem) -> some View {
         switch item {
-        case .task(let task):
-            TaskBlockView(
-                task: task,
-                onToggleComplete: {
-                    let willComplete = !task.isCompleted
-                    viewModel.toggleCompletion(task)
-                    Analytics.track(willComplete ? Analytics.Event.taskCompleted : Analytics.Event.taskUncompleted, properties: ["source": "timeline"])
-                },
-                onTap: { viewModel.startEditingTask(task) }
-            )
-            .padding(.horizontal, 16)
+        case .task(let task, let overlapName):
+            VStack(alignment: .leading, spacing: 2) {
+                if let overlapName {
+                    HStack(spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                        Text("Overlaps with \(overlapName)")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                    }
+                    .padding(.leading, overlapName.isEmpty ? 16 : 32)
+                }
+
+                TaskBlockView(
+                    task: task,
+                    onToggleComplete: {
+                        let willComplete = !task.isCompleted
+                        viewModel.toggleCompletion(task)
+                        Analytics.track(willComplete ? Analytics.Event.taskCompleted : Analytics.Event.taskUncompleted, properties: ["source": "timeline"])
+                    },
+                    onTap: { viewModel.startEditingTask(task) }
+                )
+            }
+            .padding(.horizontal, overlapName != nil ? 32 : 16)
             .padding(.vertical, 4)
             // Option B — long press context menu
             .contextMenu {
