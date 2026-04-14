@@ -9,29 +9,34 @@ struct WatchTaskRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 8) {
+            HStack(spacing: 6) {
                 WatchTaskIconView(
                     iconName: task.iconName,
                     colorHex: task.colorHex,
-                    size: 28
+                    size: 22
                 )
 
                 VStack(alignment: .leading, spacing: 1) {
-                    Text(task.compactTimeString)
-                        .font(.caption2)
-                        .foregroundStyle(taskColor.opacity(0.8))
+                    // Time + duration on one line
+                    HStack(spacing: 4) {
+                        Text(task.compactTimeString)
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundStyle(taskColor.opacity(0.8))
+                        if !task.durationLabel.isEmpty {
+                            Text("·")
+                                .font(.system(size: 10))
+                                .foregroundStyle(.secondary)
+                            Text(task.durationLabel)
+                                .font(.system(size: 10))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
 
                     Text(task.title)
-                        .font(.footnote.weight(.semibold))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(task.isCompleted ? .secondary : .primary)
                         .strikethrough(task.isCompleted)
                         .lineLimit(1)
-
-                    if !task.durationLabel.isEmpty {
-                        Text(task.durationLabel)
-                            .font(.system(size: 10))
-                            .foregroundStyle(.secondary)
-                    }
                 }
 
                 Spacer()
@@ -42,13 +47,13 @@ struct WatchTaskRow: View {
                     WatchCompletionCircle(
                         isCompleted: task.isCompleted,
                         colorHex: task.colorHex,
-                        size: 20
+                        size: 18
                     )
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 4)
         }
         .buttonStyle(.plain)
         .listRowBackground(

@@ -60,25 +60,27 @@ struct WatchAIView: View {
         VStack(spacing: 8) {
             Spacer()
             Image(systemName: "sparkles")
-                .font(.title2)
+                .font(.title3)
                 .foregroundStyle(coral)
             Text("Ask me anything")
-                .font(.footnote)
+                .font(.caption2)
                 .foregroundStyle(.secondary)
 
-            ForEach(suggestions, id: \.label) { s in
-                Button { viewModel.sendSuggestion(s.prompt) } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: s.icon)
-                            .font(.system(size: 10))
-                        Text(s.label)
-                            .font(.system(size: 11, weight: .medium))
+            HStack(spacing: 6) {
+                ForEach(suggestions, id: \.label) { s in
+                    Button { viewModel.sendSuggestion(s.prompt) } label: {
+                        HStack(spacing: 3) {
+                            Image(systemName: s.icon)
+                                .font(.system(size: 9))
+                            Text(s.label)
+                                .font(.system(size: 10, weight: .medium))
+                        }
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Capsule().fill(Color(.gray).opacity(0.2)))
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Capsule().fill(Color(.gray).opacity(0.2)))
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
             Spacer()
         }

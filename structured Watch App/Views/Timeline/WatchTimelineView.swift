@@ -33,15 +33,15 @@ struct WatchTimelineView: View {
             // Floating add button
             Button { showingTaskEditor = true } label: {
                 Image(systemName: "plus")
-                    .font(.body.weight(.semibold))
+                    .font(.caption.weight(.bold))
                     .foregroundStyle(.white)
-                    .frame(width: 36, height: 36)
+                    .frame(width: 30, height: 30)
                     .background(Circle().fill(Color(hex: "#E8907E")))
-                    .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
+                    .shadow(color: .black.opacity(0.3), radius: 3, y: 2)
             }
             .buttonStyle(.plain)
-            .padding(.trailing, 8)
-            .padding(.bottom, 4)
+            .padding(.trailing, 6)
+            .padding(.bottom, 2)
         }
         .sheet(isPresented: $showingTaskEditor) {
             WatchTaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
@@ -54,7 +54,7 @@ struct WatchTimelineView: View {
     // MARK: - Date Header
 
     private var dateHeader: some View {
-        HStack {
+        HStack(spacing: 12) {
             Button { viewModel.goToPreviousDay() } label: {
                 Image(systemName: "chevron.left")
                     .font(.caption2.weight(.semibold))
@@ -63,15 +63,9 @@ struct WatchTimelineView: View {
 
             Spacer()
 
-            VStack(spacing: 1) {
-                if viewModel.isToday {
-                    Text("Today")
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(Color(hex: "#E8907E"))
-                }
-                Text(viewModel.selectedDate.compactDateString)
-                    .font(.caption.weight(.semibold))
-            }
+            Text(dateHeaderLabel)
+                .font(.caption.weight(.bold))
+                .foregroundStyle(viewModel.isToday ? Color(hex: "#E8907E") : .primary)
 
             Spacer()
 
@@ -82,7 +76,19 @@ struct WatchTimelineView: View {
             .buttonStyle(.plain)
         }
         .padding(.horizontal, 8)
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
+    }
+
+    private var dateHeaderLabel: String {
+        if viewModel.isToday {
+            return "Today, \(viewModel.selectedDate.compactDateString)"
+        } else if Calendar.current.isDateInTomorrow(viewModel.selectedDate) {
+            return "Tomorrow"
+        } else if Calendar.current.isDateInYesterday(viewModel.selectedDate) {
+            return "Yesterday"
+        } else {
+            return viewModel.selectedDate.compactDateString
+        }
     }
 
     // MARK: - Task List
