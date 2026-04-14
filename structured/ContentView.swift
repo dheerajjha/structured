@@ -59,7 +59,10 @@ struct ContentView: View {
                         TaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
                     }
                 }
-                .onAppear { ensureAnchorsForCurrentDate() }
+                .onAppear {
+                    ensureAnchorsForCurrentDate()
+                    syncToWatch()
+                }
                 .onChange(of: viewModel.selectedDate) { _, newDate in
                     DailyAnchorManager.ensureAnchors(for: newDate, context: modelContext)
                 }
@@ -67,6 +70,9 @@ struct ContentView: View {
                     guard count > 0 else { return }
                     executeAIActions(aiViewModel.pendingActions)
                     aiViewModel.pendingActions = []
+                }
+                .onChange(of: allTasks.count) { _, _ in
+                    syncToWatch()
                 }
         }
     }
@@ -386,6 +392,12 @@ struct ContentView: View {
 
     private func ensureAnchorsForCurrentDate() {
         DailyAnchorManager.ensureAnchors(for: viewModel.selectedDate, context: modelContext)
+    }
+
+    // MARK: - Watch Sync
+
+    private func syncToWatch() {
+        WatchSyncManager.shared.syncAllTasks(context: modelContext)
     }
 
     // MARK: - AI Action Execution

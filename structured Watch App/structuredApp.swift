@@ -3,7 +3,9 @@ import SwiftData
 
 @main
 struct structured_Watch_AppApp: App {
-    var sharedModelContainer: ModelContainer = {
+    let sharedModelContainer: ModelContainer
+
+    init() {
         let schema = Schema([
             WatchTask.self,
             WatchSubtask.self,
@@ -13,14 +15,13 @@ struct structured_Watch_AppApp: App {
             isStoredInMemoryOnly: false
         )
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            self.sharedModelContainer = container
+            WatchConnectivityManager.shared.modelContainer = container
+            WatchConnectivityManager.shared.activate()
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
-
-    init() {
-        WatchConnectivityManager.shared.activate()
     }
 
     var body: some Scene {
