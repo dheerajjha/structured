@@ -41,11 +41,9 @@ struct WatchSettingsView: View {
 
                 Section("About") {
                     LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                    LabeledContent("AI Model", value: "GPT-4.1 Nano")
                 }
             }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
+            
             .onAppear {
                 wakeTime = Calendar.current.date(bySettingHour: wakeHour, minute: wakeMinute, second: 0, of: Date()) ?? Date()
                 bedTime = Calendar.current.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: Date()) ?? Date()

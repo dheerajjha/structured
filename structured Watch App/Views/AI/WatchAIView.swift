@@ -34,8 +34,7 @@ struct WatchAIView: View {
 
                 inputBar
             }
-            .navigationTitle("AI")
-            .navigationBarTitleDisplayMode(.inline)
+            
             .toolbar {
                 if !viewModel.messages.isEmpty {
                     ToolbarItem(placement: .topBarTrailing) {

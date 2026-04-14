@@ -66,8 +66,7 @@ struct WatchInboxView: View {
                     .listStyle(.carousel)
                 }
             }
-            .navigationTitle("Later")
-            .navigationBarTitleDisplayMode(.inline)
+            
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showingNewTask = true } label: {

@@ -29,8 +29,6 @@ struct WatchTimelineView: View {
                 dateHeader
                 taskList
             }
-            .navigationTitle("Today")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showingTaskEditor = true } label: {
