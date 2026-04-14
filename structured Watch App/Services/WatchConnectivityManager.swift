@@ -32,6 +32,39 @@ class WatchConnectivityManager: NSObject, @unchecked Sendable {
             WCSession.default.transferUserInfo(message)
         }
     }
+
+    /// Send a full task to iPhone for creation
+    func sendNewTask(_ task: WatchTask) {
+        let isoFmt = ISO8601DateFormatter()
+        isoFmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let dateFmt = DateFormatter()
+        dateFmt.dateFormat = "yyyy-MM-dd"
+
+        var payload: [String: Any] = [
+            "action": "create",
+            "taskId": task.id.uuidString,
+            "title": task.title,
+            "duration": task.duration,
+            "date": dateFmt.string(from: task.date),
+            "colorHex": task.colorHex,
+            "iconName": task.iconName,
+            "isCompleted": task.isCompleted,
+            "isAllDay": task.isAllDay,
+            "isInbox": task.isInbox,
+            "order": task.order,
+            "notes": task.notes,
+            "timestamp": Date().timeIntervalSince1970
+        ]
+        if let startTime = task.startTime {
+            payload["startTime"] = isoFmt.string(from: startTime)
+        }
+
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(payload, replyHandler: nil)
+        } else {
+            WCSession.default.transferUserInfo(payload)
+        }
+    }
 }
 
 // MARK: - WCSessionDelegate

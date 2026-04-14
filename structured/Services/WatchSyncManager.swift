@@ -107,8 +107,56 @@ extension WatchSyncManager: WCSessionDelegate {
     private func handleWatchAction(action: String, taskId: String, payload: [String: Any]) async {
         guard let container = modelContainer else { return }
         let context = container.mainContext
-
         guard let id = UUID(uuidString: taskId) else { return }
+
+        // Handle task creation from watch
+        if action == "create" {
+            // Check if already exists
+            let predicate = #Predicate<StructuredTask> { $0.id == id }
+            if let existing = try? context.fetch(FetchDescriptor(predicate: predicate)), !existing.isEmpty {
+                return // Already synced
+            }
+
+            let title = payload["title"] as? String ?? ""
+            let duration = payload["duration"] as? TimeInterval ?? 1800
+            let colorHex = payload["colorHex"] as? String ?? "#FF6B6B"
+            let iconName = payload["iconName"] as? String ?? "checklist"
+            let isCompleted = payload["isCompleted"] as? Bool ?? false
+            let isAllDay = payload["isAllDay"] as? Bool ?? false
+            let isInbox = payload["isInbox"] as? Bool ?? false
+            let order = payload["order"] as? Int ?? 0
+            let notes = payload["notes"] as? String ?? ""
+
+            let dateFmt = DateFormatter()
+            dateFmt.dateFormat = "yyyy-MM-dd"
+            let date = (payload["date"] as? String).flatMap { dateFmt.date(from: $0) } ?? Date().startOfDay
+
+            let isoFmt = ISO8601DateFormatter()
+            isoFmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            let startTime = (payload["startTime"] as? String).flatMap { isoFmt.date(from: $0) }
+
+            let newTask = StructuredTask(
+                title: title,
+                startTime: startTime,
+                duration: duration,
+                date: date,
+                colorHex: colorHex,
+                iconName: iconName,
+                isCompleted: isCompleted,
+                isAllDay: isAllDay,
+                isInbox: isInbox,
+                order: order
+            )
+            newTask.notes = notes
+            newTask.id = id
+            context.insert(newTask)
+
+            try? context.save()
+            NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
+            return
+        }
+
+        // Handle updates to existing tasks
         let predicate = #Predicate<StructuredTask> { $0.id == id }
         guard let tasks = try? context.fetch(FetchDescriptor(predicate: predicate)),
               let task = tasks.first else { return }
@@ -121,6 +169,11 @@ extension WatchSyncManager: WCSessionDelegate {
         case "unschedule":
             task.isInbox = true
             task.startTime = nil
+        case "move":
+            if let hour = payload["hour"] as? Int, let minute = payload["minute"] as? Int {
+                let base = task.startTime ?? task.date
+                task.startTime = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: base)
+            }
         case "delete":
             context.delete(task)
         default:

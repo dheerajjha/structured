@@ -166,6 +166,8 @@ struct WatchTaskEditorView: View {
                 isInbox: startAsInbox
             )
             modelContext.insert(newTask)
+            // Sync new task to iPhone
+            WatchConnectivityManager.shared.sendNewTask(newTask)
         }
 
         dismiss()

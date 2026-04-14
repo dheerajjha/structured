@@ -159,6 +159,7 @@ struct WatchAIView: View {
                     let base = task.startTime ?? task.date
                     task.startTime = cal.date(bySettingHour: hour, minute: minute, second: 0, of: base)
                     task.modifiedAt = Date()
+                    WatchConnectivityManager.shared.sendTaskUpdate("move", taskId: task.id.uuidString, payload: ["hour": hour, "minute": minute])
                 }
 
             case .createTask(let title, let hour, let minute, let duration, let taskDate, let colorHex):
@@ -170,10 +171,11 @@ struct WatchAIView: View {
                     duration: TimeInterval(duration * 60),
                     date: targetDay,
                     colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
+                    iconName: "checklist",
                     isAllDay: false
                 )
                 modelContext.insert(newTask)
+                WatchConnectivityManager.shared.sendNewTask(newTask)
 
             case .createUnscheduledTask(let title, let duration, let colorHex):
                 let newTask = WatchTask(
@@ -182,16 +184,18 @@ struct WatchAIView: View {
                     duration: TimeInterval(duration * 60),
                     date: today.startOfDay,
                     colorHex: colorHex ?? "#E8907E",
-                    iconName: "star.fill",
+                    iconName: "checklist",
                     isAllDay: false,
                     isInbox: true
                 )
                 modelContext.insert(newTask)
+                WatchConnectivityManager.shared.sendNewTask(newTask)
 
             case .completeTask(let title):
                 if let task = findTask(titled: title), !task.isProtected {
                     task.isCompleted = true
                     task.modifiedAt = Date()
+                    WatchConnectivityManager.shared.sendTaskUpdate("complete", taskId: task.id.uuidString)
                 }
             }
         }
