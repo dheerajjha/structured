@@ -15,12 +15,13 @@ struct WatchInboxView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if inboxTasks.isEmpty {
-                    emptyState
-                } else {
-                    List {
-                        ForEach(inboxTasks, id: \.id) { task in
+            ZStack(alignment: .bottomTrailing) {
+                Group {
+                    if inboxTasks.isEmpty {
+                        emptyState
+                    } else {
+                        List {
+                            ForEach(inboxTasks, id: \.id) { task in
                             Button {
                                 editingTask = task
                             } label: {
@@ -66,13 +67,19 @@ struct WatchInboxView: View {
                     .listStyle(.carousel)
                 }
             }
-            
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { showingNewTask = true } label: {
-                        Image(systemName: "plus")
-                    }
+
+                // Floating add button
+                Button { showingNewTask = true } label: {
+                    Image(systemName: "plus")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(Color(hex: "#E8907E")))
+                        .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
                 }
+                .buttonStyle(.plain)
+                .padding(.trailing, 8)
+                .padding(.bottom, 4)
             }
             .sheet(isPresented: $showingNewTask) {
                 WatchTaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
