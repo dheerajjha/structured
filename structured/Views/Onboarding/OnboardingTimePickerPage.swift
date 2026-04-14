@@ -63,7 +63,7 @@ struct OnboardingTimePickerPage: View {
     var onContinue: (@MainActor () -> Void)? = nil
 
     @State private var scrollPositionID: Int?
-    @State private var isUserScrolling = false
+    @State private var committedIndex: Int?
 
     private let intervalMinutes = 15
 
@@ -81,6 +81,11 @@ struct OnboardingTimePickerPage: View {
         let minute = calendar.component(.minute, from: selectedTime)
         let totalMinutes = hour * 60 + minute
         return totalMinutes / intervalMinutes
+    }
+
+    /// The index used for visual highlight — only changes when scroll settles
+    private var displayIndex: Int {
+        committedIndex ?? selectedIndex
     }
 
     var body: some View {
@@ -228,8 +233,8 @@ struct OnboardingTimePickerPage: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: scaled(4)) {
                 ForEach(Array(timeSlots.enumerated()), id: \.offset) { index, time in
-                    let isSelected = index == selectedIndex
-                    let distance = abs(index - selectedIndex)
+                    let isSelected = index == displayIndex
+                    let distance = abs(index - displayIndex)
 
                     timeSlotButton(time: time, index: index, isSelected: isSelected, distance: distance)
                         .id(index)
@@ -254,50 +259,44 @@ struct OnboardingTimePickerPage: View {
             )
         )
         .onAppear {
+            committedIndex = selectedIndex
             scrollPositionID = selectedIndex
         }
-        // Update selectedTime when user scrolls — guard against feedback loop
-        .onChange(of: scrollPositionID) { _, id in
-            guard let id, id >= 0, id < timeSlots.count else { return }
-            let newTime = timeSlots[id]
-            // Only update if actually different to break the cycle
-            if Calendar.current.component(.hour, from: newTime) != Calendar.current.component(.hour, from: selectedTime)
-                || Calendar.current.component(.minute, from: newTime) != Calendar.current.component(.minute, from: selectedTime) {
-                selectedTime = newTime
-            }
+        .onChange(of: scrollPositionID) { _, new in
+            // Commit selection when scroll settles on a new position
+            guard let id = new, id >= 0, id < timeSlots.count else { return }
+            committedIndex = id
+            selectedTime = timeSlots[id]
         }
     }
     // MARK: - Time Slot Button (extracted to help type checker)
 
     private func timeSlotButton(time: Date, index: Int, isSelected: Bool, distance: Int) -> some View {
-        let fontSize: CGFloat = isSelected ? scaled(20) : max(scaled(16) - CGFloat(distance) * scaled(1.5), scaled(12))
         let fontWeight: Font.Weight = isSelected ? .bold : .regular
-        let textOpacity: Double = isSelected ? 1.0 : max(1.0 - Double(distance) * 0.2, 0.3)
+        let textOpacity: Double = isSelected ? 1.0 : max(1.0 - Double(distance) * 0.25, 0.25)
         let textColor: Color = isSelected ? theme.pillTextColor : (theme == .night ? Color.white.opacity(textOpacity) : Color.primary.opacity(textOpacity))
 
         return Button {
             withAnimation(.snappy(duration: 0.3)) {
+                committedIndex = index
                 selectedTime = time
                 scrollPositionID = index
             }
         } label: {
             HStack(spacing: scaled(8)) {
-                if isSelected {
-                    Image(systemName: theme.icon)
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(theme.pillTextColor)
-                }
+                Image(systemName: theme.icon)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(theme.pillTextColor)
+                    .opacity(isSelected ? 1 : 0)
 
                 Text(TimeFormatting.timeString(from: time))
-                    .font(.system(size: fontSize, weight: fontWeight))
+                    .font(.system(size: scaled(18), weight: fontWeight))
                     .foregroundStyle(textColor)
             }
+            .frame(height: scaled(40))
             .padding(.horizontal, scaled(24))
-            .padding(.vertical, scaled(10))
             .background {
-                if isSelected {
-                    Capsule().fill(theme.pillBackgroundColor)
-                }
+                Capsule().fill(isSelected ? theme.pillBackgroundColor : .clear)
             }
         }
         .buttonStyle(.plain)
