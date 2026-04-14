@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		331EAA432F8E7DB3007BC2F8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 331EAA422F8E7DB3007BC2F8 /* Lottie */; };
 		335004D02F8288F10086D678 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 335004CF2F8288F10086D678 /* Mixpanel */; };
 		335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 335DAF642F7BB78D0054A3F5 /* BugReporterSDK */; };
 		33C15DE52F6F34E600247411 /* structured Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 33C15DE42F6F34E600247411 /* structured Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -61,6 +62,7 @@
 			files = (
 				335004D02F8288F10086D678 /* Mixpanel in Frameworks */,
 				335DAF652F7BB78D0054A3F5 /* BugReporterSDK in Frameworks */,
+				331EAA432F8E7DB3007BC2F8 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +118,7 @@
 			packageProductDependencies = (
 				335DAF642F7BB78D0054A3F5 /* BugReporterSDK */,
 				335004CF2F8288F10086D678 /* Mixpanel */,
+				331EAA422F8E7DB3007BC2F8 /* Lottie */,
 			);
 			productName = structured;
 			productReference = 33C15DD72F6F34E500247411 /* structured.app */;
@@ -173,6 +176,7 @@
 			packageReferences = (
 				335DAF632F7BB78D0054A3F5 /* XCRemoteSwiftPackageReference "BugReporterSDK-ios" */,
 				335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+				331EAA412F8E7DB3007BC2F8 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 33C15DD82F6F34E500247411 /* Products */;
@@ -525,6 +529,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		331EAA412F8E7DB3007BC2F8 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
@@ -544,6 +556,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		331EAA422F8E7DB3007BC2F8 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 331EAA412F8E7DB3007BC2F8 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		335004CF2F8288F10086D678 /* Mixpanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 335004CE2F8288F10086D678 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;

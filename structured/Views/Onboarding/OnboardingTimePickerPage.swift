@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 enum TimePickerTheme {
     case morning, night
@@ -63,7 +64,6 @@ struct OnboardingTimePickerPage: View {
     var onContinue: (@MainActor () -> Void)? = nil
 
     @State private var scrollPositionID: Int?
-    @State private var committedIndex: Int?
 
     private let intervalMinutes = 15
 
@@ -81,11 +81,6 @@ struct OnboardingTimePickerPage: View {
         let minute = calendar.component(.minute, from: selectedTime)
         let totalMinutes = hour * 60 + minute
         return totalMinutes / intervalMinutes
-    }
-
-    /// The index used for visual highlight — only changes when scroll settles
-    private var displayIndex: Int {
-        committedIndex ?? selectedIndex
     }
 
     var body: some View {
@@ -171,7 +166,13 @@ struct OnboardingTimePickerPage: View {
 
             // Continue button embedded in page — no z-fighting
             if let onContinue {
-                Button(action: onContinue) {
+                Button {
+                    // Commit scroll position to selectedTime before continuing
+                    if let idx = scrollPositionID, idx >= 0, idx < timeSlots.count {
+                        selectedTime = timeSlots[idx]
+                    }
+                    onContinue()
+                } label: {
                     Text("Continue")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.white)
@@ -195,35 +196,18 @@ struct OnboardingTimePickerPage: View {
     private var themeIcon: some View {
         switch theme {
         case .morning:
-            // Sun
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "#F5D547").opacity(0.8))
-                    .frame(width: scaled(60), height: scaled(60))
-
-                Image(systemName: "sun.max.fill")
-                    .font(.system(size: scaled(30)))
-                    .foregroundStyle(Color(hex: "#F5D547"))
+            LottieView {
+                try await DotLottieFile.named("sun")
             }
+            .playbackMode(.playing(.toProgress(1, loopMode: .loop)))
+            .frame(width: scaled(100), height: scaled(100))
 
         case .night:
-            // Moon
-            ZStack {
-                Image(systemName: "moon.fill")
-                    .font(.system(size: scaled(44)))
-                    .foregroundStyle(Color(hex: "#F5E0A0"))
-
-                // Stars
-                ForEach(0..<5, id: \.self) { i in
-                    Circle()
-                        .fill(Color(hex: "#F5E0A0").opacity(0.6))
-                        .frame(width: CGFloat.random(in: scaled(2)...scaled(4)), height: CGFloat.random(in: scaled(2)...scaled(4)))
-                        .offset(
-                            x: scaled(CGFloat([-40, 30, -20, 50, -10][i])),
-                            y: scaled(CGFloat([-15, -25, 20, 10, -30][i]))
-                        )
-                }
+            LottieView {
+                try await DotLottieFile.named("moon")
             }
+            .playbackMode(.playing(.toProgress(1, loopMode: .loop)))
+            .frame(width: scaled(80), height: scaled(80))
         }
     }
 
@@ -233,8 +217,8 @@ struct OnboardingTimePickerPage: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: scaled(4)) {
                 ForEach(Array(timeSlots.enumerated()), id: \.offset) { index, time in
-                    let isSelected = index == displayIndex
-                    let distance = abs(index - displayIndex)
+                    let isSelected = index == selectedIndex
+                    let distance = abs(index - selectedIndex)
 
                     timeSlotButton(time: time, index: index, isSelected: isSelected, distance: distance)
                         .id(index)
@@ -259,45 +243,32 @@ struct OnboardingTimePickerPage: View {
             )
         )
         .onAppear {
-            committedIndex = selectedIndex
             scrollPositionID = selectedIndex
         }
-        .onChange(of: scrollPositionID) { _, new in
-            // Commit selection when scroll settles on a new position
-            guard let id = new, id >= 0, id < timeSlots.count else { return }
-            committedIndex = id
-            selectedTime = timeSlots[id]
+        .onScrollPhaseChange { _, newPhase in
+            // Only commit selection when scroll fully stops — no state changes during scrolling
+            if newPhase == .idle, let id = scrollPositionID, id >= 0, id < timeSlots.count {
+                selectedTime = timeSlots[id]
+            }
         }
     }
     // MARK: - Time Slot Button (extracted to help type checker)
 
     private func timeSlotButton(time: Date, index: Int, isSelected: Bool, distance: Int) -> some View {
-        let fontWeight: Font.Weight = isSelected ? .bold : .regular
         let textOpacity: Double = isSelected ? 1.0 : max(1.0 - Double(distance) * 0.25, 0.25)
-        let textColor: Color = isSelected ? theme.pillTextColor : (theme == .night ? Color.white.opacity(textOpacity) : Color.primary.opacity(textOpacity))
+        let baseColor: Color = theme == .night ? .white : .primary
 
         return Button {
-            withAnimation(.snappy(duration: 0.3)) {
-                committedIndex = index
-                selectedTime = time
-                scrollPositionID = index
-            }
+            selectedTime = time
+            scrollPositionID = index
         } label: {
-            HStack(spacing: scaled(8)) {
-                Image(systemName: theme.icon)
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(theme.pillTextColor)
-                    .opacity(isSelected ? 1 : 0)
-
-                Text(TimeFormatting.timeString(from: time))
-                    .font(.system(size: scaled(18), weight: fontWeight))
-                    .foregroundStyle(textColor)
-            }
-            .frame(height: scaled(40))
-            .padding(.horizontal, scaled(24))
-            .background {
-                Capsule().fill(isSelected ? theme.pillBackgroundColor : .clear)
-            }
+            Text(TimeFormatting.timeString(from: time))
+                .font(.system(size: scaled(18), weight: .semibold))
+                .foregroundStyle(isSelected ? theme.pillTextColor : baseColor.opacity(textOpacity))
+                .frame(width: scaled(160), height: scaled(40))
+                .background(
+                    Capsule().fill(isSelected ? theme.pillBackgroundColor : .clear)
+                )
         }
         .buttonStyle(.plain)
     }

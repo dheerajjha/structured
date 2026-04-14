@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
@@ -13,8 +12,6 @@ struct SettingsView: View {
     // Sheet state
     @State private var showWakePicker = false
     @State private var showBedPicker  = false
-    @State private var exportFileURL: URL?
-    @State private var showShareSheet = false
 
     private let coral     = Color(hex: "#E8907E")
     private let slateBlue = Color(hex: "#7C97AB")
@@ -29,7 +26,6 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 anchorsSection
-                exportSection
                 aboutSection
             }
             .navigationTitle("Settings")
@@ -144,109 +140,11 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Data & Export Section
-
-    private var exportSection: some View {
-        Section {
-            Button {
-                Analytics.track(Analytics.Event.exportCsvTapped)
-                exportCSV()
-            } label: {
-                Label("Export to CSV", systemImage: "doc.text")
-                    .foregroundStyle(.primary)
-            }
-
-            Button {
-                Analytics.track(Analytics.Event.exportIcsTapped)
-                exportICS()
-            } label: {
-                Label("Export to iCal (.ics)", systemImage: "calendar")
-                    .foregroundStyle(.primary)
-            }
-
-            Button {
-                // TODO: Google Calendar OAuth
-            } label: {
-                Label("Sync with Google Calendar", systemImage: "arrow.triangle.2.circlepath")
-                    .foregroundStyle(.secondary)
-            }
-
-            Button {
-                // TODO: Apple Calendar / EventKit
-            } label: {
-                Label("Sync with Apple Calendar", systemImage: "apple.logo")
-                    .foregroundStyle(.secondary)
-            }
-        } header: {
-            Text("Data & Export")
-        } footer: {
-            Text("CSV and iCal export are ready. Calendar sync coming soon.")
-        }
-        .sheet(isPresented: $showShareSheet) {
-            if let url = exportFileURL {
-                ShareSheet(items: [url])
-            }
-        }
-    }
-
-    // MARK: - CSV Export
-
-    private func exportCSV() {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
-        let timeFmt = DateFormatter()
-        timeFmt.dateFormat = "HH:mm"
-
-        var csv = "Title,Date,Start Time,Duration (min),Color,Icon,Completed,All Day,Inbox\n"
-        for task in allTasks {
-            let date = fmt.string(from: task.date)
-            let start = task.startTime.map { timeFmt.string(from: $0) } ?? ""
-            let dur = task.durationMinutes
-            let line = "\"\(task.title)\",\(date),\(start),\(dur),\(task.colorHex),\(task.iconName),\(task.isCompleted),\(task.isAllDay),\(task.isInbox)"
-            csv += line + "\n"
-        }
-
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tickd_tasks.csv")
-        try? csv.write(to: url, atomically: true, encoding: .utf8)
-        exportFileURL = url
-        showShareSheet = true
-    }
-
-    // MARK: - iCal Export
-
-    private func exportICS() {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyyMMdd'T'HHmmss"
-        fmt.timeZone = TimeZone.current
-
-        var ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Tickd//EN\n"
-
-        for task in allTasks where !task.isInbox {
-            guard let start = task.startTime else { continue }
-            let end = start.addingTimeInterval(max(task.duration, 900)) // min 15 min
-            ics += "BEGIN:VEVENT\n"
-            ics += "DTSTART:\(fmt.string(from: start))\n"
-            ics += "DTEND:\(fmt.string(from: end))\n"
-            ics += "SUMMARY:\(task.title)\n"
-            if !task.notes.isEmpty { ics += "DESCRIPTION:\(task.notes.replacingOccurrences(of: "\n", with: "\\n"))\n" }
-            ics += "STATUS:\(task.isCompleted ? "COMPLETED" : "CONFIRMED")\n"
-            ics += "END:VEVENT\n"
-        }
-
-        ics += "END:VCALENDAR\n"
-
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tickd_tasks.ics")
-        try? ics.write(to: url, atomically: true, encoding: .utf8)
-        exportFileURL = url
-        showShareSheet = true
-    }
-
     // MARK: - About Section
 
     private var aboutSection: some View {
         Section("About") {
             LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-            LabeledContent("AI Model", value: "GPT-4.1 Nano")
         }
     }
 
@@ -263,17 +161,6 @@ struct SettingsView: View {
     }
 }
 
-// MARK: - Share Sheet (UIKit bridge)
-
-struct ShareSheet: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
 
 #Preview {
     SettingsView()
