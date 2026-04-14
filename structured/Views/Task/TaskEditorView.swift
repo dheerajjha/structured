@@ -250,6 +250,8 @@ struct TaskEditorView: View {
             }
             .navigationTitle(isEditing ? "Edit Task" : "New Task")
             .navigationBarTitleDisplayMode(.inline)
+            .presentationDetents([.large])
+            .presentationSizing(.form)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
