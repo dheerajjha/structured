@@ -18,6 +18,7 @@ class AIViewModel {
     var isLoading: Bool = false
     var errorMessage: String? = nil
     var pendingActions: [AIAction] = []
+    var lastVisibleMessageID: UUID? = nil
 
     private var taskContextLines: String = "No tasks today."
 
