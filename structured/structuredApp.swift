@@ -16,6 +16,7 @@ struct structuredApp: App {
         ))
         Analytics.setup()
         Analytics.track(Analytics.Event.appOpened)
+        WatchSyncManager.shared.activate()
     }
 
     var sharedModelContainer: ModelContainer = {
