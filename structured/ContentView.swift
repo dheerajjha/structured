@@ -75,102 +75,113 @@ struct ContentView: View {
 
     @ViewBuilder
     private var tabContent: some View {
-        switch selectedTab {
-        case .unscheduled:
+        ZStack {
             InboxView()
-        case .timeline:
-            VStack(spacing: 0) {
-                headerView
-                weekStripView
+                .opacity(selectedTab == .unscheduled ? 1 : 0)
+                .allowsHitTesting(selectedTab == .unscheduled)
 
-                // Piano overview behind, task sheet in front
-                GeometryReader { geo in
-                    let fullHeight = geo.size.height
-                    let pianoHeight: CGFloat = fullHeight - 90  // leave room for ~1 card
-                    let collapsedOffset: CGFloat = 0
-                    let expandedOffset: CGFloat = pianoHeight
-                    let currentOffset = pianoRevealed ? expandedOffset : collapsedOffset
+            timelineContent
+                .opacity(selectedTab == .timeline ? 1 : 0)
+                .allowsHitTesting(selectedTab == .timeline)
 
-                    ZStack(alignment: .top) {
-                        // Piano background
-                        PianoWeekView(
-                            weekDays: viewModel.selectedDate.weekDays,
-                            tasks: allTasks,
-                            selectedDate: viewModel.selectedDate
-                        )
-                        .frame(height: pianoHeight)
-                        .opacity(pianoRevealed ? 1 : 0.3)
-                        .animation(.easeInOut(duration: 0.25), value: pianoRevealed)
+            AIView(viewModel: aiViewModel)
+                .opacity(selectedTab == .ai ? 1 : 0)
+                .allowsHitTesting(selectedTab == .ai)
 
-                        // Draggable task sheet
-                        VStack(spacing: 0) {
-                            // Grab handle
-                            Capsule()
-                                .fill(Color(.systemGray4))
-                                .frame(width: 36, height: 5)
-                                .padding(.top, 10)
-                                .padding(.bottom, 6)
+            SettingsView()
+                .opacity(selectedTab == .settings ? 1 : 0)
+                .allowsHitTesting(selectedTab == .settings)
+        }
+    }
 
-                            Divider()
-                            DayTimelineView(viewModel: viewModel)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(
-                            UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16)
-                                .fill(Color(.systemGroupedBackground))
-                                .shadow(color: .black.opacity(0.08), radius: 8, y: -2)
-                        )
-                        .offset(y: currentOffset + sheetDragOffset)
-                        // Vertical drag → reveal/collapse piano
-                        .gesture(
-                            DragGesture()
-                                .onChanged { value in
-                                    // Only track if predominantly vertical
-                                    if abs(value.translation.height) > abs(value.translation.width) {
-                                        sheetDragOffset = value.translation.height
-                                    }
-                                }
-                                .onEnded { value in
-                                    let isHorizontal = abs(value.translation.width) > abs(value.translation.height)
-                                    if isHorizontal {
-                                        // YOH-91: horizontal swipe = navigate date
-                                        withAnimation(.snappy(duration: 0.3)) {
-                                            if value.translation.width < -50 {
-                                                viewModel.goToNextDay()
-                                            } else if value.translation.width > 50 {
-                                                viewModel.goToPreviousDay()
-                                            }
-                                        }
-                                    } else {
-                                        let threshold: CGFloat = 60
-                                        withAnimation(.snappy(duration: 0.3)) {
-                                            if pianoRevealed {
-                                                if value.translation.height < -threshold {
-                                                    pianoRevealed = false
-                                                    Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": false])
-                                                }
-                                            } else {
-                                                if value.translation.height > threshold {
-                                                    pianoRevealed = true
-                                                    Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": true])
-                                                }
-                                            }
-                                            sheetDragOffset = 0
-                                        }
-                                    }
-                                    sheetDragOffset = 0
-                                }
-                        )
+    private var timelineContent: some View {
+        VStack(spacing: 0) {
+            headerView
+            weekStripView
+
+            // Piano overview behind, task sheet in front
+            GeometryReader { geo in
+                let fullHeight = geo.size.height
+                let pianoHeight: CGFloat = fullHeight - 90  // leave room for ~1 card
+                let collapsedOffset: CGFloat = 0
+                let expandedOffset: CGFloat = pianoHeight
+                let currentOffset = pianoRevealed ? expandedOffset : collapsedOffset
+
+                ZStack(alignment: .top) {
+                    // Piano background
+                    PianoWeekView(
+                        weekDays: viewModel.selectedDate.weekDays,
+                        tasks: allTasks,
+                        selectedDate: viewModel.selectedDate
+                    )
+                    .frame(height: pianoHeight)
+                    .opacity(pianoRevealed ? 1 : 0.3)
+                    .animation(.easeInOut(duration: 0.25), value: pianoRevealed)
+
+                    // Draggable task sheet
+                    VStack(spacing: 0) {
+                        // Grab handle
+                        Capsule()
+                            .fill(Color(.systemGray4))
+                            .frame(width: 36, height: 5)
+                            .padding(.top, 10)
+                            .padding(.bottom, 6)
+
+                        Divider()
+                        DayTimelineView(viewModel: viewModel)
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(
+                        UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16)
+                            .fill(Color(.systemGroupedBackground))
+                            .shadow(color: .black.opacity(0.08), radius: 8, y: -2)
+                    )
+                    .offset(y: currentOffset + sheetDragOffset)
+                    // Vertical drag → reveal/collapse piano
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                // Only track if predominantly vertical
+                                if abs(value.translation.height) > abs(value.translation.width) {
+                                    sheetDragOffset = value.translation.height
+                                }
+                            }
+                            .onEnded { value in
+                                let isHorizontal = abs(value.translation.width) > abs(value.translation.height)
+                                if isHorizontal {
+                                    // YOH-91: horizontal swipe = navigate date
+                                    withAnimation(.snappy(duration: 0.3)) {
+                                        if value.translation.width < -50 {
+                                            viewModel.goToNextDay()
+                                        } else if value.translation.width > 50 {
+                                            viewModel.goToPreviousDay()
+                                        }
+                                    }
+                                } else {
+                                    let threshold: CGFloat = 60
+                                    withAnimation(.snappy(duration: 0.3)) {
+                                        if pianoRevealed {
+                                            if value.translation.height < -threshold {
+                                                pianoRevealed = false
+                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": false])
+                                            }
+                                        } else {
+                                            if value.translation.height > threshold {
+                                                pianoRevealed = true
+                                                Analytics.track(Analytics.Event.pianoViewToggled, properties: ["revealed": true])
+                                            }
+                                        }
+                                        sheetDragOffset = 0
+                                    }
+                                }
+                                sheetDragOffset = 0
+                            }
+                    )
                 }
             }
-            .onChange(of: viewModel.selectedDate, initial: true) { _, date in
-                DailyAnchorManager.ensureAnchors(for: date, context: modelContext)
-            }
-        case .ai:
-            AIView(viewModel: aiViewModel)
-        case .settings:
-            SettingsView()
+        }
+        .onChange(of: viewModel.selectedDate, initial: true) { _, date in
+            DailyAnchorManager.ensureAnchors(for: date, context: modelContext)
         }
     }
 

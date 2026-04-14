@@ -161,7 +161,6 @@ struct AIView: View {
                     ForEach(viewModel.messages) { msg in
                         MessageBubble(message: msg, coral: coral)
                             .id(msg.id)
-                            .onAppear { viewModel.lastVisibleMessageID = msg.id }
                     }
                     if viewModel.isLoading {
                         TypingIndicator(coral: coral).id("typing")
@@ -170,12 +169,6 @@ struct AIView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 12)
                 .padding(.bottom, 8)
-            }
-            .onAppear {
-                // Restore scroll to where the user left off
-                if let savedID = viewModel.lastVisibleMessageID {
-                    proxy.scrollTo(savedID, anchor: .center)
-                }
             }
             .onChange(of: viewModel.messages.count) { _, _ in
                 withAnimation {
