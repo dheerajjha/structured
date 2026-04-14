@@ -29,13 +29,13 @@ class AIViewModel {
         var lines: [String] = []
 
         if !scheduledTasks.isEmpty {
-            lines.append("Scheduled tasks (use these exact titles for actions):")
+            lines.append("Scheduled tasks:")
             for t in scheduledTasks {
                 let time      = t.startTime.map { fmt.string(from: $0) } ?? "?"
-                let dur       = t.durationMinutes > 0 ? " (\(t.durationMinutes) min)" : ""
+                let dur       = t.durationMinutes > 0 ? "\(t.durationMinutes) min" : ""
                 let done      = t.isCompleted ? " [completed]" : ""
                 let prot      = t.isProtected ? " [protected]" : ""
-                lines.append("  • \(time) — \(t.title)\(dur) [color:\(t.colorHex)]\(done)\(prot)")
+                lines.append("  • title=\"\(t.title)\" | time=\(time) | duration=\(dur) | color=\(t.colorHex)\(done)\(prot)")
             }
         }
 
@@ -95,13 +95,14 @@ class AIViewModel {
         [ACTIONS]{"actions":[...]}[/ACTIONS]
 
         Supported action types:
-        • Move a task:              {"type":"move_task","title":"exact title","new_time":"HH:MM"}
+        • Move a task:              {"type":"move_task","title":"exact title only","new_time":"HH:MM"}
         • Create a scheduled task:  {"type":"create_task","title":"name","time":"HH:MM","date":"YYYY-MM-DD","duration_minutes":30,"color":"#HEX"}
         • Create an UNSCHEDULED task (no time/date known): {"type":"create_unscheduled_task","title":"name","duration_minutes":30,"color":"#HEX"}
         • Complete a task:          {"type":"complete_task","title":"exact title"}
 
         Use 24-hour HH:MM. Default duration 30 min. Always include "date" in create_task using the ISO dates above.
-        When copying tasks, preserve the original color from the [color:#HEX] tag. Default color is #E8907E if not specified.
+        When copying tasks, preserve the original color. Default color is #E8907E if not specified.
+        CRITICAL: The "title" field must contain ONLY the task name from title="..." — never include duration, time, or other metadata in the title.
         If the user says "tomorrow", use \(tomorrowISO). If they say "today", use \(todayISO).
         If the user is unsure about the time or says "no time" / "unscheduled" / "backlog" / "later", use create_unscheduled_task.
 

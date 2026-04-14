@@ -287,6 +287,20 @@ struct AIView: View {
 
     // MARK: - Execute Actions
 
+    /// Find a task by title: exact match first, then contains-based fallback.
+    private func findTask(titled title: String) -> StructuredTask? {
+        let trimmed = title.trimmingCharacters(in: .whitespaces)
+        // Exact match
+        if let exact = allTasks.first(where: {
+            $0.title.localizedCaseInsensitiveCompare(trimmed) == .orderedSame
+        }) { return exact }
+        // Fallback: task title is contained in the AI title, or vice versa
+        let lower = trimmed.lowercased()
+        return allTasks.first(where: {
+            $0.title.lowercased().contains(lower) || lower.contains($0.title.lowercased())
+        })
+    }
+
     private func executeActions(_ actions: [AIAction]) {
         let cal = Calendar.current
         let today = Date()
@@ -295,9 +309,7 @@ struct AIView: View {
             switch action {
 
             case .moveTask(let title, let hour, let minute):
-                if let task = allTasks.first(where: {
-                    $0.title.localizedCaseInsensitiveCompare(title) == .orderedSame
-                }), !task.isProtected {
+                if let task = findTask(titled: title), !task.isProtected {
                     let base = task.startTime ?? task.date
                     task.startTime = cal.date(bySettingHour: hour, minute: minute, second: 0, of: base)
                 }
@@ -332,9 +344,7 @@ struct AIView: View {
                 modelContext.insert(newTask)
 
             case .completeTask(let title):
-                if let task = allTasks.first(where: {
-                    $0.title.localizedCaseInsensitiveCompare(title) == .orderedSame
-                }), !task.isProtected {
+                if let task = findTask(titled: title), !task.isProtected {
                     task.isCompleted = true
                 }
             }
