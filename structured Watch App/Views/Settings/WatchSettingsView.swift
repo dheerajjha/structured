@@ -13,8 +13,7 @@ struct WatchSettingsView: View {
     private let slateBlue = Color(hex: "#7C97AB")
 
     var body: some View {
-        NavigationStack {
-            List {
+        List {
                 Section("Wake Up") {
                     DatePicker(
                         "Rise and Shine",
@@ -44,10 +43,9 @@ struct WatchSettingsView: View {
                 }
             }
             
-            .onAppear {
-                wakeTime = Calendar.current.date(bySettingHour: wakeHour, minute: wakeMinute, second: 0, of: Date()) ?? Date()
-                bedTime = Calendar.current.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: Date()) ?? Date()
-            }
+        .onAppear {
+            wakeTime = Calendar.current.date(bySettingHour: wakeHour, minute: wakeMinute, second: 0, of: Date()) ?? Date()
+            bedTime = Calendar.current.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: Date()) ?? Date()
         }
     }
 }

@@ -24,32 +24,30 @@ struct WatchTimelineView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .bottomTrailing) {
-                VStack(spacing: 0) {
-                    dateHeader
-                    taskList
-                }
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 0) {
+                dateHeader
+                taskList
+            }
 
-                // Floating add button
-                Button { showingTaskEditor = true } label: {
-                    Image(systemName: "plus")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 36, height: 36)
-                        .background(Circle().fill(Color(hex: "#E8907E")))
-                        .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
-                }
-                .buttonStyle(.plain)
-                .padding(.trailing, 8)
-                .padding(.bottom, 4)
+            // Floating add button
+            Button { showingTaskEditor = true } label: {
+                Image(systemName: "plus")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 36, height: 36)
+                    .background(Circle().fill(Color(hex: "#E8907E")))
+                    .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
             }
-            .sheet(isPresented: $showingTaskEditor) {
-                WatchTaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
-            }
-            .sheet(item: $editingTask) { task in
-                WatchTaskEditorView(task: task, selectedDate: viewModel.selectedDate)
-            }
+            .buttonStyle(.plain)
+            .padding(.trailing, 8)
+            .padding(.bottom, 4)
+        }
+        .sheet(isPresented: $showingTaskEditor) {
+            WatchTaskEditorView(task: nil, selectedDate: viewModel.selectedDate)
+        }
+        .sheet(item: $editingTask) { task in
+            WatchTaskEditorView(task: task, selectedDate: viewModel.selectedDate)
         }
     }
 

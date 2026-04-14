@@ -24,29 +24,26 @@ struct WatchAIView: View {
     ]
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 4) {
-                if viewModel.messages.isEmpty {
-                    emptyState
-                } else {
-                    chatHistory
-                }
+        VStack(spacing: 4) {
+            if viewModel.messages.isEmpty {
+                emptyState
+            } else {
+                chatHistory
+            }
 
-                inputBar
-            }
-            
-            .toolbar {
-                if !viewModel.messages.isEmpty {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            viewModel.clearConversation()
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.caption2)
-                        }
-                    }
+            if !viewModel.messages.isEmpty {
+                Button {
+                    viewModel.clearConversation()
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
                 }
+                .buttonStyle(.plain)
             }
+
+            inputBar
+        }
             .onChange(of: todayScheduled.count) { _, _ in refreshContext() }
             .onChange(of: todayUnscheduled.count) { _, _ in refreshContext() }
             .onChange(of: viewModel.pendingActions.count) { _, count in
@@ -55,7 +52,6 @@ struct WatchAIView: View {
                 viewModel.pendingActions = []
             }
             .onAppear { refreshContext() }
-        }
     }
 
     // MARK: - Empty State

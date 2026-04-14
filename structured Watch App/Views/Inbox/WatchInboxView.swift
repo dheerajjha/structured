@@ -14,8 +14,7 @@ struct WatchInboxView: View {
     @State private var editingTask: WatchTask?
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .bottomTrailing) {
+        ZStack(alignment: .bottomTrailing) {
                 Group {
                     if inboxTasks.isEmpty {
                         emptyState
@@ -84,9 +83,8 @@ struct WatchInboxView: View {
             .sheet(isPresented: $showingNewTask) {
                 WatchTaskEditorView(task: nil, selectedDate: Date(), startAsInbox: true)
             }
-            .sheet(item: $editingTask) { task in
-                WatchTaskEditorView(task: task, selectedDate: Date())
-            }
+        .sheet(item: $editingTask) { task in
+            WatchTaskEditorView(task: task, selectedDate: Date())
         }
     }
 
