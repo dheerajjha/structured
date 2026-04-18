@@ -14,7 +14,7 @@ struct WatchTaskEditorView: View {
     @State private var startTime = Date()
     @State private var durationMinutes: Double = 30
     @State private var colorHex = "#FF6B6B"
-    @State private var iconName = "star.fill"
+    @State private var iconName = "checklist"
 
     private var isEditing: Bool { task != nil }
 

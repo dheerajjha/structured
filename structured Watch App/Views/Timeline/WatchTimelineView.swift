@@ -173,6 +173,10 @@ struct WatchTimelineView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
+
+                // Bottom spacer so FAB doesn't overlap last row
+                Color.clear.frame(height: 36)
+                    .listRowBackground(Color.clear)
             }
             .listStyle(.carousel)
         }
