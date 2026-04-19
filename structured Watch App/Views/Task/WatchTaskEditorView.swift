@@ -30,6 +30,7 @@ struct WatchTaskEditorView: View {
                     // Title
                     TextField("Task name", text: $title)
                         .font(.footnote)
+                        .characterLimit($title, max: WatchTaskTextLimit.title)
 
                     // All Day toggle
                     Toggle("All Day", isOn: $isAllDay)
@@ -154,6 +155,8 @@ struct WatchTaskEditorView: View {
             task.colorHex = colorHex
             task.iconName = iconName
             task.modifiedAt = Date()
+            // Push the edit to the iPhone so it overwrites its copy.
+            WatchConnectivityManager.shared.sendEditedTask(task)
         } else {
             let newTask = WatchTask(
                 title: trimmedTitle,

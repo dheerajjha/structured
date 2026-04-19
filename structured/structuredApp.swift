@@ -1,10 +1,13 @@
 import SwiftUI
 import SwiftData
+#if DEBUG
 import BugReporterSDK
+#endif
 
 @main
 struct structuredApp: App {
     init() {
+        #if DEBUG
         BugReporter.start(config: BugReporterConfig(
             apiURL: URL(string: "https://bug.heywrist.com")!,
             apiKey: "structured-ios-dev",
@@ -14,6 +17,7 @@ struct structuredApp: App {
             enableFloatingButton: false,
             maxNetworkLogEntries: 50
         ))
+        #endif
         Analytics.setup()
         Analytics.track(Analytics.Event.appOpened)
     }

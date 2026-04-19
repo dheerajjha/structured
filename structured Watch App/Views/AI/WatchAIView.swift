@@ -121,6 +121,7 @@ struct WatchAIView: View {
         HStack(spacing: 6) {
             TextField("Ask...", text: $viewModel.inputText)
                 .font(.caption)
+                .characterLimit($viewModel.inputText, max: WatchTaskTextLimit.aiInput)
                 .onSubmit { Task { await viewModel.send() } }
 
             if !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -174,7 +175,8 @@ struct WatchAIView: View {
                     date: targetDay,
                     colorHex: colorHex ?? "#E8907E",
                     iconName: "checklist",
-                    isAllDay: false
+                    isAllDay: false,
+                    order: nextOrder(on: targetDay)
                 )
                 modelContext.insert(newTask)
                 WatchConnectivityManager.shared.sendNewTask(newTask)
@@ -188,7 +190,8 @@ struct WatchAIView: View {
                     colorHex: colorHex ?? "#E8907E",
                     iconName: "checklist",
                     isAllDay: false,
-                    isInbox: true
+                    isInbox: true,
+                    order: nextInboxOrder()
                 )
                 modelContext.insert(newTask)
                 WatchConnectivityManager.shared.sendNewTask(newTask)
@@ -209,6 +212,18 @@ struct WatchAIView: View {
 
     private func refreshContext() {
         viewModel.updateContext(scheduledTasks: todayScheduled, unscheduledTasks: todayUnscheduled)
+    }
+
+    private func nextOrder(on day: Date) -> Int {
+        let dayTasks = allTasks.filter { $0.date.isSameDay(as: day) && !$0.isInbox }
+        let nonWindDown = dayTasks.filter { $0.anchorType != WatchAnchorType.windDown }
+        let maxOrder = nonWindDown.map(\.order).max() ?? 0
+        return min(maxOrder + 1, 998)
+    }
+
+    private func nextInboxOrder() -> Int {
+        let inboxTasks = allTasks.filter(\.isInbox)
+        return (inboxTasks.map(\.order).max() ?? 0) + 1
     }
 }
 

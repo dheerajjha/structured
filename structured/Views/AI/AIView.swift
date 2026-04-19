@@ -75,6 +75,39 @@ struct AIView: View {
                         .padding(.vertical, scaled(4))
                 }
 
+                // Voice input error — most commonly permission denial. Offers deep-link to Settings.
+                if let speechError = speechRecognizer.errorMessage {
+                    HStack(spacing: scaled(8)) {
+                        Image(systemName: "mic.slash.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                        Text(speechError)
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                            .lineLimit(2)
+                        Spacer()
+                        if speechRecognizer.permissionDenied {
+                            Button("Settings") {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(coral)
+                        } else {
+                            Button {
+                                speechRecognizer.errorMessage = nil
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.caption2.weight(.semibold))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, scaled(16))
+                    .padding(.vertical, scaled(6))
+                }
+
                 suggestionRow
                 inputBar.padding(.bottom, scaled(8))
             }
@@ -223,6 +256,7 @@ struct AIView: View {
                     .font(.subheadline)
                     .lineLimit(1...4)
                     .focused($inputFocused)
+                    .characterLimit($viewModel.inputText, max: TaskTextLimit.aiInput)
                     .onSubmit { Task { await viewModel.send() } }
 
                 // Mic button — tap to start/stop speech recognition
@@ -272,11 +306,13 @@ struct AIView: View {
         .onChange(of: speechRecognizer.transcript) { _, text in
             if !text.isEmpty { viewModel.inputText = text }
         }
-        // When speech stops, auto-send if there's content
+        // When speech stops, auto-send only if the user actually spoke in this
+        // session. Manual typing + mic-toggle no longer triggers a surprise send.
         .onChange(of: speechRecognizer.isListening) { _, listening in
-            if !listening && !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty {
-                Task { await viewModel.send() }
-            }
+            guard !listening,
+                  speechRecognizer.didCaptureSpeech,
+                  !viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+            Task { await viewModel.send() }
         }
     }
 

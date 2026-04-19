@@ -28,7 +28,7 @@ struct IconPickerView: View {
 
         // Transportation
         "car.fill", "bicycle", "bus.fill", "airplane",
-        "tram.fill", "figure.walk",
+        "tram.fill", "scooter",
 
         // Home & Life
         "house.fill", "washer.fill", "cart.fill", "gift.fill",

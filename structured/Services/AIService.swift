@@ -1,5 +1,5 @@
 import Foundation
-#if canImport(BugReporterSDK)
+#if DEBUG
 import BugReporterSDK
 #endif
 
@@ -38,9 +38,10 @@ struct AIService {
     private static let baseURL  = "https://azure-openai-proxy.ball-breaker.workers.dev"
     private static let devToken = "a83c17f2b50e4e4f93e9c26f52a9d0bb"
 
-    /// Session with BugReporter network logging injected (works in all modes).
+    /// Session with BugReporter network logging injected in debug builds only.
+    /// Release builds use the default URLSession so user conversations are never logged.
     private static let session: URLSession = {
-        #if canImport(BugReporterSDK)
+        #if DEBUG
         return URLSession(configuration: BugReporter.trackedSessionConfiguration())
         #else
         return URLSession.shared

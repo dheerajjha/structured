@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import WatchKit
 
 struct WatchInboxView: View {
     @Environment(\.modelContext) private var modelContext
@@ -50,9 +51,10 @@ struct WatchInboxView: View {
                                 RoundedRectangle(cornerRadius: 8)
                                     .fill(Color(hex: task.colorHex).pastel())
                             )
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
                                     let taskId = task.id.uuidString
+                                    WKInterfaceDevice.current().play(.failure)
                                     withAnimation { modelContext.delete(task) }
                                     WatchConnectivityManager.shared.sendTaskUpdate(
                                         "delete", taskId: taskId

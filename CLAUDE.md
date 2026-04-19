@@ -25,8 +25,6 @@ structured/
 │   │   │   ├── TimelineView.swift          ← DayTimelineView — task list with gaps, current-time badge, swipe/context actions
 │   │   │   ├── TaskBlockView.swift         ← Single task row (icon, title, time, completion circle)
 │   │   │   ├── AllDayTasksView.swift       ← Horizontal chip strip for all-day tasks
-│   │   │   ├── CurrentTimeIndicatorView.swift ← Red dot + line (ZStack overlay, unused in current list layout)
-│   │   │   ├── HourGridView.swift          ← 24-hour label + divider grid (ZStack overlay, unused in current list layout)
 │   │   │   └── PianoWeekView.swift         ← Mini week overview with colored capsules per day
 │   │   ├── Task/
 │   │   │   ├── TaskEditorView.swift        ← Create/edit sheet: title, icon, color, time, duration, notes, subtasks
@@ -45,7 +43,7 @@ structured/
 │   │   │   ├── OnboardingTaskStylePage.swift   ← Page 6: duration pills + color circles
 │   │   │   └── OnboardingSummaryPage.swift     ← Page 7: preview timeline + "Finish Setup"
 │   │   ├── Settings/
-│   │   │   └── SettingsView.swift          ← Anchor time editing, CSV/iCal export, about section
+│   │   │   └── SettingsView.swift          ← Anchor time editing and about section
 │   │   └── Shared/
 │   │       └── TaskIconView.swift          ← TaskIconView + CompletionCircleView (used everywhere)
 │   ├── Services/
@@ -58,9 +56,14 @@ structured/
 │   │   └── DateHelpers.swift           ← Date extensions (startOfDay, weekDays, atTime, etc.) + TimeFormatting
 │   └── Assets.xcassets/
 │       └── OnboardingWelcome, OnboardingBenefits images, AccentColor, AppIcon
-├── structured Watch App/               ← watchOS target (placeholder — not yet implemented)
+├── structured Watch App/               ← watchOS target (Timeline, Inbox, AI, Settings)
 │   ├── structuredApp.swift
-│   └── ContentView.swift
+│   ├── ContentView.swift
+│   ├── Models/                         ← WatchTask, WatchSubtask (SwiftData)
+│   ├── Services/                       ← WatchConnectivityManager, WatchAIService, WatchAnchorManager
+│   ├── Utilities/                      ← WatchColorExtensions, WatchDateHelpers
+│   ├── ViewModels/                     ← WatchTimelineViewModel, WatchAIViewModel
+│   └── Views/                          ← Timeline, Inbox, AI, Settings, Task editor, Shared
 ├── Images/                             ← Reference screenshots (1.png, 2.png, 3.png)
 └── structured.xcodeproj/
 ```
@@ -94,8 +97,6 @@ structured/
 | Day view layout (task list, gaps, current-time) | `Views/Timeline/TimelineView.swift` (DayTimelineView) |
 | Task row appearance | `Views/Timeline/TaskBlockView.swift` |
 | All-day chips | `Views/Timeline/AllDayTasksView.swift` |
-| Hour grid overlay (currently unused) | `Views/Timeline/HourGridView.swift` |
-| Current-time red line overlay (currently unused) | `Views/Timeline/CurrentTimeIndicatorView.swift` |
 | Piano week overview (drag-down) | `Views/Timeline/PianoWeekView.swift` |
 | Date navigation, layout math, scroll helpers | `ViewModels/TimelineViewModel.swift` |
 | Header (date, chevrons, Today button) | `ContentView.swift` → `headerView` |
@@ -131,8 +132,7 @@ structured/
 | What to change | File(s) |
 |---|---|
 | Anchor time editing (wake/bed) | `Views/Settings/SettingsView.swift` |
-| CSV / iCal export | `Views/Settings/SettingsView.swift` |
-| ShareSheet (UIKit bridge) | `Views/Settings/SettingsView.swift` (bottom) |
+| About / version info | `Views/Settings/SettingsView.swift` |
 
 ### Daily Anchors (Rise and Shine / Wind Down)
 | What to change | File(s) |
@@ -165,7 +165,7 @@ structured/
 The AI returns `[ACTIONS]{...}[/ACTIONS]` blocks parsed by `AIViewModel.parseResponse()`. Supported: `move_task`, `create_task`, `create_unscheduled_task`, `complete_task`. Protected tasks are excluded from actions.
 
 ### Timeline Layout
-Current layout uses a **flat List** (not a ZStack grid). Tasks are sorted by `startTime` with gap rows inserted between them. `HourGridView` and `CurrentTimeIndicatorView` exist but are unused in the current list-based design.
+Current layout uses a **flat List** (not a ZStack grid). Tasks are sorted by `startTime` with gap rows inserted between them.
 
 ### Onboarding Flow
 7 pages in a `TabView(.page)`. On finish, `saveAndFinish()` creates anchor tasks + optional user task, persists wake/bed times to UserDefaults.
@@ -173,7 +173,7 @@ Current layout uses a **flat List** (not a ZStack grid). Tasks are sorted by `st
 ---
 
 ## Watch App Status
-**Not yet implemented.** The `structured Watch App/` target contains only boilerplate `ContentView` and `structuredApp`. No models, no WatchConnectivity, no complications.
+**Implemented.** Full timeline, inbox, AI chat and settings tabs with `WatchConnectivityManager` two-way sync to iPhone (tasks, edits, deletions and anchor preferences). Stand-alone anchors created via `WatchAnchorManager` if the watch opens without the iPhone. The timeline shows a live *Now / Next* banner, a coral progress pill (*x of y done*), and Taptic feedback on completion / unschedule / delete. Complications are **not** shipped — add a WidgetKit extension target when ready.
 
 ---
 
@@ -181,7 +181,7 @@ Current layout uses a **flat List** (not a ZStack grid). Tasks are sorted by `st
 - **Accent color**: Coral `#E8907E` (primary), Slate Blue `#7C97AB` (wind down).
 - **Analytics**: Every user-facing action is tracked via `Analytics.track()`. Add new events to `Analytics.Event`.
 - **SwiftData**: All persistence through `@Query` and `ModelContext`. No Core Data.
-- **No storyboards / UIKit views** except `ShareSheet` (UIActivityViewController bridge in SettingsView).
+- **No storyboards / UIKit views**.
 
 ---
 
@@ -197,4 +197,4 @@ Current layout uses a **flat List** (not a ZStack grid). Tasks are sorted by `st
 - Pro paywall (StoreKit 2)
 - iCloud sync / App Group container
 - Drag-and-drop rescheduling on timeline
-- Watch app implementation
+- CSV / iCal export

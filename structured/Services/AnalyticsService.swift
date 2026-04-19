@@ -81,8 +81,6 @@ enum Analytics {
         static let settingsViewed            = "settings_viewed"
         static let wakeTimeChanged           = "wake_time_changed"
         static let bedTimeChanged            = "bed_time_changed"
-        static let exportCsvTapped           = "export_csv_tapped"
-        static let exportIcsTapped           = "export_ics_tapped"
 
         // FAB
         static let fabTapped                 = "fab_tapped"

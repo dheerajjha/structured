@@ -28,7 +28,10 @@ struct OnboardingContainerView: View {
     private let sageGreen  = Color(hex: "#7A9A6A")
 
     var body: some View {
-        ZStack(alignment: .top) {
+        GeometryReader { geo in
+            let safeTop = geo.safeAreaInsets.top
+
+            ZStack(alignment: .top) {
             // ── Pages ─────────────────────────────────────────────
             TabView(selection: $pageIndex) {
                 OnboardingWelcomePage(onNext: { goTo(Page.benefits.rawValue) })
@@ -96,8 +99,10 @@ struct OnboardingContainerView: View {
             }
 
             // ── Floating top bar ──────────────────────────────────
-            topBar.padding(.top, safeTop)
-        }
+            topBar.padding(.top, max(safeTop, scaled(16)))
+            } // ZStack
+            .ignoresSafeArea()
+        } // GeometryReader
         .ignoresSafeArea()
     }
 
@@ -174,12 +179,6 @@ struct OnboardingContainerView: View {
         guard !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return [] }
         return [OnboardingTaskData(title: taskTitle, icon: taskIcon,
                                    colorHex: taskColorHex, durationMinutes: taskDuration)]
-    }
-
-    private var safeTop: CGFloat {
-        UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows.first?.safeAreaInsets.top ?? 44
     }
 
     private func goTo(_ index: Int) {

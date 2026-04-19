@@ -58,12 +58,24 @@ class WatchSyncManager: NSObject, @unchecked Sendable {
             return dict
         }
 
-        let payload: [String: Any] = ["tasks": tasksPayload]
+        let anchorPayload: [String: Any] = [
+            "wakeHour":   DailyAnchorManager.storedWakeHour,
+            "wakeMinute": DailyAnchorManager.storedWakeMinute,
+            "bedHour":    DailyAnchorManager.storedBedHour,
+            "bedMinute":  DailyAnchorManager.storedBedMinute,
+        ]
+
+        let payload: [String: Any] = [
+            "tasks": tasksPayload,
+            "anchors": anchorPayload,
+        ]
 
         do {
             try WCSession.default.updateApplicationContext(payload)
         } catch {
+            #if DEBUG
             print("[WC iOS] Failed to update application context: \(error)")
+            #endif
         }
     }
 }
@@ -72,9 +84,11 @@ class WatchSyncManager: NSObject, @unchecked Sendable {
 
 extension WatchSyncManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        #if DEBUG
         if let error {
             print("[WC iOS] Activation error: \(error.localizedDescription)")
         }
+        #endif
     }
 
     func sessionDidBecomeInactive(_ session: WCSession) {}
@@ -107,56 +121,40 @@ extension WatchSyncManager: WCSessionDelegate {
     private func handleWatchAction(action: String, taskId: String, payload: [String: Any]) async {
         guard let container = modelContainer else { return }
         let context = container.mainContext
-        guard let id = UUID(uuidString: taskId) else { return }
 
-        // Handle task creation from watch
-        if action == "create" {
-            // Check if already exists
-            let predicate = #Predicate<StructuredTask> { $0.id == id }
-            if let existing = try? context.fetch(FetchDescriptor(predicate: predicate)), !existing.isEmpty {
-                return // Already synced
-            }
+        // Anchor-time change from the watch Settings.
+        if action == "anchor_update" {
+            let wakeHour   = payload["wakeHour"]   as? Int ?? DailyAnchorManager.storedWakeHour
+            let wakeMinute = payload["wakeMinute"] as? Int ?? DailyAnchorManager.storedWakeMinute
+            let bedHour    = payload["bedHour"]    as? Int ?? DailyAnchorManager.storedBedHour
+            let bedMinute  = payload["bedMinute"]  as? Int ?? DailyAnchorManager.storedBedMinute
 
-            let title = payload["title"] as? String ?? ""
-            let duration = payload["duration"] as? TimeInterval ?? 1800
-            let colorHex = payload["colorHex"] as? String ?? "#FF6B6B"
-            let iconName = payload["iconName"] as? String ?? "checklist"
-            let isCompleted = payload["isCompleted"] as? Bool ?? false
-            let isAllDay = payload["isAllDay"] as? Bool ?? false
-            let isInbox = payload["isInbox"] as? Bool ?? false
-            let order = payload["order"] as? Int ?? 0
-            let notes = payload["notes"] as? String ?? ""
+            UserDefaults.standard.set(wakeHour,   forKey: AnchorDefaults.wakeHour)
+            UserDefaults.standard.set(wakeMinute, forKey: AnchorDefaults.wakeMinute)
+            UserDefaults.standard.set(bedHour,    forKey: AnchorDefaults.bedHour)
+            UserDefaults.standard.set(bedMinute,  forKey: AnchorDefaults.bedMinute)
 
-            let dateFmt = DateFormatter()
-            dateFmt.dateFormat = "yyyy-MM-dd"
-            let date = (payload["date"] as? String).flatMap { dateFmt.date(from: $0) } ?? Date().startOfDay
-
-            let isoFmt = ISO8601DateFormatter()
-            isoFmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            let startTime = (payload["startTime"] as? String).flatMap { isoFmt.date(from: $0) }
-
-            let newTask = StructuredTask(
-                title: title,
-                startTime: startTime,
-                duration: duration,
-                date: date,
-                colorHex: colorHex,
-                iconName: iconName,
-                isCompleted: isCompleted,
-                isAllDay: isAllDay,
-                isInbox: isInbox,
-                order: order
+            DailyAnchorManager.updateGlobalTimes(
+                context: context,
+                wakeHour: wakeHour, wakeMinute: wakeMinute,
+                bedHour: bedHour,   bedMinute: bedMinute
             )
-            newTask.notes = notes
-            newTask.id = id
-            context.insert(newTask)
-
             try? context.save()
             NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
             return
         }
 
-        // Handle updates to existing tasks
+        guard let id = UUID(uuidString: taskId) else { return }
+
+        // Handle task creation / full-update from watch
+        if action == "create" || action == "update" {
+            upsertTask(id: id, payload: payload, context: context)
+            try? context.save()
+            NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
+            return
+        }
+
+        // Handle lightweight updates to existing tasks
         let predicate = #Predicate<StructuredTask> { $0.id == id }
         guard let tasks = try? context.fetch(FetchDescriptor(predicate: predicate)),
               let task = tasks.first else { return }
@@ -182,5 +180,60 @@ extension WatchSyncManager: WCSessionDelegate {
 
         try? context.save()
         NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
+    }
+
+    @MainActor
+    private func upsertTask(id: UUID, payload: [String: Any], context: ModelContext) {
+        let title = payload["title"] as? String ?? ""
+        let duration = payload["duration"] as? TimeInterval ?? 1800
+        let colorHex = payload["colorHex"] as? String ?? "#FF6B6B"
+        let iconName = payload["iconName"] as? String ?? "checklist"
+        let isCompleted = payload["isCompleted"] as? Bool ?? false
+        let isAllDay = payload["isAllDay"] as? Bool ?? false
+        let isInbox = payload["isInbox"] as? Bool ?? false
+        let order = payload["order"] as? Int ?? 0
+        let notes = payload["notes"] as? String ?? ""
+
+        let dateFmt = DateFormatter()
+        dateFmt.dateFormat = "yyyy-MM-dd"
+        let date = (payload["date"] as? String).flatMap { dateFmt.date(from: $0) } ?? Date().startOfDay
+
+        let isoFmt = ISO8601DateFormatter()
+        isoFmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let startTime = (payload["startTime"] as? String).flatMap { isoFmt.date(from: $0) }
+
+        let predicate = #Predicate<StructuredTask> { $0.id == id }
+        if let existing = (try? context.fetch(FetchDescriptor(predicate: predicate)))?.first {
+            // Protected anchor tasks are owned by the iPhone — never let the watch overwrite them.
+            guard !existing.isProtected else { return }
+
+            existing.title = title
+            existing.duration = duration
+            existing.colorHex = colorHex
+            existing.iconName = iconName
+            existing.isCompleted = isCompleted
+            existing.isAllDay = isAllDay
+            existing.isInbox = isInbox
+            existing.order = order
+            existing.notes = notes
+            existing.date = date
+            existing.startTime = startTime
+        } else {
+            let newTask = StructuredTask(
+                title: title,
+                startTime: startTime,
+                duration: duration,
+                date: date,
+                colorHex: colorHex,
+                iconName: iconName,
+                isCompleted: isCompleted,
+                isAllDay: isAllDay,
+                isInbox: isInbox,
+                order: order
+            )
+            newTask.notes = notes
+            newTask.id = id
+            context.insert(newTask)
+        }
     }
 }

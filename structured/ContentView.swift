@@ -41,12 +41,22 @@ struct ContentView: View {
     @State private var sheetDragOffset: CGFloat = 0
 
     var body: some View {
-        if !hasCompletedOnboarding {
-            OnboardingContainerView(hasCompletedOnboarding: $hasCompletedOnboarding)
-                .onChange(of: hasCompletedOnboarding) { _, completed in
-                    if completed { ensureAnchorsForCurrentDate() }
-                }
-        } else {
+        Group {
+            if !hasCompletedOnboarding {
+                OnboardingContainerView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                    .onChange(of: hasCompletedOnboarding) { _, completed in
+                        if completed { ensureAnchorsForCurrentDate() }
+                    }
+            } else {
+                mainContent
+            }
+        }
+        .readAdaptiveLayout()
+    }
+
+    @ViewBuilder
+    private var mainContent: some View {
+        AdaptiveContentContainer {
             tabContent
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 // Push content up so nothing hides behind the tab bar
@@ -442,7 +452,9 @@ struct ContentView: View {
                     date: targetDay,
                     colorHex: colorHex ?? "#E8907E",
                     iconName: IconPredictor.predict(for: title) ?? "checklist",
-                    isAllDay: false
+                    isAllDay: false,
+                    isInbox: false,
+                    order: nextOrder(on: targetDay)
                 )
                 modelContext.insert(newTask)
 
@@ -455,7 +467,8 @@ struct ContentView: View {
                     colorHex: colorHex ?? "#E8907E",
                     iconName: IconPredictor.predict(for: title) ?? "checklist",
                     isAllDay: false,
-                    isInbox: true
+                    isInbox: true,
+                    order: nextInboxOrder()
                 )
                 modelContext.insert(newTask)
 
@@ -468,6 +481,26 @@ struct ContentView: View {
 
         // Force SwiftData to flush changes so @Query updates across all live views
         try? modelContext.save()
+
+        // AI actions include move/complete that don't change allTasks.count,
+        // so the count-based sync hook won't fire. Push to the watch explicitly.
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
+    }
+
+    /// Returns an `order` value guaranteed to slot the new task after every
+    /// existing non-protected task on the same day, while staying below the
+    /// Wind Down anchor (which lives at `order = 999`).
+    private func nextOrder(on day: Date) -> Int {
+        let dayTasks = allTasks.filter { $0.date.isSameDay(as: day) && !$0.isInbox }
+        let nonWindDown = dayTasks.filter { $0.anchorType != AnchorType.windDown }
+        let maxOrder = nonWindDown.map(\.order).max() ?? 0
+        return min(maxOrder + 1, 998)
+    }
+
+    /// Returns an `order` value that appears at the end of the Inbox list.
+    private func nextInboxOrder() -> Int {
+        let inboxTasks = allTasks.filter(\.isInbox)
+        return (inboxTasks.map(\.order).max() ?? 0) + 1
     }
 }
 

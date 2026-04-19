@@ -428,8 +428,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tickd uses the microphone to capture your voice when you tap the mic button in the AI planner.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tickd uses speech recognition to convert your voice into task requests for the AI planner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -446,6 +446,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -468,8 +469,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Tickd;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice-to-text bug descriptions.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe voice bug reports.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tickd uses the microphone to capture your voice when you tap the mic button in the AI planner.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tickd uses speech recognition to convert your voice into task requests for the AI planner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,6 +487,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;

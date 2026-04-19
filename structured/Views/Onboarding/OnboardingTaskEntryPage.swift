@@ -8,6 +8,7 @@ struct OnboardingTaskEntryPage: View {
 
     @FocusState private var focused: Bool
 
+    private let coralHex = "#D4806E"
     private let coral = Color(hex: "#D4806E")
     private let warmBrown = Color(hex: "#8B7355")
 
@@ -50,12 +51,13 @@ struct OnboardingTaskEntryPage: View {
 
                 // Task name input
                 HStack(spacing: scaled(12)) {
-                    TaskIconView(iconName: taskIcon, colorHex: coral.description, size: scaled(44))
+                    TaskIconView(iconName: taskIcon, colorHex: coralHex, size: scaled(44))
 
                     TextField("Task name", text: $taskTitle)
                         .font(.title3.weight(.medium))
                         .focused($focused)
                         .submitLabel(.done)
+                        .characterLimit($taskTitle, max: TaskTextLimit.title)
 
                     if !taskTitle.isEmpty {
                         Image(systemName: "checkmark.circle.fill")

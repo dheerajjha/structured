@@ -7,6 +7,12 @@ final class SpeechRecognizer {
     var transcript: String = ""
     var isListening: Bool = false
     var errorMessage: String?
+    /// Flag describing *why* the last recognition session ended.
+    /// `true` only when the user actually produced speech in this session.
+    var didCaptureSpeech: Bool = false
+    /// `true` when the user has explicitly denied mic or speech access so
+    /// callers can surface an "Open Settings" CTA.
+    var permissionDenied: Bool = false
 
     private var speechRecognizer: SFSpeechRecognizer?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -26,7 +32,8 @@ final class SpeechRecognizer {
             }
         }
         guard speechStatus == .authorized else {
-            errorMessage = "Speech recognition not authorized."
+            errorMessage = "Speech recognition is disabled. Enable it in Settings to dictate your plans."
+            permissionDenied = (speechStatus == .denied || speechStatus == .restricted)
             return false
         }
 
@@ -41,10 +48,12 @@ final class SpeechRecognizer {
             }
         }
         guard audioStatus else {
-            errorMessage = "Microphone access not granted."
+            errorMessage = "Microphone access is disabled. Enable it in Settings to use voice input."
+            permissionDenied = true
             return false
         }
 
+        permissionDenied = false
         return true
     }
 
@@ -81,12 +90,17 @@ final class SpeechRecognizer {
             isListening = true
             transcript = ""
             errorMessage = nil
+            didCaptureSpeech = false
 
             recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
                 guard let self else { return }
                 if let result {
+                    let text = result.bestTranscription.formattedString
                     Task { @MainActor in
-                        self.transcript = result.bestTranscription.formattedString
+                        self.transcript = text
+                        if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            self.didCaptureSpeech = true
+                        }
                     }
                 }
                 if error != nil || (result?.isFinal ?? false) {

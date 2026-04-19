@@ -23,6 +23,7 @@ struct WatchSettingsView: View {
                     .onChange(of: wakeTime) { _, newVal in
                         wakeHour = Calendar.current.component(.hour, from: newVal)
                         wakeMinute = Calendar.current.component(.minute, from: newVal)
+                        pushAnchors()
                     }
                 }
 
@@ -35,6 +36,7 @@ struct WatchSettingsView: View {
                     .onChange(of: bedTime) { _, newVal in
                         bedHour = Calendar.current.component(.hour, from: newVal)
                         bedMinute = Calendar.current.component(.minute, from: newVal)
+                        pushAnchors()
                     }
                 }
 
@@ -47,5 +49,12 @@ struct WatchSettingsView: View {
             wakeTime = Calendar.current.date(bySettingHour: wakeHour, minute: wakeMinute, second: 0, of: Date()) ?? Date()
             bedTime = Calendar.current.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: Date()) ?? Date()
         }
+    }
+
+    private func pushAnchors() {
+        WatchConnectivityManager.shared.sendAnchorUpdate(
+            wakeHour: wakeHour, wakeMinute: wakeMinute,
+            bedHour: bedHour,   bedMinute: bedMinute
+        )
     }
 }

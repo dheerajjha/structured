@@ -158,6 +158,8 @@ struct SettingsView: View {
             wakeHour: wakeTime.hour, wakeMinute: wakeTime.minute,
             bedHour: bedTime.hour,   bedMinute: bedTime.minute
         )
+        // Push the new anchor preferences and refreshed anchor tasks to the watch.
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
     }
 }
 

@@ -95,6 +95,7 @@ struct DayTimelineView: View {
             task.isInbox = true
             task.startTime = nil
         }
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
     }
 
     private func deleteTask(_ task: StructuredTask) {

@@ -63,6 +63,9 @@ class TimelineViewModel {
         withAnimation(.snappy(duration: 0.3)) {
             task.isCompleted.toggle()
         }
+        // SwiftData @Query only observes collection size changes, so explicitly
+        // kick the iPhone→Watch sync here.
+        NotificationCenter.default.post(name: .watchSyncNeeded, object: nil)
     }
 
     // MARK: - Layout Helpers

@@ -69,6 +69,7 @@ struct TaskEditorView: View {
 
                         TextField("Task name", text: $title)
                             .font(.title3.weight(.semibold))
+                            .characterLimit($title, max: TaskTextLimit.title)
                             .onChange(of: title) { _, newTitle in
                                 guard !userPickedIcon, !isEditing else { return }
                                 if let predicted = IconPredictor.predict(for: newTitle) {
@@ -283,6 +284,7 @@ struct TaskEditorView: View {
                 Section("Notes") {
                     TextField("Add notes...", text: $notes, axis: .vertical)
                         .lineLimit(3...6)
+                        .characterLimit($notes, max: TaskTextLimit.notes)
                 }
 
                 // Subtasks section
@@ -294,6 +296,7 @@ struct TaskEditorView: View {
                                 .font(.caption)
 
                             TextField("Subtask", text: $subtaskTexts[index])
+                                .characterLimit($subtaskTexts[index], max: TaskTextLimit.subtask)
 
                             Button {
                                 subtaskTexts.remove(at: index)
