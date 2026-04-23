@@ -37,16 +37,7 @@ final class SpeechRecognizer {
             return false
         }
 
-        let audioStatus: Bool
-        if #available(iOS 17.0, *) {
-            audioStatus = await AVAudioApplication.requestRecordPermission()
-        } else {
-            audioStatus = await withCheckedContinuation { cont in
-                AVAudioSession.sharedInstance().requestRecordPermission { granted in
-                    cont.resume(returning: granted)
-                }
-            }
-        }
+        let audioStatus = await AVAudioApplication.requestRecordPermission()
         guard audioStatus else {
             errorMessage = "Microphone access is disabled. Enable it in Settings to use voice input."
             permissionDenied = true

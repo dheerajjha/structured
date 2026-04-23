@@ -2,7 +2,7 @@
 
 **Subtitle**: Simple to do list & daily planner
 
-A SwiftUI daily planner (iOS 26.2+ / watchOS 26.2+).
+A SwiftUI daily planner (iOS 18.0+ / watchOS 10.0+).
 **Stack**: SwiftUI, SwiftData, Mixpanel analytics, Azure OpenAI proxy for AI chat, BugReporterSDK.
 
 ---
