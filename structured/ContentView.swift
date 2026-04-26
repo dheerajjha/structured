@@ -148,14 +148,12 @@ struct ContentView: View {
                             .padding(.top, scaled(10))
                             .padding(.bottom, scaled(6))
 
-                        Divider()
                         DayTimelineView(viewModel: viewModel)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
                         UnevenRoundedRectangle(topLeadingRadius: scaled(16), topTrailingRadius: scaled(16))
                             .fill(Color(.systemGroupedBackground))
-                            .shadow(color: .black.opacity(0.08), radius: scaled(8), y: -2)
                     )
                     .offset(y: currentOffset + sheetDragOffset)
                     // Vertical drag → reveal/collapse piano
@@ -204,6 +202,9 @@ struct ContentView: View {
         .onChange(of: viewModel.selectedDate, initial: true) { _, date in
             DailyAnchorManager.ensureAnchors(for: date, context: modelContext)
         }
+        // Match the other tabs so the area behind the floating bottom bar stays
+        // the same color instead of falling back to the default systemBackground.
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
     }
 
     // MARK: - Bottom Bar

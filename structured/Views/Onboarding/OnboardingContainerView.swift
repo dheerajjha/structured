@@ -132,12 +132,6 @@ struct OnboardingContainerView: View {
                     }
                 }
                 Spacer()
-                Button("Skip") {
-                    Analytics.track(Analytics.Event.onboardingSkipped, properties: ["page_index": pageIndex])
-                    finish()
-                }
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.85))
             } else {
                 // Progress bar — setup pages
                 GeometryReader { geo in
@@ -152,13 +146,6 @@ struct OnboardingContainerView: View {
                     }
                 }
                 .frame(height: scaled(5))
-
-                Button("Skip") {
-                    Analytics.track(Analytics.Event.onboardingSkipped, properties: ["page_index": pageIndex])
-                    finish()
-                }
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(warmBrown.opacity(0.55))
             }
         }
         .padding(.horizontal, scaled(20))

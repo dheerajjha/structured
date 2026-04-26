@@ -31,7 +31,6 @@ enum Analytics {
         // Onboarding
         static let onboardingStarted        = "onboarding_started"
         static let onboardingPageViewed      = "onboarding_page_viewed"
-        static let onboardingSkipped         = "onboarding_skipped"
         static let onboardingCompleted       = "onboarding_completed"
         static let onboardingWakeTimeSet     = "onboarding_wake_time_set"
         static let onboardingBedTimeSet      = "onboarding_bed_time_set"
