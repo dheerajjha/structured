@@ -1,25 +1,62 @@
 import Foundation
 import Mixpanel
-
-// MARK: - Analytics Service
+import UIKit
 
 enum Analytics {
 
-    // MARK: - Session
-
     static let sessionId = UUID().uuidString
 
-    // MARK: - Setup
+    private static let projectToken = "f8aebee34dee964043f41b1bae1316d5"
+
+    /// Pinned Mixpanel instance — BugReporterSDK reroutes `mainInstance()`
+    /// via `setMainInstance(name:)`, so we must hold our own reference.
+    private static var instance: MixpanelInstance?
+    private static let distinctIdKey = "Analytics.structured.stableDistinctId"
+    private static var flushHooksRegistered = false
 
     static func setup() {
-        Mixpanel.initialize(token: "f8aebee34dee964043f41b1bae1316d5", trackAutomaticEvents: false)
-        Mixpanel.mainInstance().registerSuperProperties(["session_id": sessionId])
+        if instance != nil { return }
+        let mp = Mixpanel.initialize(token: projectToken, trackAutomaticEvents: false, instanceName: "structured")
+        #if DEBUG
+        mp.loggingEnabled = true
+        #endif
+        instance = mp
+        mp.registerSuperProperties(["session_id": sessionId])
+        identifyStableUser()
+        registerFlushHooks()
     }
 
-    // MARK: - Track
+    private static var stableDistinctId: String {
+        if let cached = UserDefaults.standard.string(forKey: distinctIdKey) { return cached }
+        let fresh = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        UserDefaults.standard.set(fresh, forKey: distinctIdKey)
+        return fresh
+    }
+
+    private static func identifyStableUser() {
+        guard let mp = instance else { return }
+        mp.identify(distinctId: stableDistinctId)
+        let now = Date()
+        mp.people.setOnce(properties: ["$first_seen": now])
+        mp.people.set(properties: [
+            "$last_seen": now,
+            "app_version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
+            "build_number": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+        ])
+    }
+
+    private static func registerFlushHooks() {
+        guard !flushHooksRegistered else { return }
+        flushHooksRegistered = true
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: nil) { _ in instance?.flush() }
+        nc.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { _ in instance?.flush() }
+    }
+
+    static func flush() { instance?.flush() }
 
     static func track(_ event: String, properties: [String: MixpanelType]? = nil) {
-        Mixpanel.mainInstance().track(event: event, properties: properties)
+        instance?.track(event: event, properties: properties)
     }
 
     // MARK: - Event Names
