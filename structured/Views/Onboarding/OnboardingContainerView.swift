@@ -262,5 +262,9 @@ struct OnboardingPrimaryButton: View {
                 )
         }
         .disabled(isDisabled)
+        // Cap onboarding CTA at ~440pt on iPad so the rounded button
+        // doesn't span the full 700pt+ canvas. Phones are narrower
+        // than the cap so render unchanged.
+        .iPadCappedWidth(440)
     }
 }
