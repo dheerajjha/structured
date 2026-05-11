@@ -2,7 +2,8 @@ import Foundation
 import WatchConnectivity
 import SwiftData
 
-class WatchConnectivityManager: NSObject, @unchecked Sendable {
+@MainActor
+class WatchConnectivityManager: NSObject {
     static let shared = WatchConnectivityManager()
     var modelContainer: ModelContainer?
 
@@ -99,7 +100,7 @@ class WatchConnectivityManager: NSObject, @unchecked Sendable {
 // MARK: - WCSessionDelegate
 
 extension WatchConnectivityManager: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    nonisolated func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         #if DEBUG
         if let error {
             print("[WC Watch] Activation error: \(error.localizedDescription)")
@@ -107,19 +108,19 @@ extension WatchConnectivityManager: WCSessionDelegate {
         #endif
     }
 
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+    nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         guard let tasksData = applicationContext["tasks"] as? [[String: Any]] else { return }
         let anchors = applicationContext["anchors"] as? [String: Any]
-        Task { @MainActor in
-            await syncTasks(from: tasksData, anchors: anchors)
+        Task { @MainActor [weak self] in
+            await self?.syncTasks(from: tasksData, anchors: anchors)
         }
     }
 
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+    nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         if let tasksData = message["tasks"] as? [[String: Any]] {
             let anchors = message["anchors"] as? [String: Any]
-            Task { @MainActor in
-                await syncTasks(from: tasksData, anchors: anchors)
+            Task { @MainActor [weak self] in
+                await self?.syncTasks(from: tasksData, anchors: anchors)
             }
         }
     }

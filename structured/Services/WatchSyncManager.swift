@@ -6,7 +6,8 @@ extension Notification.Name {
     static let watchSyncNeeded = Notification.Name("watchSyncNeeded")
 }
 
-class WatchSyncManager: NSObject, @unchecked Sendable {
+@MainActor
+class WatchSyncManager: NSObject {
     static let shared = WatchSyncManager()
     var modelContainer: ModelContainer?
 
@@ -83,7 +84,7 @@ class WatchSyncManager: NSObject, @unchecked Sendable {
 // MARK: - WCSessionDelegate
 
 extension WatchSyncManager: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    nonisolated func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         #if DEBUG
         if let error {
             print("[WC iOS] Activation error: \(error.localizedDescription)")
@@ -91,29 +92,29 @@ extension WatchSyncManager: WCSessionDelegate {
         #endif
     }
 
-    func sessionDidBecomeInactive(_ session: WCSession) {}
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
 
-    func sessionDidDeactivate(_ session: WCSession) {
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
         WCSession.default.activate()
     }
 
     // MARK: - Receive from Watch
 
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+    nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         guard let action = message["action"] as? String,
               let taskId = message["taskId"] as? String else { return }
 
-        Task { @MainActor in
-            await handleWatchAction(action: action, taskId: taskId, payload: message)
+        Task { @MainActor [weak self] in
+            await self?.handleWatchAction(action: action, taskId: taskId, payload: message)
         }
     }
 
-    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+    nonisolated func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
         guard let action = userInfo["action"] as? String,
               let taskId = userInfo["taskId"] as? String else { return }
 
-        Task { @MainActor in
-            await handleWatchAction(action: action, taskId: taskId, payload: userInfo)
+        Task { @MainActor [weak self] in
+            await self?.handleWatchAction(action: action, taskId: taskId, payload: userInfo)
         }
     }
 
