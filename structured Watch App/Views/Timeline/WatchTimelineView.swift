@@ -133,7 +133,7 @@ struct WatchTimelineView: View {
                     .frame(width: geo.size.width * ratio)
                     .animation(.easeInOut(duration: 0.25), value: ratio)
                 HStack {
-                    Text("\(stats.done) of \(stats.total) done")
+                    Text("\(stats.done) of \(stats.total) done", comment: "Watch progress pill: how many tasks the user has completed today. %lld of %lld done.")
                         .font(.system(size: 9, weight: .semibold))
                         .foregroundStyle(.white.opacity(ratio >= 0.5 ? 1 : 0.85))
                         .padding(.leading, 6)
@@ -146,11 +146,11 @@ struct WatchTimelineView: View {
 
     private var dateHeaderLabel: String {
         if viewModel.isToday {
-            return "Today, \(viewModel.selectedDate.compactDateString)"
+            return String(localized: "Today, \(viewModel.selectedDate.compactDateString)", comment: "Watch timeline date header for today (e.g. 'Today, Mar 26'). %@ is a short formatted date.")
         } else if Calendar.current.isDateInTomorrow(viewModel.selectedDate) {
-            return "Tomorrow"
+            return String(localized: "Tomorrow", comment: "Watch timeline date header for tomorrow")
         } else if Calendar.current.isDateInYesterday(viewModel.selectedDate) {
-            return "Yesterday"
+            return String(localized: "Yesterday", comment: "Watch timeline date header for yesterday")
         } else {
             return viewModel.selectedDate.compactDateString
         }
@@ -167,7 +167,7 @@ struct WatchTimelineView: View {
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: 28))
                     .foregroundStyle(Color(.gray))
-                Text("No tasks")
+                Text("No tasks", comment: "Watch timeline empty-state title — no scheduled tasks for this day")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Button { showingTaskEditor = true } label: {
@@ -292,21 +292,27 @@ struct WatchTimelineView: View {
         guard let start = task.startTime else { return "" }
         let end = start.addingTimeInterval(task.duration)
         let remaining = max(0, Int(end.timeIntervalSince(Date()) / 60))
-        if remaining <= 0 { return "now" }
-        if remaining < 60 { return "\(remaining)m left" }
+        if remaining <= 0 { return String(localized: "now", comment: "Watch Now banner trailing label — task ends in 0 minutes") }
+        if remaining < 60 { return String(localized: "\(remaining)m left", comment: "Watch Now banner trailing label — minutes remaining (e.g. '5m left')") }
         let h = remaining / 60
         let m = remaining % 60
-        return m > 0 ? "\(h)h \(m)m" : "\(h)h left"
+        if m > 0 {
+            return String(localized: "\(h)h \(m)m", comment: "Watch Now banner trailing label — hours and minutes remaining (e.g. '1h 30m')")
+        }
+        return String(localized: "\(h)h left", comment: "Watch Now banner trailing label — whole hours remaining (e.g. '1h left')")
     }
 
     private func startsInLabel(for task: WatchTask) -> String {
         guard let start = task.startTime else { return "" }
         let delta = Int(start.timeIntervalSince(Date()) / 60)
-        if delta <= 0 { return "starting" }
-        if delta < 60 { return "in \(delta)m" }
+        if delta <= 0 { return String(localized: "starting", comment: "Watch Next banner trailing label — task starts now") }
+        if delta < 60 { return String(localized: "in \(delta)m", comment: "Watch Next banner trailing label — minutes until task starts (e.g. 'in 5m')") }
         let h = delta / 60
         let m = delta % 60
-        return m > 0 ? "in \(h)h \(m)m" : "in \(h)h"
+        if m > 0 {
+            return String(localized: "in \(h)h \(m)m", comment: "Watch Next banner trailing label — hours and minutes until task starts (e.g. 'in 1h 30m')")
+        }
+        return String(localized: "in \(h)h", comment: "Watch Next banner trailing label — whole hours until task starts (e.g. 'in 2h')")
     }
 
     // MARK: - Haptics
@@ -321,7 +327,7 @@ struct WatchTimelineView: View {
 // MARK: - Now/Next Banner View
 
 private struct WatchNowNextBanner: View {
-    let title: String
+    let title: LocalizedStringKey
     let task: WatchTask
     let accent: Color
     let trailing: String
@@ -340,7 +346,7 @@ private struct WatchNowNextBanner: View {
                         .font(.system(size: 9, weight: .bold))
                         .foregroundStyle(accent)
                     if !trailing.isEmpty {
-                        Text("· \(trailing)")
+                        Text(verbatim: "· \(trailing)")
                             .font(.system(size: 9, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
@@ -374,7 +380,7 @@ private struct WatchAllClearBanner: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(.green)
-            Text("All clear. Nice work.")
+            Text("All clear. Nice work.", comment: "Watch banner shown when all today's tasks are completed")
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(.primary)
             Spacer(minLength: 0)

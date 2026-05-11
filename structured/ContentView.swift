@@ -221,7 +221,7 @@ struct ContentView: View {
                         VStack(spacing: scaled(3)) {
                             Image(systemName: tab.icon)
                                 .font(.system(size: scaled(20), weight: .medium))
-                            Text(tab.title)
+                            Text(LocalizedStringKey(tab.title), comment: "Bottom tab bar label — values: Later, Today, AI, Settings")
                                 .font(.system(size: scaled(10), weight: .medium))
                         }
                         .foregroundStyle(selectedTab == tab ? Color(hex: "#E8907E") : Color.primary)
@@ -270,7 +270,7 @@ struct ContentView: View {
             } label: {
                 VStack(alignment: .leading, spacing: scaled(2)) {
                     if viewModel.isToday {
-                        Text("Today")
+                        Text("Today", comment: "Caption above date header indicating selected day is today")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(Color(hex: "#FF6B6B"))
                     }
@@ -311,7 +311,7 @@ struct ContentView: View {
                     viewModel.goToToday()
                     Analytics.track(Analytics.Event.todayButtonTapped)
                 } label: {
-                    Text("Today")
+                    Text("Today", comment: "Pill button that jumps date selection back to today")
                         .font(.subheadline.weight(.semibold))
                         .padding(.horizontal, scaled(12))
                         .padding(.vertical, scaled(6))

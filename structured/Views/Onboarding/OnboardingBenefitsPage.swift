@@ -7,7 +7,7 @@ struct OnboardingBenefitsPage: View {
 
     private let coral = Color(hex: "#D4806E")
 
-    private let benefits: [(icon: String, color: String, text: String, detail: String)] = [
+    private let benefits: [(icon: String, color: String, text: LocalizedStringKey, detail: LocalizedStringKey)] = [
         ("eye.fill",          "#B8D4E8", "stay focused",       "cut through distractions with a clear plan"),
         ("square.stack.fill", "#B8E0C4", "keep control",       "on your busiest days"),
         ("trophy.fill",       "#E8D4B8", "achieve your goals", "in the long haul"),
@@ -34,10 +34,10 @@ struct OnboardingBenefitsPage: View {
 
                 // Title
                 VStack(alignment: .leading, spacing: scaled(4)) {
-                    Text("Tickd")
+                    Text(verbatim: "Tickd")
                         .font(.system(size: scaled(40), weight: .bold))
                         .foregroundStyle(.white)
-                    Text("helps you...")
+                    Text("helps you...", comment: "Onboarding page 2 — second line below brand name 'Tickd' (the full phrase reads 'Tickd helps you...')")
                         .font(.system(size: scaled(36), weight: .light))
                         .foregroundStyle(.white.opacity(0.82))
                 }
@@ -82,7 +82,7 @@ struct OnboardingBenefitsPage: View {
         }
     }
 
-    private func benefitRow(_ b: (icon: String, color: String, text: String, detail: String), delay: Double) -> some View {
+    private func benefitRow(_ b: (icon: String, color: String, text: LocalizedStringKey, detail: LocalizedStringKey), delay: Double) -> some View {
         HStack(spacing: scaled(20)) {
             ZStack {
                 RoundedRectangle(cornerRadius: scaled(10))

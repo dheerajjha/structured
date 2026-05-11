@@ -86,10 +86,10 @@ struct InboxView: View {
             Image(systemName: "tray")
                 .font(.system(size: scaled(48)))
                 .foregroundStyle(Color(.systemGray4))
-            Text("No tasks yet")
+            Text("No tasks yet", comment: "Empty-state title on Inbox (Later) tab when user has no unscheduled tasks")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.secondary)
-            Text("Tasks without a scheduled time live here.\nGreat for capturing ideas and to-dos.")
+            Text("Tasks without a scheduled time live here.\nGreat for capturing ideas and to-dos.", comment: "Empty-state body on Inbox tab. \\n is a literal line break — keep it.")
                 .font(.subheadline)
                 .foregroundStyle(Color(.systemGray3))
                 .multilineTextAlignment(.center)
@@ -100,7 +100,7 @@ struct InboxView: View {
                 HStack(spacing: scaled(8)) {
                     Image(systemName: "plus.circle.fill")
                         .font(.body)
-                    Text("Add Task")
+                    Text("Add Task", comment: "Primary CTA button label on Inbox empty state")
                         .font(.subheadline.weight(.semibold))
                 }
                 .foregroundStyle(.white)
@@ -131,9 +131,12 @@ struct InboxRowView: View {
         if mins >= 60 {
             let h = mins / 60
             let m = mins % 60
-            return m > 0 ? "\(h) hr, \(m) min" : "\(h) hr"
+            if m > 0 {
+                return String(localized: "\(h) hr, \(m) min", comment: "Inbox row duration — hours and minutes (e.g. '1 hr, 30 min')")
+            }
+            return String(localized: "\(h) hr", comment: "Inbox row duration — whole hours (e.g. '2 hr')")
         }
-        return "\(mins) min"
+        return String(localized: "\(mins) min", comment: "Inbox row duration — minutes under an hour (e.g. '15 min')")
     }
 
     var body: some View {

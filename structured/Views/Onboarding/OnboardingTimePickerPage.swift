@@ -56,9 +56,9 @@ enum TimePickerTheme {
 
 /// Reusable time picker page — used for wake-up and bedtime
 struct OnboardingTimePickerPage: View {
-    let title: String
-    let highlightedWord: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let highlightedWord: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     @Binding var selectedTime: Date
     let theme: TimePickerTheme
     var onContinue: (@MainActor () -> Void)? = nil
@@ -103,15 +103,17 @@ struct OnboardingTimePickerPage: View {
 
             // Title
             VStack(alignment: .leading, spacing: scaled(8)) {
-                (Text(title + " ")
+                (Text(title)
                     .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme == .night ? .white : .primary)
+                 +
+                 Text(verbatim: " ")
                  +
                  Text(highlightedWord)
                     .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme.accentColor)
                  +
-                 Text("?")
+                 Text("?", comment: "Trailing question mark for the time-picker page title (e.g. 'When did you wake up?')")
                     .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(theme == .night ? .white : .primary)
                 )
@@ -173,7 +175,7 @@ struct OnboardingTimePickerPage: View {
                     }
                     onContinue()
                 } label: {
-                    Text("Continue")
+                    Text("Continue", comment: "Continue button on onboarding time-picker page")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)

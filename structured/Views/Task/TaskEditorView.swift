@@ -39,7 +39,7 @@ struct TaskEditorView: View {
 
     // MARK: - Duration Options
 
-    private let durationOptions: [(String, Double)] = [
+    private let durationOptions: [(LocalizedStringKey, Double)] = [
         ("15 min", 15),
         ("30 min", 30),
         ("45 min", 45),
@@ -100,7 +100,7 @@ struct TaskEditorView: View {
                                 }
                             } label: {
                                 Label {
-                                    Text("Date")
+                                    Text("Date", comment: "Task editor row label — date the task is scheduled on")
                                         .foregroundStyle(.primary)
                                 } icon: {
                                     Image(systemName: "calendar")
@@ -174,7 +174,7 @@ struct TaskEditorView: View {
                             .tint(Color(hex: colorHex))
                     } footer: {
                         if !isScheduled {
-                            Text("Task will move to Unscheduled.")
+                            Text("Task will move to Unscheduled.", comment: "Task editor footer shown when user turns off the Scheduled toggle")
                                 .font(.caption)
                         }
                     }
@@ -195,7 +195,7 @@ struct TaskEditorView: View {
                     }
 
                         VStack(alignment: .leading, spacing: scaled(8)) {
-                            Text("Duration")
+                            Text("Duration", comment: "Task editor inline label above the duration pills")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
 
@@ -242,7 +242,7 @@ struct TaskEditorView: View {
                                             .pickerStyle(.wheel)
                                             .frame(width: scaled(60), height: scaled(100))
                                             .clipped()
-                                            Text("hr")
+                                            Text("hr", comment: "Short label for hours next to the custom-duration hour wheel")
                                                 .font(.subheadline)
                                                 .foregroundStyle(.secondary)
                                         }
@@ -256,7 +256,7 @@ struct TaskEditorView: View {
                                             .pickerStyle(.wheel)
                                             .frame(width: scaled(60), height: scaled(100))
                                             .clipped()
-                                            Text("min")
+                                            Text("min", comment: "Short label for minutes next to the custom-duration minute wheel")
                                                 .font(.subheadline)
                                                 .foregroundStyle(.secondary)
                                         }
@@ -269,7 +269,7 @@ struct TaskEditorView: View {
                                         }
                                         Analytics.track(Analytics.Event.durationSelected, properties: ["minutes": durationMinutes])
                                     } label: {
-                                        Text("Done — \(customDurationLabel)")
+                                        Text("Done — \(customDurationLabel)", comment: "Confirm button label that commits a custom task duration. %@ is the formatted duration e.g. '1 hr 30 min'.")
                                             .font(.subheadline.weight(.semibold))
                                             .foregroundStyle(.white)
                                             .frame(maxWidth: .infinity)
@@ -339,7 +339,7 @@ struct TaskEditorView: View {
                         } label: {
                             HStack {
                                 Spacer()
-                                Text("Delete Task")
+                                Text("Delete Task", comment: "Destructive button label inside task editor")
                                 Spacer()
                             }
                         }
@@ -392,7 +392,9 @@ struct TaskEditorView: View {
                 }
             }
         } label: {
-            Text(isCustomActive ? customDurationLabel : "Custom")
+            (isCustomActive
+                ? Text(verbatim: customDurationLabel)
+                : Text("Custom", comment: "Pill label for opening the custom-duration picker"))
                 .font(.subheadline.weight(.medium))
                 .padding(.horizontal, scaled(12))
                 .padding(.vertical, scaled(6))
@@ -411,9 +413,9 @@ struct TaskEditorView: View {
 
     private var taskDateLabel: String {
         if Calendar.current.isDateInToday(taskDate) {
-            return "Today"
+            return String(localized: "Today", comment: "Inline date label in task editor when task is today")
         } else if Calendar.current.isDateInTomorrow(taskDate) {
-            return "Tomorrow"
+            return String(localized: "Tomorrow", comment: "Inline date label in task editor when task is tomorrow")
         } else {
             let fmt = DateFormatter()
             fmt.dateFormat = "EEE, d MMM"
@@ -423,7 +425,7 @@ struct TaskEditorView: View {
 
     // MARK: - Quick Date Pill
 
-    private func quickDatePill(_ label: String, date: Date, isActive: Bool) -> some View {
+    private func quickDatePill(_ label: LocalizedStringKey, date: Date, isActive: Bool) -> some View {
         Button {
             taskDate = date
             withAnimation(.snappy(duration: 0.25)) {
@@ -447,13 +449,15 @@ struct TaskEditorView: View {
 
     private var customDurationLabel: String {
         let totalMins = customHours * 60 + customMinutes
-        if totalMins == 0 { return "0 min" }
+        if totalMins == 0 {
+            return String(localized: "0 min", comment: "Custom duration label when total is zero minutes")
+        }
         if customHours > 0 && customMinutes > 0 {
-            return "\(customHours) hr \(customMinutes) min"
+            return String(localized: "\(customHours) hr \(customMinutes) min", comment: "Custom duration label — hours and minutes (e.g. '1 hr 30 min')")
         } else if customHours > 0 {
-            return "\(customHours) hr"
+            return String(localized: "\(customHours) hr", comment: "Custom duration label — whole hours (e.g. '2 hr')")
         } else {
-            return "\(customMinutes) min"
+            return String(localized: "\(customMinutes) min", comment: "Custom duration label — minutes only (e.g. '45 min')")
         }
     }
 

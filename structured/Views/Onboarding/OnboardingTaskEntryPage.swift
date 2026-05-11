@@ -12,6 +12,10 @@ struct OnboardingTaskEntryPage: View {
     private let coral = Color(hex: "#D4806E")
     private let warmBrown = Color(hex: "#8B7355")
 
+    // The English titles act as both display labels (looked up in the catalog
+    // via LocalizedStringKey) and as the persisted task title when the user
+    // taps a chip. We localize the persisted value with String(localized:) so
+    // tapping a chip on a French device saves the French task name.
     private let suggestions: [(title: String, icon: String)] = [
         ("Answer Emails", "envelope.fill"),
         ("Clean Up",      "sparkles"),
@@ -32,16 +36,16 @@ struct OnboardingTaskEntryPage: View {
 
                 // Title
                 VStack(alignment: .leading, spacing: scaled(6)) {
-                    (Text("What's up ")
+                    (Text("What's up ", comment: "Onboarding page 5 title — first segment (before the colored word 'next'). Concatenated as: 'What's up next?'")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
-                     + Text("next")
+                     + Text("next", comment: "Onboarding page 5 title — colored middle segment. Concatenated as: 'What's up next?'")
                         .foregroundStyle(coral)
-                     + Text("?")
+                     + Text("?", comment: "Trailing punctuation for onboarding page 5 title (e.g. 'What's up next?')")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                     )
                     .font(.system(size: scaled(32), weight: .bold))
 
-                    Text("Enter something you want to achieve today.")
+                    Text("Enter something you want to achieve today.", comment: "Onboarding page 5 subtitle below the title")
                         .font(.body)
                         .foregroundStyle(.secondary)
                 }
@@ -75,7 +79,7 @@ struct OnboardingTaskEntryPage: View {
 
                 // Suggestions grid — all visible, no scrolling
                 VStack(alignment: .leading, spacing: scaled(10)) {
-                    Text("Suggestions:")
+                    Text("Suggestions:", comment: "Label above the grid of task-name suggestion chips during onboarding")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.secondary)
 
@@ -86,7 +90,9 @@ struct OnboardingTaskEntryPage: View {
                         ForEach(suggestions, id: \.title) { s in
                             Button {
                                 withAnimation(.snappy(duration: 0.2)) {
-                                    taskTitle = s.title
+                                    // Persist the locale-appropriate task title so the user's
+                                    // saved task is rendered in their language.
+                                    taskTitle = String(localized: String.LocalizationValue(s.title), comment: "Onboarding task suggestion chip — also persisted as the user's first task title")
                                     taskIcon  = s.icon
                                     focused   = false
                                 }
@@ -95,7 +101,7 @@ struct OnboardingTaskEntryPage: View {
                                     Image(systemName: s.icon)
                                         .font(.subheadline)
                                         .foregroundStyle(coral)
-                                    Text(s.title)
+                                    Text(LocalizedStringKey(s.title), comment: "Onboarding task suggestion chip label")
                                         .font(.subheadline.weight(.medium))
                                         .foregroundStyle(.primary)
                                         .lineLimit(1)
@@ -111,7 +117,7 @@ struct OnboardingTaskEntryPage: View {
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: scaled(12))
-                                        .strokeBorder(taskTitle == s.title ? coral.opacity(0.5) : Color(.systemGray5), lineWidth: 1)
+                                        .strokeBorder(taskTitle == String(localized: String.LocalizationValue(s.title)) ? coral.opacity(0.5) : Color(.systemGray5), lineWidth: 1)
                                 )
                             }
                             .buttonStyle(.plain)

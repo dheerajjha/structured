@@ -11,7 +11,7 @@ struct OnboardingTaskStylePage: View {
     private let coral = Color(hex: "#D4806E")
     private let warmBrown = Color(hex: "#8B7355")
 
-    private let durations: [(label: String, mins: Double)] = [
+    private let durations: [(label: LocalizedStringKey, mins: Double)] = [
         ("5m", 5), ("15m", 15), ("30m", 30),
         ("45m", 45), ("1h", 60), ("1.5h", 90), ("2h", 120),
     ]
@@ -28,11 +28,17 @@ struct OnboardingTaskStylePage: View {
         fmt.dateFormat = "h:mm"
         let fmtEnd = DateFormatter()
         fmtEnd.dateFormat = "h:mm a"
-        let d = duration >= 60
-            ? (duration.truncatingRemainder(dividingBy: 60) == 0
-               ? "\(Int(duration/60)) hr"
-               : "\(Int(duration/60)) hr \(Int(duration.truncatingRemainder(dividingBy: 60))) min")
-            : "\(Int(duration)) min"
+        let d: String = {
+            if duration >= 60 {
+                let h = Int(duration / 60)
+                let m = Int(duration.truncatingRemainder(dividingBy: 60))
+                if m == 0 {
+                    return String(localized: "\(h) hr", comment: "Onboarding preview duration — whole hours (e.g. '2 hr')")
+                }
+                return String(localized: "\(h) hr \(m) min", comment: "Onboarding preview duration — hours and minutes (e.g. '1 hr 30 min')")
+            }
+            return String(localized: "\(Int(duration)) min", comment: "Onboarding preview duration — minutes only (e.g. '15 min')")
+        }()
         return "\(fmt.string(from: start)) – \(fmtEnd.string(from: end)) (\(d))"
     }
 
@@ -48,20 +54,20 @@ struct OnboardingTaskStylePage: View {
 
                 // Title
                 VStack(alignment: .leading, spacing: scaled(6)) {
-                    (Text("How ")
+                    (Text("How ", comment: "Onboarding page 6 title — first segment. Full title concatenates: 'How long, and what color?'")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
-                     + Text("long")
+                     + Text("long", comment: "Onboarding page 6 title — colored 'long' segment in 'How long, and what color?'")
                         .foregroundStyle(coral)
-                     + Text(", and what ")
+                     + Text(", and what ", comment: "Onboarding page 6 title — middle segment in 'How long, and what color?'. Keep the leading comma if the target language uses commas there; otherwise adapt.")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
-                     + Text("color")
+                     + Text("color", comment: "Onboarding page 6 title — colored 'color' segment in 'How long, and what color?'")
                         .foregroundStyle(Color(hex: colorHex))
-                     + Text("?")
+                     + Text("?", comment: "Trailing punctuation for onboarding page 6 title (e.g. 'How long, and what color?')")
                         .foregroundStyle(Color(hex: "#3D3D3D"))
                     )
                     .font(.system(size: scaled(28), weight: .bold))
 
-                    Text("Set a duration and pick a color for your task.")
+                    Text("Set a duration and pick a color for your task.", comment: "Onboarding page 6 subtitle")
                         .font(.body)
                         .foregroundStyle(.secondary)
                 }
@@ -148,7 +154,9 @@ struct OnboardingTaskStylePage: View {
                 Text(previewRange)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Text(taskTitle.isEmpty ? "Your task" : taskTitle)
+                (taskTitle.isEmpty
+                    ? Text("Your task", comment: "Placeholder shown in the onboarding task preview card before the user types a name")
+                    : Text(verbatim: taskTitle))
                     .font(.subheadline.weight(.semibold))
             }
             Spacer()

@@ -18,7 +18,7 @@ struct WatchAIView: View {
         allTasks.filter { $0.isInbox }
     }
 
-    private let suggestions: [(icon: String, label: String, prompt: String)] = [
+    private let suggestions: [(icon: String, label: LocalizedStringKey, prompt: String)] = [
         ("list.bullet", "My day", "What's on my schedule today?"),
         ("clock", "Free time?", "Do I have any free time today?"),
     ]
@@ -62,7 +62,7 @@ struct WatchAIView: View {
             Image(systemName: "sparkles")
                 .font(.title3)
                 .foregroundStyle(coral)
-            Text("Ask me anything")
+            Text("Ask me anything", comment: "Watch AI tab empty-state hint")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
 

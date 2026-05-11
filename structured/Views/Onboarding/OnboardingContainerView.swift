@@ -244,7 +244,7 @@ struct OnboardingTaskData {
 }
 
 struct OnboardingPrimaryButton: View {
-    let title: String
+    let title: LocalizedStringKey
     let colorHex: String
     var isDisabled: Bool = false
     let action: @MainActor () -> Void

@@ -27,9 +27,12 @@ enum AIError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .serverError(let code): return "Server error (\(code)). Try again."
-        case .invalidResponse:       return "Unexpected response format."
-        case .networkError(let e):   return e.localizedDescription
+        case .serverError(let code):
+            return String(localized: "Server error (\(code)). Try again.", comment: "AI chat error shown when the proxy server returns a non-200 status. %lld is the HTTP status code.")
+        case .invalidResponse:
+            return String(localized: "Unexpected response format.", comment: "AI chat error shown when the proxy returns a body we can't parse")
+        case .networkError(let e):
+            return e.localizedDescription
         }
     }
 }

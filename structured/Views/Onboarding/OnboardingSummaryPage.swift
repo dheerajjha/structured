@@ -16,16 +16,16 @@ struct OnboardingSummaryPage: View {
 
             // Title
             VStack(alignment: .leading, spacing: scaled(8)) {
-                (Text("Awesome! ")
+                (Text("Awesome! ", comment: "Onboarding summary page title — first colored segment. Concatenates with following segment as 'Awesome! That's a great plan.'")
                     .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(greenColor)
                  +
-                 Text("That's a great plan.")
+                 Text("That's a great plan.", comment: "Onboarding summary page title — second segment. Concatenates with 'Awesome! ' to form 'Awesome! That's a great plan.'")
                     .font(.system(size: scaled(32), weight: .bold))
                     .foregroundStyle(.primary)
                 )
 
-                Text("You're all set! It's time to achieve your goals.")
+                Text("You're all set! It's time to achieve your goals.", comment: "Onboarding summary page subtitle")
                     .font(.body)
                     .foregroundStyle(.secondary)
             }
@@ -33,7 +33,7 @@ struct OnboardingSummaryPage: View {
             .padding(.top, scaled(4))
 
             // Plan label
-            Text("Your Tickd Plan:")
+            Text("Your Tickd Plan:", comment: "Onboarding summary page label above the timeline preview. Brand name 'Tickd' stays unchanged.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, scaled(24))
@@ -60,7 +60,7 @@ struct OnboardingSummaryPage: View {
             timelineRow(
                 icon: "sun.max.fill",
                 colorHex: "#E8907E",
-                title: "Rise and Shine",
+                title: String(localized: "Rise and Shine", comment: "Wake-up daily anchor task title. Translate idiomatically (e.g. de 'Aufstehen', fr 'Réveil', ja '起床', ar 'الاستيقاظ').") ,
                 timeStr: TimeFormatting.timeString(from: wakeUpTime),
                 isCompleted: true,
                 isLast: false,
@@ -76,7 +76,7 @@ struct OnboardingSummaryPage: View {
             timelineRow(
                 icon: "moon.fill",
                 colorHex: "#7C97AB",
-                title: "Wind Down",
+                title: String(localized: "Wind Down", comment: "Bedtime daily anchor task title. Translate idiomatically (e.g. de 'Ausklingen', fr 'Détente', ja '就寝準備', ar 'الاسترخاء')."),
                 timeStr: TimeFormatting.timeString(from: bedTime),
                 isCompleted: false,
                 isLast: true,
@@ -104,9 +104,12 @@ struct OnboardingSummaryPage: View {
             if task.durationMinutes >= 60 {
                 let hrs = Int(task.durationMinutes) / 60
                 let mins = Int(task.durationMinutes) % 60
-                return mins > 0 ? "\(hrs) hr \(mins) min" : "\(hrs) hr"
+                if mins > 0 {
+                    return String(localized: "\(hrs) hr \(mins) min", comment: "Onboarding summary duration — hours and minutes (e.g. '1 hr 30 min')")
+                }
+                return String(localized: "\(hrs) hr", comment: "Onboarding summary duration — whole hours (e.g. '2 hr')")
             }
-            return "\(Int(task.durationMinutes)) min"
+            return String(localized: "\(Int(task.durationMinutes)) min", comment: "Onboarding summary duration — minutes only (e.g. '15 min')")
         }()
 
         timelineRow(

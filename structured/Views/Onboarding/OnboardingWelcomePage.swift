@@ -28,10 +28,10 @@ struct OnboardingWelcomePage: View {
 
                 // Title
                 VStack(alignment: .leading, spacing: scaled(6)) {
-                    Text("Welcome to")
+                    Text("Welcome to", comment: "Onboarding page 1 — first line above the brand name 'Tickd'")
                         .font(.system(size: scaled(38), weight: .light))
                         .foregroundStyle(.white.opacity(0.88))
-                    Text("Tickd")
+                    Text(verbatim: "Tickd")
                         .font(.system(size: scaled(44), weight: .bold))
                         .foregroundStyle(.white)
                 }

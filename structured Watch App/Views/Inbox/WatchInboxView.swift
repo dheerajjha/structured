@@ -96,10 +96,10 @@ struct WatchInboxView: View {
             Image(systemName: "tray")
                 .font(.system(size: 28))
                 .foregroundStyle(Color(.gray))
-            Text("No tasks yet")
+            Text("No tasks yet", comment: "Watch Inbox empty-state title — no unscheduled tasks")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.secondary)
-            Text("Capture ideas here")
+            Text("Capture ideas here", comment: "Watch Inbox empty-state body — short tagline")
                 .font(.caption2)
                 .foregroundStyle(Color(.gray))
 

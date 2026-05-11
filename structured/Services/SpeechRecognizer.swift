@@ -32,14 +32,14 @@ final class SpeechRecognizer {
             }
         }
         guard speechStatus == .authorized else {
-            errorMessage = "Speech recognition is disabled. Enable it in Settings to dictate your plans."
+            errorMessage = String(localized: "Speech recognition is disabled. Enable it in Settings to dictate your plans.", comment: "Speech recognition permission error shown above the AI input bar")
             permissionDenied = (speechStatus == .denied || speechStatus == .restricted)
             return false
         }
 
         let audioStatus = await AVAudioApplication.requestRecordPermission()
         guard audioStatus else {
-            errorMessage = "Microphone access is disabled. Enable it in Settings to use voice input."
+            errorMessage = String(localized: "Microphone access is disabled. Enable it in Settings to use voice input.", comment: "Microphone permission error shown above the AI input bar")
             permissionDenied = true
             return false
         }
@@ -55,7 +55,7 @@ final class SpeechRecognizer {
         guard !isListening else { return }
         guard await requestPermissions() else { return }
         guard let speechRecognizer, speechRecognizer.isAvailable else {
-            errorMessage = "Speech recognition unavailable."
+            errorMessage = String(localized: "Speech recognition unavailable.", comment: "Speech recognition error shown when SFSpeechRecognizer is not available for the current locale")
             return
         }
 
@@ -101,7 +101,7 @@ final class SpeechRecognizer {
                 }
             }
         } catch {
-            errorMessage = "Could not start audio engine."
+            errorMessage = String(localized: "Could not start audio engine.", comment: "Generic error if the underlying audio engine fails to start when toggling speech recognition")
             isListening = false
         }
     }

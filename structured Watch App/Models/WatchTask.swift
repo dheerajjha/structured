@@ -101,8 +101,11 @@ extension WatchTask {
         if mins >= 60 {
             let h = mins / 60
             let m = mins % 60
-            return m > 0 ? "\(h)h \(m)m" : "\(h)h"
+            if m > 0 {
+                return String(localized: "\(h)h \(m)m", comment: "Compact watch duration label — hours and minutes (e.g. '1h 30m')")
+            }
+            return String(localized: "\(h)h", comment: "Compact watch duration label — whole hours (e.g. '2h')")
         }
-        return "\(mins)m"
+        return String(localized: "\(mins)m", comment: "Compact watch duration label — minutes under an hour (e.g. '15m')")
     }
 }

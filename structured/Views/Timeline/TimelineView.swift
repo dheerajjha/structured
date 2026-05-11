@@ -176,7 +176,7 @@ struct DayTimelineView: View {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.caption2)
                             .foregroundStyle(.orange)
-                        Text("Overlaps with \(overlapName)")
+                        Text("Overlaps with \(overlapName)", comment: "Warning shown above a task that overlaps the previous one. %@ is the previous task's title.")
                             .font(.caption2)
                             .foregroundStyle(.orange)
                     }
@@ -277,7 +277,7 @@ struct DayTimelineView: View {
                     HStack(spacing: scaled(4)) {
                         Image(systemName: "plus.circle.fill")
                             .font(.caption)
-                        Text("Add Task")
+                        Text("Add Task", comment: "Inline button in a free-time gap that opens the new-task editor")
                             .font(.caption.weight(.medium))
                     }
                     .foregroundStyle(Color(hex: "#E8907E"))
@@ -297,9 +297,12 @@ struct DayTimelineView: View {
         if minutes >= 60 {
             let h = minutes / 60
             let m = minutes % 60
-            return m > 0 ? "\(h) hr \(m) min free" : "\(h) hr free"
+            if m > 0 {
+                return String(localized: "\(h) hr \(m) min free", comment: "Free-time gap label between two timeline tasks when both hours and minutes apply")
+            }
+            return String(localized: "\(h) hr free", comment: "Free-time gap label between two timeline tasks when the gap is whole hours")
         }
-        return "\(minutes) min free"
+        return String(localized: "\(minutes) min free", comment: "Free-time gap label between two timeline tasks when the gap is under an hour")
     }
 
     // MARK: - Empty State
@@ -310,10 +313,10 @@ struct DayTimelineView: View {
             Image(systemName: "calendar.badge.plus")
                 .font(.system(size: scaled(48)))
                 .foregroundStyle(Color(.systemGray4))
-            Text("No tasks scheduled")
+            Text("No tasks scheduled", comment: "Empty-state title on the Today timeline")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.secondary)
-            Text("Tap + to add your first task.")
+            Text("Tap + to add your first task.", comment: "Empty-state body on the Today timeline. The + is the floating add button.")
                 .font(.subheadline)
                 .foregroundStyle(Color(.systemGray3))
             Spacer()

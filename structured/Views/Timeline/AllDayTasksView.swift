@@ -9,7 +9,7 @@ struct AllDayTasksView: View {
     var body: some View {
         if !tasks.isEmpty {
             VStack(alignment: .leading, spacing: scaled(8)) {
-                Text("ALL DAY")
+                Text("ALL DAY", comment: "Section label above all-day tasks at the top of the timeline. Translate as a similarly compact uppercase phrase.")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, scaled(16))

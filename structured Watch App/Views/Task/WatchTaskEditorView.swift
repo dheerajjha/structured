@@ -18,7 +18,7 @@ struct WatchTaskEditorView: View {
 
     private var isEditing: Bool { task != nil }
 
-    private let durationOptions: [(String, Double)] = [
+    private let durationOptions: [(LocalizedStringKey, Double)] = [
         ("15m", 15), ("30m", 30), ("45m", 45),
         ("1h", 60), ("1.5h", 90), ("2h", 120),
     ]
@@ -48,7 +48,7 @@ struct WatchTaskEditorView: View {
 
                     // Duration
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Duration")
+                        Text("Duration", comment: "Watch task editor label above duration pills")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
 
@@ -78,7 +78,7 @@ struct WatchTaskEditorView: View {
 
                     // Color
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Color")
+                        Text("Color", comment: "Watch task editor label above color swatches")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
 

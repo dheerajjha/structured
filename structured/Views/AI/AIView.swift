@@ -28,14 +28,14 @@ struct AIView: View {
 
     // MARK: - Greeting
 
-    private var greeting: String {
+    private var greeting: LocalizedStringKey {
         let h = Calendar.current.component(.hour, from: Date())
         if h < 12 { return "Good morning!" }
         if h < 17 { return "Hi there!" }
         return "Good evening!"
     }
 
-    private var greetingSubtitle: String {
+    private var greetingSubtitle: LocalizedStringKey {
         let h = Calendar.current.component(.hour, from: Date())
         if h < 12 { return "What's on the agenda today?" }
         if h < 17 { return "What do you have planned for the day?" }
@@ -44,7 +44,7 @@ struct AIView: View {
 
     // MARK: - Suggestions
 
-    private let suggestions: [(icon: String, label: String, prompt: String)] = [
+    private let suggestions: [(icon: String, label: LocalizedStringKey, prompt: String)] = [
         ("clock.arrow.circlepath", "Move task by 1h",   "Can you suggest moving all my tasks today forward by 1 hour?"),
         ("list.bullet.rectangle",  "Summarize my day",  "Give me a quick summary of what I have planned today."),
         ("sparkles",               "Optimize schedule", "Looking at my tasks, how can I arrange my day more efficiently?"),
@@ -178,7 +178,7 @@ struct AIView: View {
     private var emptyState: some View {
         VStack {
             Spacer()
-            Text("Ask me anything about your day.")
+            Text("Ask me anything about your day.", comment: "AI chat empty-state hint shown when there are no messages")
                 .font(.subheadline)
                 .foregroundStyle(Color(.systemGray3))
             Spacer()
@@ -388,7 +388,7 @@ private struct AIHelpSheet: View {
     @Environment(\.dismiss) private var dismiss
     private let coral = Color(hex: "#E8907E")
 
-    private let examples: [(icon: String, title: String, example: String)] = [
+    private let examples: [(icon: String, title: LocalizedStringKey, example: LocalizedStringKey)] = [
         ("calendar.badge.plus",    "Create a task",          "Add a meeting at 3pm tomorrow"),
         ("tray.fill",              "Add to backlog",         "Add 'read a book' unscheduled"),
         ("clock.arrow.circlepath", "Move a task",            "Move my workout to 5pm"),
@@ -401,7 +401,7 @@ private struct AIHelpSheet: View {
         NavigationStack {
             List {
                 Section {
-                    Text("Just tell the AI what you want in plain English. It will act immediately — no confirmation needed.")
+                    Text("Just tell the AI what you want in plain English. It will act immediately — no confirmation needed.", comment: "AI help sheet intro paragraph. Translate idiomatically — 'plain English' means everyday language.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .listRowBackground(Color.clear)
@@ -419,7 +419,7 @@ private struct AIHelpSheet: View {
                             VStack(alignment: .leading, spacing: scaled(2)) {
                                 Text(item.title)
                                     .font(.subheadline.weight(.semibold))
-                                Text("\"\(item.example)\"")
+                                (Text(verbatim: "\u{201C}") + Text(item.example) + Text(verbatim: "\u{201D}"))
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                     .italic()

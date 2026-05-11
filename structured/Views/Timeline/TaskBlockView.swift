@@ -38,7 +38,7 @@ struct TaskBlockView: View {
                     // Show subtask progress if space allows
                     if blockHeight > scaled(85), let subtasks = task.subtasks, !subtasks.isEmpty {
                         let completed = subtasks.filter(\.isCompleted).count
-                        Text("\(completed)/\(subtasks.count) subtasks")
+                        Text("\(completed)/\(subtasks.count) subtasks", comment: "Subtask progress shown inside a task block — e.g. '2/5 subtasks'")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }

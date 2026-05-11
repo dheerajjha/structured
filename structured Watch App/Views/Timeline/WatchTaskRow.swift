@@ -23,10 +23,10 @@ struct WatchTaskRow: View {
                             .font(.system(size: 10, weight: .medium))
                             .foregroundStyle(taskColor.opacity(0.8))
                         if !task.durationLabel.isEmpty {
-                            Text("·")
+                            Text(verbatim: "·")
                                 .font(.system(size: 10))
                                 .foregroundStyle(.secondary)
-                            Text(task.durationLabel)
+                            Text(verbatim: task.durationLabel)
                                 .font(.system(size: 10))
                                 .foregroundStyle(.secondary)
                         }

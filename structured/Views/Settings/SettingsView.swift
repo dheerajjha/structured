@@ -76,9 +76,9 @@ struct SettingsView: View {
                 HStack {
                     Label {
                         VStack(alignment: .leading, spacing: scaled(2)) {
-                            Text("Wake Up Time")
+                            Text("Wake Up Time", comment: "Settings row title for editing global wake-up time")
                                 .foregroundStyle(.primary)
-                            Text("Rise and Shine default")
+                            Text("Rise and Shine default", comment: "Settings row caption explaining that this time is used for the Rise and Shine anchor task. Translate Rise and Shine to the same idiomatic phrase used elsewhere in this catalog.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -107,9 +107,9 @@ struct SettingsView: View {
                 HStack {
                     Label {
                         VStack(alignment: .leading, spacing: scaled(2)) {
-                            Text("Bedtime")
+                            Text("Bedtime", comment: "Settings row title for editing global bedtime")
                                 .foregroundStyle(.primary)
-                            Text("Wind Down default")
+                            Text("Wind Down default", comment: "Settings row caption explaining that this time is used for the Wind Down anchor task. Translate Wind Down to the same idiomatic phrase used elsewhere in this catalog.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -134,9 +134,9 @@ struct SettingsView: View {
             .buttonStyle(.plain)
 
         } header: {
-            Text("Daily Anchors")
+            Text("Daily Anchors", comment: "Settings section header — refers to the two daily anchor tasks (wake / bedtime)")
         } footer: {
-            Text("Rise and Shine and Wind Down appear on every day's timeline at these times. Days you've manually adjusted keep their own time.")
+            Text("Rise and Shine and Wind Down appear on every day's timeline at these times. Days you've manually adjusted keep their own time.", comment: "Settings footer explaining anchor behaviour")
         }
     }
 
