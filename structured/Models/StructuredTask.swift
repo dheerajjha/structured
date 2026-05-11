@@ -78,9 +78,11 @@ extension StructuredTask {
     }
 
     var timeRangeString: String {
-        guard let start = startTime else { return "All Day" }
+        guard let start = startTime else {
+            return String(localized: "All Day", comment: "Time-range label shown on a task row when no specific start time is set")
+        }
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         let startStr = formatter.string(from: start)
         if duration == 0 { return startStr }
         let endStr = formatter.string(from: start.addingTimeInterval(duration))
@@ -89,11 +91,11 @@ extension StructuredTask {
             let hours = mins / 60
             let remaining = mins % 60
             if remaining == 0 {
-                return "\(startStr) - \(endStr) (\(hours) hr)"
+                return String(localized: "\(startStr) - \(endStr) (\(hours) hr)", comment: "Task time range with whole-hour duration. %1$@ start time, %2$@ end time, %3$lld hours.")
             } else {
-                return "\(startStr) - \(endStr) (\(hours) hr \(remaining) min)"
+                return String(localized: "\(startStr) - \(endStr) (\(hours) hr \(remaining) min)", comment: "Task time range with hours and minutes. %1$@ start, %2$@ end, %3$lld hours, %4$lld minutes.")
             }
         }
-        return "\(startStr) - \(endStr) (\(mins) min)"
+        return String(localized: "\(startStr) - \(endStr) (\(mins) min)", comment: "Task time range with minutes-only duration. %1$@ start, %2$@ end, %3$lld minutes.")
     }
 }

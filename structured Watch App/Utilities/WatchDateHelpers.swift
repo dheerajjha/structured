@@ -55,13 +55,13 @@ extension Date {
 enum WatchTimeFormatting {
     static func timeString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         return formatter.string(from: date)
     }
 
     static func shortTimeString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         return formatter.string(from: date)
     }
 }

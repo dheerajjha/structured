@@ -18,7 +18,7 @@ struct SettingsView: View {
 
     private var timeFormatter: DateFormatter {
         let f = DateFormatter()
-        f.dateFormat = "h:mm a"
+        f.setLocalizedDateFormatFromTemplate("jmm")
         return f
     }
 

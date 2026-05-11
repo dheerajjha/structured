@@ -12481,6 +12481,318 @@
           }
         }
       }
+    },
+    "%@ - %@ (%lld hr %lld min)": {
+      "comment": "Task time range with hours and minutes. %1$@ start, %2$@ end, %3$lld hours, %4$lld minutes.",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld س %4$lld د)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld Std. %4$lld Min.)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld hr %4$lld min)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h %4$lld min)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h %4$lld min)"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld घं %4$lld मि)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h %4$lld min)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@〜%2$@(%3$lld時間%4$lld分)"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld시간 %4$lld분)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h %4$lld min)"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld ч %4$lld мин)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@（%3$lld 小时 %4$lld 分）"
+          }
+        }
+      }
+    },
+    "%@ - %@ (%lld hr)": {
+      "comment": "Task time range with whole-hour duration. %1$@ start time, %2$@ end time, %3$lld hours.",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld ساعة)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld Std.)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld hr)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h)"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld घं)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@〜%2$@(%3$lld時間)"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld시간)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld h)"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld ч)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@（%3$lld 小时）"
+          }
+        }
+      }
+    },
+    "%@ - %@ (%lld min)": {
+      "comment": "Task time range with minutes-only duration. %1$@ start, %2$@ end, %3$lld minutes.",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld دقيقة)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld Min.)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld min)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld min)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld min)"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld मि)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld min)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@〜%2$@(%3$lld分)"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld분)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld min)"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@ (%3$lld мин)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@（%3$lld 分钟）"
+          }
+        }
+      }
+    },
+    "Setting a clear sleep goal can help to regulate your body's internal clock.": {
+      "comment": "Onboarding time-picker hint shown below the bedtime wheel — explains the benefit of a sleep goal",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يساعدك تحديد هدف نوم واضح على تنظيم الساعة البيولوجية لجسمك."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein klares Schlafziel hilft dabei, deine innere Uhr zu regulieren."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setting a clear sleep goal can help to regulate your body's internal clock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Establecer un objetivo de sueño claro ayuda a regular tu reloj biológico."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Définir un objectif de sommeil clair aide à réguler votre horloge interne."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नींद का स्पष्ट लक्ष्य रखने से आपकी जैविक घड़ी संतुलित रहती है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definire un obiettivo di sonno chiaro aiuta a regolare il tuo orologio biologico."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "はっきりとした睡眠目標を立てると、体内時計を整えやすくなります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "명확한 수면 목표를 정하면 생체 시계를 조절하는 데 도움이 됩니다."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Definir uma meta clara de sono ajuda a regular o relógio biológico."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чёткая цель по сну помогает настроить внутренние биологические часы."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设定清晰的睡眠目标，有助于调节身体的生物钟。"
+          }
+        }
+      }
     }
   }
 }

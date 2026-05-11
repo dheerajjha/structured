@@ -76,22 +76,23 @@ extension WatchTask {
     }
 
     var timeRangeString: String {
-        guard let start = startTime else { return "All Day" }
+        guard let start = startTime else {
+            return String(localized: "All Day", comment: "Watch time-range label shown on a task row when no specific start time is set")
+        }
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         let startStr = formatter.string(from: start)
         if duration == 0 { return startStr }
         let endStr = formatter.string(from: start.addingTimeInterval(duration))
-        if durationMinutes >= 60 {
-            return "\(startStr) – \(endStr)"
-        }
-        return "\(startStr) – \(endStr)"
+        return String(localized: "\(startStr) – \(endStr)", comment: "Watch task time range — start and end time joined by an en dash. %1$@ start, %2$@ end.")
     }
 
     var compactTimeString: String {
-        guard let start = startTime else { return "All Day" }
+        guard let start = startTime else {
+            return String(localized: "All Day", comment: "Watch compact time label when no specific start time is set")
+        }
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         return formatter.string(from: start)
     }
 

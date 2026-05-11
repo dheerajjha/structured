@@ -92,15 +92,15 @@ extension Date {
 
 enum TimeFormatting {
     static func hourLabel(for hour: Int) -> String {
-        if hour == 0 { return "12 AM" }
-        if hour < 12 { return "\(hour) AM" }
-        if hour == 12 { return "12 PM" }
-        return "\(hour - 12) PM"
+        let date = Calendar.current.date(bySettingHour: hour, minute: 0, second: 0, of: Date()) ?? Date()
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("j")
+        return formatter.string(from: date)
     }
 
     static func timeString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.setLocalizedDateFormatFromTemplate("jmm")
         return formatter.string(from: date)
     }
 }

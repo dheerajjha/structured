@@ -25,9 +25,9 @@ struct OnboardingTaskStylePage: View {
         let start = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date())!
         let end   = start.addingTimeInterval(duration * 60)
         let fmt   = DateFormatter()
-        fmt.dateFormat = "h:mm"
+        fmt.setLocalizedDateFormatFromTemplate("jmm")
         let fmtEnd = DateFormatter()
-        fmtEnd.dateFormat = "h:mm a"
+        fmtEnd.setLocalizedDateFormatFromTemplate("jmm")
         let d: String = {
             if duration >= 60 {
                 let h = Int(duration / 60)
