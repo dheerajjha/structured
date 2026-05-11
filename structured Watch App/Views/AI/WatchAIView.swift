@@ -67,7 +67,7 @@ struct WatchAIView: View {
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 6) {
-                ForEach(suggestions, id: \.label) { s in
+                ForEach(suggestions, id: \.icon) { s in
                     Button { viewModel.sendSuggestion(s.prompt) } label: {
                         HStack(spacing: 3) {
                             Image(systemName: s.icon)

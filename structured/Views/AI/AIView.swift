@@ -219,7 +219,7 @@ struct AIView: View {
     private var suggestionRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: scaled(10)) {
-                ForEach(suggestions, id: \.label) { s in
+                ForEach(suggestions, id: \.icon) { s in
                     Button { viewModel.sendSuggestion(s.prompt) } label: {
                         HStack(spacing: scaled(6)) {
                             Image(systemName: s.icon)
@@ -409,7 +409,7 @@ private struct AIHelpSheet: View {
                 }
 
                 Section("What you can ask") {
-                    ForEach(examples, id: \.title) { item in
+                    ForEach(examples, id: \.icon) { item in
                         HStack(alignment: .top, spacing: scaled(12)) {
                             Image(systemName: item.icon)
                                 .font(.body)

@@ -1,0 +1,3984 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "Add Task": {
+      "comment": "Watch button label — empty state and inbox FAB",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إضافة مهمة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Task"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir tarea"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une tâche"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कार्य जोड़ें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi attività"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タスクを追加"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 추가"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar tarefa"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить задачу"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加任务"
+          }
+        }
+      }
+    },
+    "About": {
+      "comment": "Section header — about / version info",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حول التطبيق"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acerca de"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À propos"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऐप के बारे में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informazioni"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このアプリについて"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "정보"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobre"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "О приложении"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关于"
+          }
+        }
+      }
+    },
+    "All clear. Nice work.": {
+      "comment": "Watch banner shown when all today's tasks are completed",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انتهى كل شيء. عمل رائع."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles erledigt. Gute Arbeit."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All clear. Nice work."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo listo. ¡Bien hecho!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout est fait. Beau boulot."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सब पूरा। बढ़िया काम।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto fatto. Bel lavoro."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて完了。お疲れさまでした。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모두 완료. 수고하셨어요."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo pronto. Mandou bem."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Всё готово. Отличная работа."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部完成，干得漂亮。"
+          }
+        }
+      }
+    },
+    "All Day": {
+      "comment": "Watch task editor toggle — make task all-day",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "طوال اليوم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganztägig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All Day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo el día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toute la journée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरे दिन"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto il giorno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終日"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "종일"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O dia todo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Весь день"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全天"
+          }
+        }
+      }
+    },
+    "Ask me anything": {
+      "comment": "Watch AI tab empty-state hint",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسألني أي شيء"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frag mich alles"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask me anything"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregúntame lo que quieras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demande-moi n'importe quoi"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मुझसे कुछ भी पूछें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiedimi qualsiasi cosa"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "何でも聞いてください"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "무엇이든 물어보세요"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pergunte-me qualquer coisa"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросите о чём угодно"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "随便问我"
+          }
+        }
+      }
+    },
+    "Ask...": {
+      "comment": "Watch AI input field placeholder",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسأل..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frag…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregunta..."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demande…"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूछें..."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiedi..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "質問…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물어보세요..."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pergunte..."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросите…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提问……"
+          }
+        }
+      }
+    },
+    "Bedtime": {
+      "comment": "Watch settings section header — bedtime time picker",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وقت النوم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlafenszeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bedtime"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de dormir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heure du coucher"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सोने का समय"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora di andare a letto"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "就寝時刻"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취침 시간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de dormir"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время сна"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "就寝时间"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "comment": "Watch task editor toolbar — cancel button",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إلغاء"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "रद्द करें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отмена"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "Capture ideas here": {
+      "comment": "Watch Inbox empty-state body",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "دوّن الأفكار هنا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier Ideen festhalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capture ideas here"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anota ideas aquí"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note tes idées ici"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यहाँ विचार लिखें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annota qui le idee"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ここにアイデアをメモ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "여기에 아이디어를 적어두세요"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anote ideias aqui"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Записывайте идеи здесь"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在这里记下想法"
+          }
+        }
+      }
+    },
+    "Color": {
+      "comment": "Watch task editor label above color swatches",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللون"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farbe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couleur"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "रंग"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カラー"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "색상"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cor"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Цвет"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "颜色"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "comment": "Watch swipe action — delete a task",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हटाएं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除"
+          }
+        }
+      }
+    },
+    "Done": {
+      "comment": "Watch swipe action — mark task done",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hecho"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fait"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हो गया"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fatto"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concluído"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готово"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        }
+      }
+    },
+    "Duration": {
+      "comment": "Watch task editor label above duration pills",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المدة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauer"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duration"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duración"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अवधि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duração"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Длительность"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "时长"
+          }
+        }
+      }
+    },
+    "Edit": {
+      "comment": "Watch nav title when editing an existing task",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعديل"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeiten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "संपादित करें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "편집"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Изменить"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑"
+          }
+        }
+      }
+    },
+    "Free time?": {
+      "comment": "Watch AI suggestion chip",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وقت فراغ؟"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freizeit?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free time?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Tiempo libre?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temps libre ?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "खाली समय?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempo libero?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空き時間？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "여유 시간?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempo livre?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Свободное время?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空闲？"
+          }
+        }
+      }
+    },
+    "Later": {
+      "comment": "Watch swipe action — unschedule a task",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لاحقًا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Später"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Later"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Después"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus tard"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बाद में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あとで"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "나중에"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depois"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Позже"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后"
+          }
+        }
+      }
+    },
+    "My day": {
+      "comment": "Watch AI suggestion chip",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يومي"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mein Tag"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ma journée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मेरा दिन"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La mia giornata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今日の予定"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오늘의 일정"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meu dia"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мой день"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我的一天"
+          }
+        }
+      }
+    },
+    "New Task": {
+      "comment": "Watch nav title when creating a new task",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مهمة جديدة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Aufgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Task"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva tarea"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle tâche"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नया कार्य"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova attività"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新規タスク"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 작업"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova tarefa"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новая задача"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建任务"
+          }
+        }
+      }
+    },
+    "No tasks": {
+      "comment": "Watch timeline empty-state title — no scheduled tasks for this day",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد مهام"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Aufgaben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune tâche"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कोई कार्य नहीं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna attività"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タスクなし"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 없음"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem tarefas"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет задач"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无任务"
+          }
+        }
+      }
+    },
+    "No tasks yet": {
+      "comment": "Watch Inbox empty-state title — no unscheduled tasks",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد مهام بعد"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Aufgaben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No tasks yet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore de tâches"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अभी कोई कार्य नहीं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ancora nessuna attività"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まだタスクはありません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 작업이 없습니다"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainda sem tarefas"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Задач пока нет"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无任务"
+          }
+        }
+      }
+    },
+    "NOW": {
+      "comment": "Banner title shown when a task is currently in progress",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الآن"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JETZT"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOW"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AHORA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EN COURS"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अभी"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ORA"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "進行中"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "진행 중"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AGORA"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "СЕЙЧАС"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "进行中"
+          }
+        }
+      }
+    },
+    "NEXT": {
+      "comment": "Banner title shown when there is a task about to start",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التالي"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALS NÄCHSTES"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NEXT"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SIGUIENTE"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SUIVANT"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अगला"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PROSSIMA"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다음"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRÓXIMA"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ДАЛЕЕ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一个"
+          }
+        }
+      }
+    },
+    "Rise and Shine": {
+      "comment": "Watch settings — wake-up daily anchor label inside the wake time picker",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاستيقاظ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufstehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rise and Shine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Arriba!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réveil"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उठो और चमको"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sveglia"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起床"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기상"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bom dia!"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подъём"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起床"
+          }
+        }
+      }
+    },
+    "Save": {
+      "comment": "Watch task editor toolbar — save button",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حفظ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सहेजें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salva"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salvar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сохранить"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
+    "Something went wrong.": {
+      "comment": "Generic Watch AI chat error fallback",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حدث خطأ ما."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas ist schiefgelaufen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something went wrong."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algo salió mal."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une erreur est survenue."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुछ गलत हुआ।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualcosa è andato storto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "問題が発生しました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "문제가 발생했습니다."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algo deu errado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что-то пошло не так."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出现错误。"
+          }
+        }
+      }
+    },
+    "Task name": {
+      "comment": "Watch task editor — title field placeholder",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسم المهمة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabenname"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Task name"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre de la tarea"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom de la tâche"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कार्य का नाम"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome attività"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タスク名"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 이름"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome da tarefa"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Название задачи"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任务名称"
+          }
+        }
+      }
+    },
+    "Time": {
+      "comment": "Watch task editor — start time picker label",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الوقت"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heure"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "समय"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orario"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時刻"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시각"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "时间"
+          }
+        }
+      }
+    },
+    "Today, %@": {
+      "comment": "Watch timeline date header for today (e.g. 'Today, Mar 26'). %@ is a short formatted date.",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اليوم، %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute, %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today, %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoy, %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aujourd'hui, %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आज, %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi, %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今日、%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오늘, %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje, %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня, %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天，%@"
+          }
+        }
+      }
+    },
+    "Tomorrow": {
+      "comment": "Watch timeline date header for tomorrow",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "غدًا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomorrow"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mañana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demain"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कल"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domani"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "明日"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내일"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amanhã"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завтра"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "明天"
+          }
+        }
+      }
+    },
+    "Version": {
+      "comment": "Watch about row — app version",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإصدار"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "संस्करण"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バージョン"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버전"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versão"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версия"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版本"
+          }
+        }
+      }
+    },
+    "Wake Up": {
+      "comment": "Watch settings section header — wake-up time picker",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاستيقاظ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufstehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wake Up"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despertar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réveil"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उठना"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sveglia"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起床"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기상"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acordar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подъём"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起床"
+          }
+        }
+      }
+    },
+    "Wind Down": {
+      "comment": "Watch settings — bedtime daily anchor label inside the bedtime picker",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاسترخاء"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausklingen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wind Down"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relajarse"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détente"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "विश्राम"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riposo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "就寝準備"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "잠자리 준비"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de relaxar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отдых"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "放松"
+          }
+        }
+      }
+    },
+    "Yesterday": {
+      "comment": "Watch timeline date header for yesterday",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أمس"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yesterday"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कल"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ieri"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "昨日"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어제"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontem"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вчера"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "昨天"
+          }
+        }
+      }
+    },
+    "15m": {
+      "comment": "Watch duration pill — 15 minutes",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "١٥د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15m"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15मि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15분"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15分"
+          }
+        }
+      }
+    },
+    "30m": {
+      "comment": "Watch duration pill — 30 minutes",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "٣٠د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30m"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30मि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30분"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30分"
+          }
+        }
+      }
+    },
+    "45m": {
+      "comment": "Watch duration pill — 45 minutes",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "٤٥د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45m"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45 min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45 min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45मि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45 min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45분"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45 min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45 мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "45分"
+          }
+        }
+      }
+    },
+    "1h": {
+      "comment": "Watch duration pill — 1 hour",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ساعة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1Std"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 h"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1घं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1시간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1小时"
+          }
+        }
+      }
+    },
+    "1.5h": {
+      "comment": "Watch duration pill — 1.5 hours",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "١٫٥ ساعة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1,5Std"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1.5h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1,5 h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 h 30"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1.5घं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1,5 h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1時間30分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1.5시간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1,5 h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1,5 ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1.5小时"
+          }
+        }
+      }
+    },
+    "2h": {
+      "comment": "Watch duration pill — 2 hours",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ساعتان"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2Std"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 h"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2घं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2시간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2小时"
+          }
+        }
+      }
+    },
+    "%lldh %lldm": {
+      "comment": "Compact watch duration — hours and minutes (e.g. '1h 30m')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld س %2$lld د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldStd %2$lldMin"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldघं %2$lldमि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld時間%2$lld分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld시간 %2$lld분"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldч %2$lldм"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld小时%2$lld分"
+          }
+        }
+      }
+    },
+    "%lldh": {
+      "comment": "Compact watch duration — whole hours (e.g. '2h')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ساعة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldStd"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldh"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldघं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld시간"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld小时"
+          }
+        }
+      }
+    },
+    "%lldm": {
+      "comment": "Compact watch duration — minutes under an hour (e.g. '15m')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldMin"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldमि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld분"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld分"
+          }
+        }
+      }
+    },
+    "%lldm left": {
+      "comment": "Watch Now banner trailing label — minutes remaining (e.g. '5m left')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بقي %lld د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldm left"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "quedan %lld min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "reste %lld min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld मि बाकी"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "restano %lld min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残り%lld分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld분 남음"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "faltam %lld min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "осталось %lld мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还剩 %lld 分"
+          }
+        }
+      }
+    },
+    "%lldh left": {
+      "comment": "Watch Now banner trailing label — whole hours remaining (e.g. '1h left')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بقي %lld ساعة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld Std"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldh left"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "queda %lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "reste %lld h"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld घं बाकी"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "resta %lld h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残り%lld時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld시간 남음"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "falta %lld h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "осталось %lld ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还剩 %lld 小时"
+          }
+        }
+      }
+    },
+    "starting": {
+      "comment": "Watch Next banner trailing label — task starts now",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبدأ الآن"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "beginnt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "starting"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "empieza"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "démarre"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "शुरू हो रहा है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "inizia"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시작"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "começando"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "начинается"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "即将开始"
+          }
+        }
+      }
+    },
+    "in %lldm": {
+      "comment": "Watch Next banner trailing label — minutes until task starts (e.g. 'in 5m')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بعد %lld د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %lld Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %lldm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "en %lld min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dans %lld min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld मि में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tra %lld min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと%lld分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld분 후"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "em %lld min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "через %lld мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 分后"
+          }
+        }
+      }
+    },
+    "in %lldh %lldm": {
+      "comment": "Watch Next banner trailing label — hours and minutes until task starts (e.g. 'in 1h 30m')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بعد %1$lld س %2$lld د"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %1$lld Std %2$lld Min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %1$lldh %2$lldm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "en %1$lld h %2$lld min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dans %1$lld h %2$lld min"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld घं %2$lld मि में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tra %1$lld h %2$lld min"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと%1$lld時間%2$lld分"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld시간 %2$lld분 후"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "em %1$lld h %2$lld min"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "через %1$lld ч %2$lld мин"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld 小时 %2$lld 分后"
+          }
+        }
+      }
+    },
+    "in %lldh": {
+      "comment": "Watch Next banner trailing label — whole hours until task starts (e.g. 'in 2h')",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بعد %lld ساعة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %lld Std"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %lldh"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "en %lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dans %lld h"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld घं में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tra %lld h"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと%lld時間"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld시간 후"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "em %lld h"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "через %lld ч"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 小时后"
+          }
+        }
+      }
+    },
+    "%lld of %lld done": {
+      "comment": "Watch progress pill: how many tasks the user has completed today.",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld من %2$lld مكتملة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld erledigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld de %2$lld hechas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld sur %2$lld terminées"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld में से %2$lld पूरे"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld su %2$lld completate"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld件中 %1$lld件完了"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld개 중 %1$lld개 완료"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld de %2$lld concluídas"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld из %2$lld выполнено"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld 项中已完成 %1$lld 项"
+          }
+        }
+      }
+    },
+    "You are a friendly AI planning assistant in the Tickd daily planner app (Apple Watch).\nToday is %@. Current time is %@.\nToday's date (ISO): %@\nTomorrow's date (ISO): %@\n\n%@\n\nKeep responses very short (1 sentence max). Be warm and direct.\n\nWhen the user asks you to create, move, reschedule, complete, or in any way modify tasks — do it immediately. Do NOT ask for confirmation.\nWords like \"suggest\", \"can you\", \"would you\", \"please\" are all commands — execute immediately.\n\nYou MUST append an action block AFTER your response text whenever any task operation is needed:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNEVER respond about task changes without including [ACTIONS].\n\nSupported action types:\n• Move a task:              {\"type\":\"move_task\",\"title\":\"exact title only\",\"new_time\":\"HH:MM\"}\n• Create a scheduled task:  {\"type\":\"create_task\",\"title\":\"name\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Create an UNSCHEDULED task: {\"type\":\"create_unscheduled_task\",\"title\":\"name\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Complete a task:          {\"type\":\"complete_task\",\"title\":\"exact title\"}\n\nUse 24-hour HH:MM. Default duration 30 min.\nCRITICAL: The \"title\" field must contain ONLY the task name from title=\"...\" — never include duration, time, or other metadata.\nIf the user says \"tomorrow\", use %@. If they say \"today\", use %@.\n\nPROTECTED tasks (marked [protected]): never include in [ACTIONS].": {
+      "comment": "AI system prompt — preserve [ACTIONS] markers and JSON format",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أنت مساعد تخطيط ودود في تطبيق Tickd (Apple Watch).\nاليوم هو %1$@. الوقت الحالي %2$@.\nتاريخ اليوم (ISO): %3$@\nتاريخ غدٍ (ISO): %4$@\n\n%5$@\n\nاحرص على ردود قصيرة جدًا (جملة واحدة كحد أقصى). كن دافئًا ومباشرًا.\n\nعندما يطلب المستخدم إنشاء أو نقل أو إعادة جدولة أو إكمال أو تعديل المهام، نفّذ ذلك فورًا. لا تطلب تأكيدًا.\nكلمات مثل «اقترح» و«هل يمكنك» و«من فضلك» تُعدّ أوامر — نفّذها فورًا.\n\nيجب إلحاق كتلة إجراءات بعد نص ردك كلما كانت هناك عملية على المهام:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nلا ترد أبدًا عن تغييرات المهام دون تضمين [ACTIONS].\n\nأنواع الإجراءات المدعومة:\n• نقل مهمة:                       {\"type\":\"move_task\",\"title\":\"العنوان فقط\",\"new_time\":\"HH:MM\"}\n• إنشاء مهمة مجدولة:              {\"type\":\"create_task\",\"title\":\"الاسم\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• إنشاء مهمة غير مجدولة:          {\"type\":\"create_unscheduled_task\",\"title\":\"الاسم\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• إكمال مهمة:                     {\"type\":\"complete_task\",\"title\":\"العنوان الدقيق\"}\n\nاستخدم تنسيق 24 ساعة HH:MM. المدة الافتراضية 30 دقيقة.\nمهم: حقل «title» يحتوي فقط على اسم المهمة من title=\"…\" — لا تضمّن مدة أو وقتًا أو بيانات أخرى في العنوان.\nإذا قال المستخدم «غدًا» فاستخدم %6$@، وإذا قال «اليوم» فاستخدم %7$@.\n\nالمهام المحمية (الموسومة [protected]) لا تُدرَج أبدًا في [ACTIONS]."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist ein freundlicher KI-Planungsassistent in der Tickd-App (Apple Watch).\nHeute ist %1$@. Aktuelle Uhrzeit: %2$@.\nDatum heute (ISO): %3$@\nDatum morgen (ISO): %4$@\n\n%5$@\n\nAntworte sehr kurz (max. 1 Satz). Sei warmherzig und direkt.\n\nWenn der Nutzer dich bittet, Aufgaben zu erstellen, zu verschieben, neu zu planen, abzuschließen oder zu ändern, mach es sofort. Frag NICHT nach Bestätigung.\nWörter wie „schlag vor\", „kannst du\", „würdest du\", „bitte\" sind Befehle — führe sie sofort aus.\n\nDu MUSST nach deinem Antworttext einen Aktionsblock anhängen, sobald eine Aufgabenoperation nötig ist:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nAntworte NIE über Aufgabenänderungen ohne [ACTIONS].\n\nUnterstützte Aktionstypen:\n• Aufgabe verschieben:           {\"type\":\"move_task\",\"title\":\"exakter Titel\",\"new_time\":\"HH:MM\"}\n• Geplante Aufgabe erstellen:    {\"type\":\"create_task\",\"title\":\"Name\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• UNGEPLANTE Aufgabe erstellen:  {\"type\":\"create_unscheduled_task\",\"title\":\"Name\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Aufgabe abschließen:           {\"type\":\"complete_task\",\"title\":\"exakter Titel\"}\n\nVerwende 24-Stunden-Format HH:MM. Standarddauer 30 Min.\nWICHTIG: Das Feld „title\" darf NUR den Aufgabennamen aus title=\"…\" enthalten — niemals Dauer, Uhrzeit oder andere Metadaten.\nSagt der Nutzer „morgen\", verwende %6$@. Sagt er „heute\", verwende %7$@.\n\nGESCHÜTZTE Aufgaben (gekennzeichnet mit [protected]) gehören nie in [ACTIONS]."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are a friendly AI planning assistant in the Tickd daily planner app (Apple Watch).\nToday is %1$@. Current time is %2$@.\nToday's date (ISO): %3$@\nTomorrow's date (ISO): %4$@\n\n%5$@\n\nKeep responses very short (1 sentence max). Be warm and direct.\n\nWhen the user asks you to create, move, reschedule, complete, or in any way modify tasks — do it immediately. Do NOT ask for confirmation.\nWords like \"suggest\", \"can you\", \"would you\", \"please\" are all commands — execute immediately.\n\nYou MUST append an action block AFTER your response text whenever any task operation is needed:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNEVER respond about task changes without including [ACTIONS].\n\nSupported action types:\n• Move a task:              {\"type\":\"move_task\",\"title\":\"exact title only\",\"new_time\":\"HH:MM\"}\n• Create a scheduled task:  {\"type\":\"create_task\",\"title\":\"name\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Create an UNSCHEDULED task: {\"type\":\"create_unscheduled_task\",\"title\":\"name\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Complete a task:          {\"type\":\"complete_task\",\"title\":\"exact title\"}\n\nUse 24-hour HH:MM. Default duration 30 min.\nCRITICAL: The \"title\" field must contain ONLY the task name from title=\"...\" — never include duration, time, or other metadata.\nIf the user says \"tomorrow\", use %6$@. If they say \"today\", use %7$@.\n\nPROTECTED tasks (marked [protected]): never include in [ACTIONS]."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eres un asistente de planificación amable en la app Tickd (Apple Watch).\nHoy es %1$@. La hora actual es %2$@.\nFecha de hoy (ISO): %3$@\nFecha de mañana (ISO): %4$@\n\n%5$@\n\nResponde muy breve (1 frase como máximo). Sé cercano y directo.\n\nCuando la persona te pida crear, mover, reprogramar, completar o cambiar tareas, hazlo al instante. NO pidas confirmación.\nPalabras como «sugiere», «puedes», «podrías», «por favor» son órdenes: ejecútalas de inmediato.\n\nDEBES añadir un bloque de acciones DESPUÉS de tu respuesta cuando haya cualquier operación sobre tareas:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNUNCA respondas sobre cambios en tareas sin incluir [ACTIONS].\n\nTipos de acción admitidos:\n• Mover una tarea:                {\"type\":\"move_task\",\"title\":\"título exacto\",\"new_time\":\"HH:MM\"}\n• Crear una tarea programada:    {\"type\":\"create_task\",\"title\":\"nombre\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Crear una tarea SIN PROGRAMAR: {\"type\":\"create_unscheduled_task\",\"title\":\"nombre\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Completar una tarea:           {\"type\":\"complete_task\",\"title\":\"título exacto\"}\n\nUsa formato 24 h HH:MM. Duración por defecto: 30 min.\nCRÍTICO: el campo «title» debe contener SOLO el nombre de la tarea de title=\"…\". Nunca incluyas duración, hora ni metadatos en el título.\nSi la persona dice «mañana», usa %6$@. Si dice «hoy», usa %7$@.\n\nLas tareas PROTEGIDAS (marcadas [protected]) nunca van en [ACTIONS]."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu es un assistant de planification convivial dans l'app Tickd (Apple Watch).\nNous sommes le %1$@. Il est %2$@.\nDate du jour (ISO) : %3$@\nDate de demain (ISO) : %4$@\n\n%5$@\n\nRéponds très brièvement (1 phrase max). Sois chaleureux et direct.\n\nQuand l'utilisateur·rice te demande de créer, déplacer, replanifier, terminer ou modifier des tâches, fais-le immédiatement. Ne demande PAS de confirmation.\nDes mots comme « suggère », « peux-tu », « pourrais-tu », « s'il te plaît » sont des ordres : exécute-les immédiatement.\n\nTu DOIS ajouter un bloc d'actions APRÈS ton texte de réponse dès qu'une opération sur une tâche est nécessaire :\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNe réponds JAMAIS à propos d'un changement de tâche sans inclure [ACTIONS].\n\nTypes d'action pris en charge :\n• Déplacer une tâche :          {\"type\":\"move_task\",\"title\":\"titre exact\",\"new_time\":\"HH:MM\"}\n• Créer une tâche planifiée :    {\"type\":\"create_task\",\"title\":\"nom\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Créer une tâche NON PLANIFIÉE : {\"type\":\"create_unscheduled_task\",\"title\":\"nom\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Terminer une tâche :          {\"type\":\"complete_task\",\"title\":\"titre exact\"}\n\nUtilise le format 24 h HH:MM. Durée par défaut : 30 min.\nIMPORTANT : le champ « title » doit contenir UNIQUEMENT le nom de la tâche de title=\"…\". N'inclus jamais la durée, l'heure ou d'autres métadonnées.\nSi l'utilisateur·rice dit « demain », utilise %6$@. Si elle dit « aujourd'hui », utilise %7$@.\n\nLes tâches PROTÉGÉES (marquées [protected]) ne doivent jamais figurer dans [ACTIONS]."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आप Tickd डेली प्लानर ऐप (Apple Watch) में एक मित्रवत AI प्लानिंग असिस्टेंट हैं।\nआज %1$@ है। वर्तमान समय %2$@ है।\nआज की तिथि (ISO): %3$@\nकल की तिथि (ISO): %4$@\n\n%5$@\n\nजवाब बहुत छोटे रखें (अधिकतम 1 वाक्य)। गर्मजोशी से और सीधे जवाब दें।\n\nजब उपयोगकर्ता कार्य बनाने, खिसकाने, फिर से शेड्यूल करने, पूरा करने या किसी भी तरह बदलने के लिए कहे, तो उसे तुरंत करें। पुष्टि न पूछें।\n«सुझाव दें», «क्या आप», «कृपया» जैसे शब्द भी आदेश हैं — तुरंत निष्पादित करें।\n\nजब भी कार्यों से जुड़ा कोई संचालन ज़रूरी हो, आपको जवाब के बाद एक ऐक्शन ब्लॉक अवश्य जोड़ना है:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\n[ACTIONS] को शामिल किए बिना कार्य परिवर्तनों के बारे में कभी जवाब न दें।\n\nसमर्थित ऐक्शन प्रकार:\n• कार्य को खिसकाना:                {\"type\":\"move_task\",\"title\":\"सटीक शीर्षक\",\"new_time\":\"HH:MM\"}\n• शेड्यूल किया कार्य बनाना:       {\"type\":\"create_task\",\"title\":\"नाम\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• बिना शेड्यूल कार्य बनाना:        {\"type\":\"create_unscheduled_task\",\"title\":\"नाम\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• कार्य पूरा करना:                 {\"type\":\"complete_task\",\"title\":\"सटीक शीर्षक\"}\n\n24-घंटे का HH:MM प्रारूप उपयोग करें। डिफ़ॉल्ट अवधि 30 मिनट।\nमहत्वपूर्ण: «title» फ़ील्ड में केवल title=\"…\" से कार्य का नाम रखें — अवधि, समय या अन्य मेटाडेटा कभी न जोड़ें।\nयदि उपयोगकर्ता «कल» कहे तो %6$@ का उपयोग करें; «आज» कहे तो %7$@ का।\n\nसुरक्षित (protected) कार्य कभी भी [ACTIONS] में शामिल न करें।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sei un assistente di pianificazione cordiale nell'app Tickd (Apple Watch).\nOggi è %1$@. Ora corrente: %2$@.\nData di oggi (ISO): %3$@\nData di domani (ISO): %4$@\n\n%5$@\n\nRispondi molto brevemente (1 frase al massimo). Sii caloroso e diretto.\n\nQuando l'utente ti chiede di creare, spostare, riprogrammare, completare o modificare attività, fallo subito. NON chiedere conferma.\nParole come «suggerisci», «puoi», «potresti», «per favore» sono comandi: eseguili immediatamente.\n\nDEVI accodare un blocco di azioni DOPO il testo di risposta ogniqualvolta sia necessaria un'operazione sulle attività:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNON rispondere MAI a una modifica di attività senza includere [ACTIONS].\n\nTipi di azione supportati:\n• Spostare un'attività:           {\"type\":\"move_task\",\"title\":\"titolo esatto\",\"new_time\":\"HH:MM\"}\n• Creare un'attività pianificata: {\"type\":\"create_task\",\"title\":\"nome\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Creare un'attività NON PIANIFICATA: {\"type\":\"create_unscheduled_task\",\"title\":\"nome\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Completare un'attività:        {\"type\":\"complete_task\",\"title\":\"titolo esatto\"}\n\nUsa il formato 24 ore HH:MM. Durata predefinita 30 min.\nIMPORTANTE: il campo «title» deve contenere SOLO il nome dell'attività da title=\"…\". Mai durata, ora o altri metadati nel titolo.\nSe l'utente dice «domani», usa %6$@. Se dice «oggi», usa %7$@.\n\nLe attività PROTETTE (marcate [protected]) non vanno mai in [ACTIONS]."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あなたはTickdデイリープランナーアプリ（Apple Watch）のフレンドリーなAIプランニングアシスタントです。\n本日は %1$@、現在時刻は %2$@ です。\n本日のISO日付: %3$@\n明日のISO日付: %4$@\n\n%5$@\n\n返答はとても短く（最大1文）。親しみやすく、簡潔に。\n\nユーザーがタスクの作成・移動・再スケジュール・完了・変更を求めたら、すぐに実行してください。確認は不要です。\n「提案して」「できる？」「お願い」などの言葉も命令と見なし、即実行します。\n\nタスク操作が必要な場合は、応答文のあとに必ずアクションブロックを追加してください:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\n[ACTIONS]を含めずにタスク変更について返答してはいけません。\n\nサポートされるアクションタイプ:\n• タスクを移動:                    {\"type\":\"move_task\",\"title\":\"正確なタイトル\",\"new_time\":\"HH:MM\"}\n• スケジュール付きタスクを作成:    {\"type\":\"create_task\",\"title\":\"名前\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• 未スケジュールタスクを作成:      {\"type\":\"create_unscheduled_task\",\"title\":\"名前\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• タスクを完了:                    {\"type\":\"complete_task\",\"title\":\"正確なタイトル\"}\n\n24時間表記 HH:MM を使用。既定の所要時間は30分。\n重要: 「title」フィールドには title=\"…\" のタスク名のみを入れます。所要時間や時刻、その他のメタデータを含めないでください。\nユーザーが「明日」と言ったら %6$@、「今日」と言ったら %7$@ を使ってください。\n\n[protected]と付いた保護タスクは [ACTIONS] に絶対に含めないでください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "당신은 Tickd 데일리 플래너 앱(Apple Watch)의 친절한 AI 계획 도우미입니다.\n오늘은 %1$@ 입니다. 현재 시각은 %2$@ 입니다.\n오늘 날짜(ISO): %3$@\n내일 날짜(ISO): %4$@\n\n%5$@\n\n답변은 매우 짧게 해주세요(최대 1문장). 따뜻하고 간결한 어조로.\n\n사용자가 작업을 만들거나 옮기거나 재예약, 완료, 어떤 식으로든 변경해 달라고 하면 바로 실행하세요. 확인을 묻지 마세요.\n‘제안해 줘', ‘해줄 수 있어', ‘부탁해' 같은 표현도 모두 명령으로 보고 즉시 실행하세요.\n\n작업 변경이 필요한 경우 답변 뒤에 반드시 액션 블록을 덧붙여야 합니다:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\n[ACTIONS] 없이 작업 변경에 대해 응답하지 마세요.\n\n지원되는 액션 유형:\n• 작업 이동:                       {\"type\":\"move_task\",\"title\":\"정확한 제목\",\"new_time\":\"HH:MM\"}\n• 예약된 작업 생성:               {\"type\":\"create_task\",\"title\":\"이름\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• 예약 없는 작업 생성:            {\"type\":\"create_unscheduled_task\",\"title\":\"이름\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• 작업 완료:                       {\"type\":\"complete_task\",\"title\":\"정확한 제목\"}\n\n24시간 형식 HH:MM 을 사용하세요. 기본 소요 시간은 30분입니다.\n중요: «title» 필드에는 title=\"…\" 의 작업 이름만 넣고, 길이·시간·기타 메타데이터는 포함하지 마세요.\n사용자가 «내일»이라고 하면 %6$@, «오늘»이라고 하면 %7$@ 을 사용하세요.\n\n[protected] 로 표시된 보호 작업은 [ACTIONS] 에 절대 포함하지 마세요."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você é uma assistente de planejamento amigável no app Tickd (Apple Watch).\nHoje é %1$@. A hora atual é %2$@.\nData de hoje (ISO): %3$@\nData de amanhã (ISO): %4$@\n\n%5$@\n\nResponda de forma bem curta (no máximo 1 frase). Seja acolhedora e direta.\n\nQuando a pessoa pedir para criar, mover, reagendar, concluir ou alterar tarefas, faça na hora. NÃO peça confirmação.\nPalavras como «sugira», «pode», «poderia», «por favor» são comandos: execute imediatamente.\n\nVocê PRECISA acrescentar um bloco de ações DEPOIS do texto de resposta sempre que houver qualquer operação em tarefas:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nNUNCA responda sobre mudanças em tarefas sem incluir [ACTIONS].\n\nTipos de ação suportados:\n• Mover uma tarefa:                {\"type\":\"move_task\",\"title\":\"título exato\",\"new_time\":\"HH:MM\"}\n• Criar uma tarefa agendada:       {\"type\":\"create_task\",\"title\":\"nome\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Criar uma tarefa SEM HORÁRIO:    {\"type\":\"create_unscheduled_task\",\"title\":\"nome\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Concluir uma tarefa:             {\"type\":\"complete_task\",\"title\":\"título exato\"}\n\nUse formato 24 h HH:MM. Duração padrão 30 min.\nIMPORTANTE: o campo «title» deve conter APENAS o nome da tarefa de title=\"…\". Nunca inclua duração, horário ou outros metadados no título.\nSe a pessoa disser «amanhã», use %6$@. Se disser «hoje», use %7$@.\n\nTarefas PROTEGIDAS (marcadas [protected]) nunca entram em [ACTIONS]."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ты дружелюбный ИИ-помощник по планированию в приложении Tickd (Apple Watch).\nСегодня %1$@. Текущее время — %2$@.\nДата сегодня (ISO): %3$@\nДата завтра (ISO): %4$@\n\n%5$@\n\nОтвечай очень кратко (не больше 1 предложения). Будь тёплым и прямолинейным.\n\nКогда пользователь просит создать, перенести, перепланировать, выполнить или иным образом изменить задачи — делай это сразу. НЕ запрашивай подтверждения.\nСлова «предложи», «можешь», «пожалуйста» — это команды, выполняй их немедленно.\n\nКаждый раз, когда нужна операция с задачей, ОБЯЗАТЕЛЬНО добавляй блок действий ПОСЛЕ текста ответа:\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\nНЕ отвечай об изменении задач, не приложив [ACTIONS].\n\nПоддерживаемые типы действий:\n• Перенести задачу:               {\"type\":\"move_task\",\"title\":\"точное название\",\"new_time\":\"HH:MM\"}\n• Создать запланированную задачу: {\"type\":\"create_task\",\"title\":\"название\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Создать незапланированную:      {\"type\":\"create_unscheduled_task\",\"title\":\"название\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• Завершить задачу:               {\"type\":\"complete_task\",\"title\":\"точное название\"}\n\nИспользуй 24-часовой формат HH:MM. Длительность по умолчанию — 30 мин.\nВАЖНО: поле «title» должно содержать ТОЛЬКО название задачи из title=\"…\"; никогда не добавляй длительность, время или иные метаданные.\nЕсли пользователь говорит «завтра», используй %6$@. Если «сегодня» — %7$@.\n\nЗАЩИЩЁННЫЕ задачи (отмечены [protected]) не включай в [ACTIONS]."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你是 Tickd 日程规划应用（Apple Watch）中一位友好的 AI 规划助理。\n今天是 %1$@，当前时间是 %2$@。\n今天的 ISO 日期：%3$@\n明天的 ISO 日期：%4$@\n\n%5$@\n\n回答请非常简短（最多 1 句）。语气友善、简洁、直接。\n\n当用户要求创建、移动、重新排程、完成或以任何方式修改任务时，请立即执行。不要询问确认。\n「建议」「你能」「请」之类的措辞都视为命令，立刻执行。\n\n只要涉及任务操作，回复文本之后必须附加动作块：\n[ACTIONS]{\"actions\":[...]}[/ACTIONS]\n绝对不要在不附 [ACTIONS] 的情况下谈论任务变更。\n\n支持的动作类型：\n• 移动任务：                       {\"type\":\"move_task\",\"title\":\"完全相同的标题\",\"new_time\":\"HH:MM\"}\n• 创建已排程任务：                 {\"type\":\"create_task\",\"title\":\"名称\",\"time\":\"HH:MM\",\"date\":\"YYYY-MM-DD\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• 创建未排程任务：                 {\"type\":\"create_unscheduled_task\",\"title\":\"名称\",\"duration_minutes\":30,\"color\":\"#HEX\"}\n• 完成任务：                       {\"type\":\"complete_task\",\"title\":\"完全相同的标题\"}\n\n使用 24 小时制 HH:MM。默认时长 30 分钟。\n关键：「title」字段只放 title=\"…\" 中的任务名，绝不要包含时长、时间或其他元数据。\n用户若说「明天」，使用 %6$@；若说「今天」，使用 %7$@。\n\n受保护的任务（带 [protected]）绝不要写入 [ACTIONS]。"
+          }
+        }
+      }
+    },
+    "ends now": {
+      "comment": "Watch Now banner trailing label — task ends in 0 minutes",
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ينتهي الآن"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "endet jetzt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ends now"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "termina ya"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "se termine"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अभी समाप्त"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "finisce ora"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まもなく終了"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "곧 종료"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "termina agora"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "заканчивается"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "即将结束"
+          }
+        }
+      }
+    }
+  }
+}

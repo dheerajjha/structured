@@ -49,7 +49,7 @@ struct OnboardingBenefitsPage: View {
 
                 // Benefit rows
                 VStack(spacing: scaled(26)) {
-                    ForEach(Array(benefits.enumerated()), id: \.element.text) { i, b in
+                    ForEach(Array(benefits.enumerated()), id: \.element.icon) { i, b in
                         benefitRow(b, delay: Double(i) * 0.1)
                     }
                 }

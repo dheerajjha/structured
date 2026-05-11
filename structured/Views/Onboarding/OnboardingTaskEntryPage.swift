@@ -91,8 +91,10 @@ struct OnboardingTaskEntryPage: View {
                             Button {
                                 withAnimation(.snappy(duration: 0.2)) {
                                     // Persist the locale-appropriate task title so the user's
-                                    // saved task is rendered in their language.
-                                    taskTitle = String(localized: String.LocalizationValue(s.title), comment: "Onboarding task suggestion chip — also persisted as the user's first task title")
+                                    // saved task is rendered in their language. The English title
+                                    // string is the catalog key; Bundle.main resolves it to the
+                                    // current locale at runtime.
+                                    taskTitle = NSLocalizedString(s.title, comment: "Onboarding task suggestion chip — also persisted as the user's first task title")
                                     taskIcon  = s.icon
                                     focused   = false
                                 }
@@ -117,7 +119,7 @@ struct OnboardingTaskEntryPage: View {
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: scaled(12))
-                                        .strokeBorder(taskTitle == String(localized: String.LocalizationValue(s.title)) ? coral.opacity(0.5) : Color(.systemGray5), lineWidth: 1)
+                                        .strokeBorder(taskTitle == NSLocalizedString(s.title, comment: "") ? coral.opacity(0.5) : Color(.systemGray5), lineWidth: 1)
                                 )
                             }
                             .buttonStyle(.plain)

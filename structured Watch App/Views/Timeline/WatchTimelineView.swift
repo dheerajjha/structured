@@ -292,7 +292,7 @@ struct WatchTimelineView: View {
         guard let start = task.startTime else { return "" }
         let end = start.addingTimeInterval(task.duration)
         let remaining = max(0, Int(end.timeIntervalSince(Date()) / 60))
-        if remaining <= 0 { return String(localized: "now", comment: "Watch Now banner trailing label — task ends in 0 minutes") }
+        if remaining <= 0 { return String(localized: "ends now", comment: "Watch Now banner trailing label — task ends in 0 minutes") }
         if remaining < 60 { return String(localized: "\(remaining)m left", comment: "Watch Now banner trailing label — minutes remaining (e.g. '5m left')") }
         let h = remaining / 60
         let m = remaining % 60
