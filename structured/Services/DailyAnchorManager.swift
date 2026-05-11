@@ -72,11 +72,20 @@ struct DailyAnchorManager {
         wakeHour: Int, wakeMinute: Int,
         bedHour: Int, bedMinute: Int
     ) {
-        let day = date.startOfDay
-        let cal = Calendar.current
+        // Route the anchor-day window through HabitDay so a future
+        // "lock to home TZ" preference can change the day boundary in
+        // one place. Use a half-open `[start, nextStart)` range
+        // instead of exact `==` so a TZ change doesn't cause duplicate
+        // anchors when the stored `date` and freshly-derived midnight
+        // disagree by a few hours.
+        let day = HabitDay.startOfDay(for: date)
+        let nextDay = HabitDay.nextStartOfDay(for: date)
+        let cal = HabitDay.calendar
 
         guard let existing = try? context.fetch(
-            FetchDescriptor<StructuredTask>(predicate: #Predicate { $0.isProtected && $0.date == day })
+            FetchDescriptor<StructuredTask>(predicate: #Predicate {
+                $0.isProtected && $0.date >= day && $0.date < nextDay
+            })
         ) else { return }
 
         let hasWake = existing.contains { $0.anchorType == AnchorType.wakeUp }
@@ -115,8 +124,8 @@ struct DailyAnchorManager {
         wakeHour: Int, wakeMinute: Int,
         bedHour: Int, bedMinute: Int
     ) {
-        let today = Date().startOfDay
-        let cal   = Calendar.current
+        let today = HabitDay.startOfDay(for: Date())
+        let cal   = HabitDay.calendar
 
         guard let anchors = try? context.fetch(
             FetchDescriptor<StructuredTask>(predicate: #Predicate {
