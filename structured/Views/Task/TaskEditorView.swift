@@ -136,12 +136,25 @@ struct TaskEditorView: View {
                         }
 
                         if showDatePicker {
-                            DatePicker(
-                                "Select date",
-                                selection: $taskDate,
-                                in: Date().startOfDay...,
-                                displayedComponents: .date
-                            )
+                            // When editing, allow selecting the task's original (possibly past) date
+                            // so opening a back-dated task doesn't silently rewrite it to today.
+                            // When creating, keep the lower bound at today.
+                            Group {
+                                if isEditing {
+                                    DatePicker(
+                                        "Select date",
+                                        selection: $taskDate,
+                                        displayedComponents: .date
+                                    )
+                                } else {
+                                    DatePicker(
+                                        "Select date",
+                                        selection: $taskDate,
+                                        in: Date().startOfDay...,
+                                        displayedComponents: .date
+                                    )
+                                }
+                            }
                             .datePickerStyle(.graphical)
                             .tint(Color(hex: colorHex))
                             .transition(.opacity.combined(with: .move(edge: .top)))
@@ -550,21 +563,57 @@ struct TaskEditorView: View {
     }
 
     private func updateSubtasks(for task: StructuredTask) {
-        // Remove existing subtasks
-        for subtask in task.subtasks ?? [] {
-            modelContext.delete(subtask)
+        // Merge the edited subtask list into the existing subtasks so we preserve
+        // per-subtask state (notably `isCompleted`) across unrelated edits like
+        // renaming the parent task or changing its color.
+        //
+        // Matching strategy: by title.
+        // The editor UI works on plain title strings (`subtaskTexts: [String]`) and
+        // doesn't carry through the `Subtask.id`, so we can't do an id-based merge.
+        // Matching by title is lossy if the user renames a subtask (it'll look like
+        // a delete + insert and lose its completion state), but it covers the
+        // common case where the user edits the parent task without touching
+        // existing subtask rows.
+        let validSubtasks = subtaskTexts
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+
+        // Bucket existing subtasks by title so duplicate titles each consume a
+        // distinct existing row instead of all collapsing onto the same one.
+        var remainingByTitle: [String: [Subtask]] = [:]
+        for sub in task.subtasks ?? [] {
+            remainingByTitle[sub.title, default: []].append(sub)
         }
 
-        // Add new subtasks
-        let validSubtasks = subtaskTexts.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
-        var newSubtasks: [Subtask] = []
+        var merged: [Subtask] = []
         for (index, text) in validSubtasks.enumerated() {
-            let subtask = Subtask(title: text, order: index)
-            subtask.task = task
-            modelContext.insert(subtask)
-            newSubtasks.append(subtask)
+            if var bucket = remainingByTitle[text], let match = bucket.first {
+                // Reuse the existing subtask — preserve `isCompleted`, update `order`.
+                bucket.removeFirst()
+                if bucket.isEmpty {
+                    remainingByTitle.removeValue(forKey: text)
+                } else {
+                    remainingByTitle[text] = bucket
+                }
+                match.order = index
+                merged.append(match)
+            } else {
+                // No existing match — this is a newly added subtask.
+                let subtask = Subtask(title: text, order: index)
+                subtask.task = task
+                modelContext.insert(subtask)
+                merged.append(subtask)
+            }
         }
-        task.subtasks = newSubtasks
+
+        // Anything still in `remainingByTitle` was removed by the user.
+        for leftovers in remainingByTitle.values {
+            for sub in leftovers {
+                modelContext.delete(sub)
+            }
+        }
+
+        task.subtasks = merged
     }
 
     // MARK: - Delete
